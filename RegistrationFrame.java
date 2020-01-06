@@ -1,6 +1,7 @@
 package travelReviewPkg;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -8,6 +9,7 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.color.*;
 
 public class RegistrationFrame extends JFrame {
 
@@ -26,6 +28,7 @@ public class RegistrationFrame extends JFrame {
 	    frameDimY = (int) ((dimension.getHeight() - getHeight()) / 2);
 	    setLocation(frameDimX, frameDimY);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
