@@ -27,10 +27,10 @@ public class LoginFrame extends JFrame {
 	
 	
 	private JPanel contentPane;
-	private JPanel transformPanel;
+	private JPanel cardLayoutPanel;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
-	private CardLayout cardLayout;
+	private CardLayout cl_cardLayoutPanel;
 	private Controller ctrl;
 	private JTextField txtRegUsername;
 	private JTextField txtRegName;
@@ -56,18 +56,18 @@ public class LoginFrame extends JFrame {
 		gradientMainBg.kGradientFocus = 650;
 		gradientMainBg.kStartColor = new Color(33, 147, 176);
 		gradientMainBg.kEndColor = new Color(109, 213, 237);
-		gradientMainBg.setBounds(0, 0, 916, 530);
+		gradientMainBg.setBounds(0, 0, 899, 493);
 		contentPane.add(gradientMainBg);
 		gradientMainBg.setLayout(null);
 		
-		transformPanel = new JPanel();
-		transformPanel.setBounds(466, 0, 450, 530);
-		gradientMainBg.add(transformPanel);
-		transformPanel.setLayout(new CardLayout(0, 0));
-		cardLayout = (CardLayout) transformPanel.getLayout();
+		cardLayoutPanel = new JPanel();
+		cardLayoutPanel.setBounds(466, 0, 450, 530);
+		gradientMainBg.add(cardLayoutPanel);
+		cardLayoutPanel.setLayout(new CardLayout(0, 0));
+		cl_cardLayoutPanel = (CardLayout) cardLayoutPanel.getLayout();
 		
 		JPanel loginPanel = new JPanel();
-		transformPanel.add(loginPanel, "loginPanel_name");
+		cardLayoutPanel.add(loginPanel, "loginPanel_name");
 		loginPanel.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(255, 255, 255)));
 		loginPanel.setBackground(new Color(255, 255, 255));
 		loginPanel.setLayout(null);
@@ -143,7 +143,7 @@ public class LoginFrame extends JFrame {
 		
 		JPanel registrationPanel = new JPanel();
 		registrationPanel.setBackground(Color.WHITE);
-		transformPanel.add(registrationPanel, "registrationPanel_name");
+		cardLayoutPanel.add(registrationPanel, "registrationPanel_name");
 		registrationPanel.setLayout(null);
 		
 		JLabel lblRegistrazioneInTravelreview = new JLabel("Registrazione in TravelReview");
@@ -228,7 +228,7 @@ public class LoginFrame extends JFrame {
 		lblRegistratiOra_1.setForeground(Color.WHITE);
 		
 		JLabel lblWorldplanelogo = new JLabel("");
-		lblWorldplanelogo.setIcon(new ImageIcon("C:\\Users\\davide\\Documents\\GitHub\\TravelReview\\TravelReview\\resources\\logo_big.png"));
+		lblWorldplanelogo.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TestModernUI\\resources\\travelreview_logo_big.png"));
 		lblWorldplanelogo.setBounds(24, 87, 432, 375);
 		gradientMainBg.add(lblWorldplanelogo);
 		
@@ -247,7 +247,7 @@ public class LoginFrame extends JFrame {
 		lblRegistratiOra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				cardLayout.show(transformPanel, "registrationPanel_name");
+				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_name");
 			}
 			
 			@Override
