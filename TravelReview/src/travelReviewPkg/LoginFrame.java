@@ -17,6 +17,10 @@ import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.CardLayout;
+import javax.swing.JPasswordField;
+import javax.swing.JList;
+import javax.swing.JComboBox;
+import javax.swing.UIManager;
 
 public class LoginFrame extends JFrame {
 	private static final long serialVersionUID = -1361424214147021740L;
@@ -26,6 +30,10 @@ public class LoginFrame extends JFrame {
 	private JTextField txtUsername;
 	private JTextField txtPassword;
 	private CardLayout CL;
+	private JTextField txtRegUsername;
+	private JTextField txtRegName;
+	private JTextField txtRegSurname;
+	private JPasswordField pswReg;
 
 	/**
 	 * Costruzione del frame
@@ -40,17 +48,17 @@ public class LoginFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		KGradientPanel homeGradientPanel = new KGradientPanel();
-		homeGradientPanel.kGradientFocus = 650;
-		homeGradientPanel.kStartColor = new Color(33, 147, 176);
-		homeGradientPanel.kEndColor = new Color(109, 213, 237);
-		homeGradientPanel.setBounds(0, 0, 916, 530);
-		contentPane.add(homeGradientPanel);
-		homeGradientPanel.setLayout(null);
+		KGradientPanel gradientMainBg = new KGradientPanel();
+		gradientMainBg.kGradientFocus = 650;
+		gradientMainBg.kStartColor = new Color(33, 147, 176);
+		gradientMainBg.kEndColor = new Color(109, 213, 237);
+		gradientMainBg.setBounds(0, 0, 916, 530);
+		contentPane.add(gradientMainBg);
+		gradientMainBg.setLayout(null);
 		
 		JPanel transformPanel = new JPanel();
 		transformPanel.setBounds(466, 0, 450, 530);
-		homeGradientPanel.add(transformPanel);
+		gradientMainBg.add(transformPanel);
 		transformPanel.setLayout(new CardLayout(0, 0));
 		CL = (CardLayout) transformPanel.getLayout();
 		
@@ -85,24 +93,24 @@ public class LoginFrame extends JFrame {
 		lblPassword.setBounds(83, 210, 82, 13);
 		loginPanel.add(lblPassword);
 		
-		KGradientPanel gradientPanel_1 = new KGradientPanel();
-		gradientPanel_1.kStartColor = new Color(204, 51, 255);
-		gradientPanel_1.setBounds(108, 341, 228, 37);
-		loginPanel.add(gradientPanel_1);
-		gradientPanel_1.setLayout(null);
+		KGradientPanel gradientLoginBtnBg = new KGradientPanel();
+		gradientLoginBtnBg.kStartColor = new Color(204, 51, 255);
+		gradientLoginBtnBg.setBounds(108, 341, 228, 37);
+		loginPanel.add(gradientLoginBtnBg);
+		gradientLoginBtnBg.setLayout(null);
 		
 		JLabel lblAccedi = new JLabel("Accedi");
 		lblAccedi.setForeground(new Color(255, 255, 255));
 		lblAccedi.setFont(new Font("Ubuntu", Font.BOLD, 15));
 		lblAccedi.setBounds(86, 10, 54, 17);
-		gradientPanel_1.add(lblAccedi);
+		gradientLoginBtnBg.add(lblAccedi);
 		
 		JLabel lblNonSeiRegistrato = new JLabel("Non sei registrato?");
 		lblNonSeiRegistrato.setFont(new Font("Ubuntu", Font.PLAIN, 17));
 		lblNonSeiRegistrato.setBounds(108, 446, 237, 21);
 		loginPanel.add(lblNonSeiRegistrato);
 		
-		JLabel lblRegistratiOra = new JLabel("Registrati ora, \u00E8 gratuito!");
+		JLabel lblRegistratiOra = new JLabel("<html>\r\n<body>\r\n<u>Registrati ora, \u00E8 gratuito!</u>\r\n</body>\r\n</html>");
 		lblRegistratiOra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -115,14 +123,14 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		lblRegistratiOra.setFont(new Font("Ubuntu", Font.BOLD, 17));
-		lblRegistratiOra.setBounds(108, 465, 237, 31);
+		lblRegistratiOra.setBounds(108, 464, 237, 31);
 		loginPanel.add(lblRegistratiOra);
 		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(new Color(0, 0, 0));
-		separator.setBackground(new Color(0, 0, 0));
-		separator.setBounds(83, 420, 300, 10);
-		loginPanel.add(separator);
+		JSeparator loginSeparator = new JSeparator();
+		loginSeparator.setForeground(new Color(0, 0, 0));
+		loginSeparator.setBackground(new Color(0, 0, 0));
+		loginSeparator.setBounds(83, 420, 300, 10);
+		loginPanel.add(loginSeparator);
 		
 		JCheckBox chckbxMantieniLaSessione = new JCheckBox("Mantieni la sessione");
 		chckbxMantieniLaSessione.setBackground(new Color(255, 255, 255));
@@ -180,18 +188,94 @@ public class LoginFrame extends JFrame {
 		
 		JLabel lblRegistrazioneInTravelreview = new JLabel("Registrazione in TravelReview");
 		lblRegistrazioneInTravelreview.setFont(new Font("Ubuntu", Font.BOLD, 22));
-		lblRegistrazioneInTravelreview.setBounds(76, 23, 319, 57);
+		lblRegistrazioneInTravelreview.setBounds(74, 23, 319, 57);
 		registrationPanel.add(lblRegistrazioneInTravelreview);
+		
+		txtRegUsername = new JTextField();
+		txtRegUsername.setBounds(74, 148, 319, 28);
+		registrationPanel.add(txtRegUsername);
+		txtRegUsername.setColumns(10);
+		
+		txtRegName = new JTextField();
+		txtRegName.setBounds(74, 291, 140, 28);
+		registrationPanel.add(txtRegName);
+		txtRegName.setColumns(10);
+		
+		txtRegSurname = new JTextField();
+		txtRegSurname.setBounds(249, 291, 144, 28);
+		registrationPanel.add(txtRegSurname);
+		txtRegSurname.setColumns(10);
+		
+		pswReg = new JPasswordField();
+		pswReg.setBounds(74, 219, 319, 28);
+		registrationPanel.add(pswReg);
+		
+		JComboBox comboBirthDay = new JComboBox();
+		comboBirthDay.setBounds(74, 364, 99, 28);
+		registrationPanel.add(comboBirthDay);
+		
+		JComboBox comboBirthMonth = new JComboBox();
+		comboBirthMonth.setBounds(185, 364, 98, 28);
+		registrationPanel.add(comboBirthMonth);
+		
+		JComboBox comboBirthYear = new JComboBox();
+		comboBirthYear.setBounds(294, 364, 99, 28);
+		registrationPanel.add(comboBirthYear);
+		
+		JLabel lblRegUsername = new JLabel("Username");
+		lblRegUsername.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegUsername.setBounds(74, 125, 99, 21);
+		registrationPanel.add(lblRegUsername);
+		
+		JLabel lblRegPsw = new JLabel("Password");
+		lblRegPsw.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegPsw.setBounds(74, 196, 140, 21);
+		registrationPanel.add(lblRegPsw);
+		
+		JLabel lblRegName = new JLabel("Nome");
+		lblRegName.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegName.setBounds(74, 268, 85, 21);
+		registrationPanel.add(lblRegName);
+		
+		JLabel lblRegCognome = new JLabel("Cognome");
+		lblRegCognome.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegCognome.setBounds(249, 268, 99, 21);
+		registrationPanel.add(lblRegCognome);
+		
+		JLabel lblRegBirthdate = new JLabel("Data di Nascita");
+		lblRegBirthdate.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegBirthdate.setBounds(74, 341, 140, 21);
+		registrationPanel.add(lblRegBirthdate);
+		
+		JCheckBox chkboxRegTerms = new JCheckBox("<html>\r\n<body>\r\nAccetto i <u>Termini e Condizioni</u> del servizio.\r\n</body>\r\n</html>");
+		chkboxRegTerms.setBackground(Color.WHITE);
+		chkboxRegTerms.setFont(new Font("Ubuntu", Font.PLAIN, 14));
+		chkboxRegTerms.setBounds(74, 424, 330, 34);
+		registrationPanel.add(chkboxRegTerms);
+		
+		KGradientPanel gradientRegBtn = new KGradientPanel();
+		gradientRegBtn.kGradientFocus = 175;
+		gradientRegBtn.kEndColor = new Color(50, 205, 50);
+		gradientRegBtn.kStartColor = Color.GREEN;
+		gradientRegBtn.setBounds(74, 464, 319, 42);
+		registrationPanel.add(gradientRegBtn);
+		gradientRegBtn.setLayout(null);
+		
+		JLabel lblRegistratiOra_1 = new JLabel("Registrati ora");
+		lblRegistratiOra_1.setBounds(111, 10, 100, 24);
+		gradientRegBtn.add(lblRegistratiOra_1);
+		lblRegistratiOra_1.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblRegistratiOra_1.setForeground(Color.WHITE);
 		
 		JLabel lblWorldplanelogo = new JLabel("");
 		lblWorldplanelogo.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TestModernUI\\resources\\travelreview_logo_big.png"));
 		lblWorldplanelogo.setBounds(24, 87, 432, 375);
-		homeGradientPanel.add(lblWorldplanelogo);
+		gradientMainBg.add(lblWorldplanelogo);
 		
 		JLabel lblTravelreview = new JLabel("TravelReview");
 		lblTravelreview.setForeground(new Color(255, 255, 255));
 		lblTravelreview.setFont(new Font("Quicksand Medium", Font.PLAIN, 52));
 		lblTravelreview.setBounds(10, 39, 361, 83);
-		homeGradientPanel.add(lblTravelreview);
+		gradientMainBg.add(lblTravelreview);
 	}
 }
