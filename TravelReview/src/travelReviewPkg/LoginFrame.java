@@ -40,8 +40,7 @@ public class LoginFrame extends JFrame {
 	 */
 	public LoginFrame() {
 		setResizable(false);
-		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 530);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -107,7 +106,7 @@ public class LoginFrame extends JFrame {
 		
 		JLabel lblNonSeiRegistrato = new JLabel("Non sei registrato?");
 		lblNonSeiRegistrato.setFont(new Font("Ubuntu", Font.PLAIN, 17));
-		lblNonSeiRegistrato.setBounds(108, 446, 237, 21);
+		lblNonSeiRegistrato.setBounds(108, 440, 237, 21);
 		loginPanel.add(lblNonSeiRegistrato);
 		
 		JLabel lblRegistratiOra = new JLabel("<html>\r\n<body>\r\n<u>Registrati ora, \u00E8 gratuito!</u>\r\n</body>\r\n</html>");
@@ -123,7 +122,7 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		lblRegistratiOra.setFont(new Font("Ubuntu", Font.BOLD, 17));
-		lblRegistratiOra.setBounds(108, 464, 237, 31);
+		lblRegistratiOra.setBounds(108, 458, 237, 31);
 		loginPanel.add(lblRegistratiOra);
 		
 		JSeparator loginSeparator = new JSeparator();
@@ -148,43 +147,10 @@ public class LoginFrame extends JFrame {
 		lblAccediOraPer.setBounds(56, 90, 363, 21);
 		loginPanel.add(lblAccediOraPer);
 		
-		JLabel logCloseProgramBtn = new JLabel("X");
-		logCloseProgramBtn.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				logCloseProgramBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
-		logCloseProgramBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		logCloseProgramBtn.setBounds(426, 10, 14, 21);
-		loginPanel.add(logCloseProgramBtn);
-		
 		JPanel registrationPanel = new JPanel();
 		registrationPanel.setBackground(Color.WHITE);
 		transformPanel.add(registrationPanel, "registrationPanel_name");
 		registrationPanel.setLayout(null);
-		
-		JLabel regCloseProgramBtn = new JLabel("X");
-		regCloseProgramBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				System.exit(0);
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				regCloseProgramBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
-		regCloseProgramBtn.setFont(new Font("Tahoma", Font.BOLD, 20));
-		regCloseProgramBtn.setBounds(426, 10, 14, 21);
-		registrationPanel.add(regCloseProgramBtn);
 		
 		JLabel lblRegistrazioneInTravelreview = new JLabel("Registrazione in TravelReview");
 		lblRegistrazioneInTravelreview.setFont(new Font("Ubuntu", Font.BOLD, 22));
@@ -192,72 +158,72 @@ public class LoginFrame extends JFrame {
 		registrationPanel.add(lblRegistrazioneInTravelreview);
 		
 		txtRegUsername = new JTextField();
-		txtRegUsername.setBounds(74, 148, 319, 28);
+		txtRegUsername.setBounds(74, 126, 319, 28);
 		registrationPanel.add(txtRegUsername);
 		txtRegUsername.setColumns(10);
 		
 		txtRegName = new JTextField();
-		txtRegName.setBounds(74, 291, 140, 28);
+		txtRegName.setBounds(74, 269, 140, 28);
 		registrationPanel.add(txtRegName);
 		txtRegName.setColumns(10);
 		
 		txtRegSurname = new JTextField();
-		txtRegSurname.setBounds(249, 291, 144, 28);
+		txtRegSurname.setBounds(249, 269, 144, 28);
 		registrationPanel.add(txtRegSurname);
 		txtRegSurname.setColumns(10);
 		
 		pswReg = new JPasswordField();
-		pswReg.setBounds(74, 219, 319, 28);
+		pswReg.setBounds(74, 197, 319, 28);
 		registrationPanel.add(pswReg);
 		
 		JComboBox comboBirthDay = new JComboBox();
-		comboBirthDay.setBounds(74, 364, 99, 28);
+		comboBirthDay.setBounds(74, 349, 99, 28);
 		registrationPanel.add(comboBirthDay);
 		
 		JComboBox comboBirthMonth = new JComboBox();
-		comboBirthMonth.setBounds(185, 364, 98, 28);
+		comboBirthMonth.setBounds(185, 349, 98, 28);
 		registrationPanel.add(comboBirthMonth);
 		
 		JComboBox comboBirthYear = new JComboBox();
-		comboBirthYear.setBounds(294, 364, 99, 28);
+		comboBirthYear.setBounds(294, 349, 99, 28);
 		registrationPanel.add(comboBirthYear);
 		
 		JLabel lblRegUsername = new JLabel("Username");
 		lblRegUsername.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegUsername.setBounds(74, 125, 99, 21);
+		lblRegUsername.setBounds(74, 103, 99, 21);
 		registrationPanel.add(lblRegUsername);
 		
 		JLabel lblRegPsw = new JLabel("Password");
 		lblRegPsw.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegPsw.setBounds(74, 196, 140, 21);
+		lblRegPsw.setBounds(74, 174, 140, 21);
 		registrationPanel.add(lblRegPsw);
 		
 		JLabel lblRegName = new JLabel("Nome");
 		lblRegName.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegName.setBounds(74, 268, 85, 21);
+		lblRegName.setBounds(74, 246, 85, 21);
 		registrationPanel.add(lblRegName);
 		
 		JLabel lblRegCognome = new JLabel("Cognome");
 		lblRegCognome.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegCognome.setBounds(249, 268, 99, 21);
+		lblRegCognome.setBounds(249, 246, 99, 21);
 		registrationPanel.add(lblRegCognome);
 		
 		JLabel lblRegBirthdate = new JLabel("Data di Nascita");
 		lblRegBirthdate.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegBirthdate.setBounds(74, 341, 140, 21);
+		lblRegBirthdate.setBounds(74, 326, 140, 21);
 		registrationPanel.add(lblRegBirthdate);
 		
 		JCheckBox chkboxRegTerms = new JCheckBox("<html>\r\n<body>\r\nAccetto i <u>Termini e Condizioni</u> del servizio.\r\n</body>\r\n</html>");
 		chkboxRegTerms.setBackground(Color.WHITE);
 		chkboxRegTerms.setFont(new Font("Ubuntu", Font.PLAIN, 14));
-		chkboxRegTerms.setBounds(74, 424, 330, 34);
+		chkboxRegTerms.setBounds(74, 395, 330, 34);
 		registrationPanel.add(chkboxRegTerms);
 		
 		KGradientPanel gradientRegBtn = new KGradientPanel();
 		gradientRegBtn.kGradientFocus = 175;
 		gradientRegBtn.kEndColor = new Color(50, 205, 50);
 		gradientRegBtn.kStartColor = Color.GREEN;
-		gradientRegBtn.setBounds(74, 464, 319, 42);
+		gradientRegBtn.setBounds(74, 435, 319, 42);
 		registrationPanel.add(gradientRegBtn);
 		gradientRegBtn.setLayout(null);
 		
