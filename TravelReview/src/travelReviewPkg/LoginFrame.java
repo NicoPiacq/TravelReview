@@ -228,7 +228,7 @@ public class LoginFrame extends JFrame {
 		lblRegistratiOra_1.setForeground(Color.WHITE);
 		
 		JLabel lblWorldplanelogo = new JLabel("");
-		lblWorldplanelogo.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TestModernUI\\resources\\travelreview_logo_big.png"));
+		lblWorldplanelogo.setIcon(new ImageIcon("C:\\Users\\davide\\Documents\\GitHub\\TravelReview\\TravelReview\\resources\\logo_big.png"));
 		lblWorldplanelogo.setBounds(24, 87, 432, 375);
 		gradientMainBg.add(lblWorldplanelogo);
 		

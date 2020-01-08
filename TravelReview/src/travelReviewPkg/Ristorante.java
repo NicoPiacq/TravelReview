@@ -1,11 +1,9 @@
 package travelReviewPkg;
 
-public class Ristorante {
-	
+public class Ristorante extends Inserzione{
 	private String nome;
 	private String indirizzo;
-	private String partitaIva;
-
+	
 	public String getNome() {
 		return nome;
 	}
@@ -18,17 +16,4 @@ public class Ristorante {
 	public void setIndirizzo(String indirizzo) {
 		this.indirizzo = indirizzo;
 	}
-	public String getPartitaIva() {
-		return partitaIva;
-	}
-	public void setPartitaIva(String partitaIva) {
-		this.partitaIva = partitaIva;
-	}
-
-	
-	
-	
-	
-	
-	
 }
