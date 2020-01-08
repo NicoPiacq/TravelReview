@@ -27,9 +27,11 @@ public class LoginFrame extends JFrame {
 	
 	
 	private JPanel contentPane;
+	private JPanel transformPanel;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
-	private CardLayout CL;
+	private CardLayout cardLayout;
+	private Controller ctrl;
 	private JTextField txtRegUsername;
 	private JTextField txtRegName;
 	private JTextField txtRegSurname;
@@ -38,7 +40,10 @@ public class LoginFrame extends JFrame {
 	/**
 	 * Costruzione del frame
 	 */
-	public LoginFrame() {
+	public LoginFrame(Controller c) {
+		
+		ctrl = c;
+		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 530);
@@ -55,11 +60,11 @@ public class LoginFrame extends JFrame {
 		contentPane.add(gradientMainBg);
 		gradientMainBg.setLayout(null);
 		
-		JPanel transformPanel = new JPanel();
+		transformPanel = new JPanel();
 		transformPanel.setBounds(466, 0, 450, 530);
 		gradientMainBg.add(transformPanel);
 		transformPanel.setLayout(new CardLayout(0, 0));
-		CL = (CardLayout) transformPanel.getLayout();
+		cardLayout = (CardLayout) transformPanel.getLayout();
 		
 		JPanel loginPanel = new JPanel();
 		transformPanel.add(loginPanel, "loginPanel_name");
@@ -92,17 +97,17 @@ public class LoginFrame extends JFrame {
 		lblPassword.setBounds(83, 210, 82, 13);
 		loginPanel.add(lblPassword);
 		
-		KGradientPanel gradientLoginBtnBg = new KGradientPanel();
-		gradientLoginBtnBg.kStartColor = new Color(204, 51, 255);
-		gradientLoginBtnBg.setBounds(108, 341, 228, 37);
-		loginPanel.add(gradientLoginBtnBg);
-		gradientLoginBtnBg.setLayout(null);
+		KGradientPanel gradientLoginBtn = new KGradientPanel();
+		gradientLoginBtn.kStartColor = new Color(204, 51, 255);
+		gradientLoginBtn.setBounds(108, 341, 228, 37);
+		loginPanel.add(gradientLoginBtn);
+		gradientLoginBtn.setLayout(null);
 		
 		JLabel lblAccedi = new JLabel("Accedi");
 		lblAccedi.setForeground(new Color(255, 255, 255));
 		lblAccedi.setFont(new Font("Ubuntu", Font.BOLD, 15));
 		lblAccedi.setBounds(86, 10, 54, 17);
-		gradientLoginBtnBg.add(lblAccedi);
+		gradientLoginBtn.add(lblAccedi);
 		
 		JLabel lblNonSeiRegistrato = new JLabel("Non sei registrato?");
 		lblNonSeiRegistrato.setFont(new Font("Ubuntu", Font.PLAIN, 17));
@@ -110,17 +115,6 @@ public class LoginFrame extends JFrame {
 		loginPanel.add(lblNonSeiRegistrato);
 		
 		JLabel lblRegistratiOra = new JLabel("<html>\r\n<body>\r\n<u>Registrati ora, \u00E8 gratuito!</u>\r\n</body>\r\n</html>");
-		lblRegistratiOra.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				CL.show(transformPanel, "registrationPanel_name");
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				lblRegistratiOra.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
 		lblRegistratiOra.setFont(new Font("Ubuntu", Font.BOLD, 17));
 		lblRegistratiOra.setBounds(108, 458, 237, 31);
 		loginPanel.add(lblRegistratiOra);
@@ -243,5 +237,29 @@ public class LoginFrame extends JFrame {
 		lblTravelreview.setFont(new Font("Quicksand Medium", Font.PLAIN, 52));
 		lblTravelreview.setBounds(10, 39, 361, 83);
 		gradientMainBg.add(lblTravelreview);
+		
+		registerMouseListener(ctrl, gradientLoginBtn, gradientRegBtn, lblRegistratiOra);
 	}
+	
+	
+	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegBtn, JLabel lblRegistratiOra) {
+		
+		lblRegistratiOra.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cardLayout.show(transformPanel, "registrationPanel_name");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblRegistratiOra.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		
+		
+	}
+	
+
+	
 }
