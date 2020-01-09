@@ -1,6 +1,5 @@
 package travelReviewPkg;
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +9,7 @@ import java.awt.Cursor;
 import javax.swing.border.MatteBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
@@ -18,9 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
-import javax.swing.JList;
 import javax.swing.JComboBox;
-import javax.swing.UIManager;
 
 public class LoginFrame extends JFrame {
 	private static final long serialVersionUID = -1361424214147021740L;
@@ -37,16 +35,16 @@ public class LoginFrame extends JFrame {
 	private JTextField txtRegSurname;
 	private JPasswordField pswReg;
 
-	/**
-	 * Costruzione del frame
-	 */
 	public LoginFrame(Controller c) {
+		setTitle("TravelReview - Read before you go");
 		
 		ctrl = c;
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 530);
+		setLocationRelativeTo(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
