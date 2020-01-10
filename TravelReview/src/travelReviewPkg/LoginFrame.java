@@ -28,7 +28,7 @@ public class LoginFrame extends JFrame {
 	private JPanel cardLayoutPanel;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
-	private CardLayout cl_cardLayoutPanel;
+	private CardLayout cardLayout;
 	private Controller ctrl;
 	private JTextField txtRegUsername;
 	private JTextField txtRegName;
@@ -62,7 +62,7 @@ public class LoginFrame extends JFrame {
 		cardLayoutPanel.setBounds(466, 0, 450, 530);
 		gradientMainBg.add(cardLayoutPanel);
 		cardLayoutPanel.setLayout(new CardLayout(0, 0));
-		cl_cardLayoutPanel = (CardLayout) cardLayoutPanel.getLayout();
+		cardLayout = (CardLayout) cardLayoutPanel.getLayout();
 		
 		JPanel loginPanel = new JPanel();
 		cardLayoutPanel.add(loginPanel, "loginPanel_name");
@@ -245,7 +245,7 @@ public class LoginFrame extends JFrame {
 		lblRegistratiOra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_name");
+				cardLayout.show(cardLayoutPanel, "registrationPanel_name");
 			}
 			
 			@Override

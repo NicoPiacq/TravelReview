@@ -219,16 +219,16 @@ public class MainFrame extends JFrame {
 	
 	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel AddRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel) {
+	public void registerMouseListener(JPanel ristorantiBtn, JPanel attrazioneBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel) {
 		
-		foodBtn.addMouseListener(new MouseAdapter() {
+		ristorantiBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				foodBtn.setBackground(new Color(97, 168, 232));
+				ristorantiBtn.setBackground(new Color(97, 168, 232));
 				selectFood.setVisible(true);
 				
-				attrBtn.setBackground(new Color(97, 152, 232));
+				attrazioneBtn.setBackground(new Color(97, 152, 232));
 				selectAttr.setVisible(false);
 				
 				hotelBtn.setBackground(new Color(97, 152, 232));
@@ -242,24 +242,24 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				if(!foodBtnIsPressed)
-					foodBtn.setBackground(new Color(97, 152, 232));
+					ristorantiBtn.setBackground(new Color(97, 152, 232));
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				foodBtn.setBackground(new Color(97, 168, 232));
+				ristorantiBtn.setBackground(new Color(97, 168, 232));
 			}
 			
 		});
 		
-		attrBtn.addMouseListener(new MouseAdapter() {
+		attrazioneBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				attrBtn.setBackground(new Color(97, 168, 232));
+				attrazioneBtn.setBackground(new Color(97, 168, 232));
 				selectAttr.setVisible(true);
 				
-				foodBtn.setBackground(new Color(97, 152, 232));
+				ristorantiBtn.setBackground(new Color(97, 152, 232));
 				selectFood.setVisible(false);
 				
 				hotelBtn.setBackground(new Color(97, 152, 232));
@@ -272,13 +272,13 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				attrBtn.setBackground(new Color(97, 168, 232));
+				attrazioneBtn.setBackground(new Color(97, 168, 232));
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				if(!attrBtnIsPressed)
-					attrBtn.setBackground(new Color(97, 152, 232));
+					attrazioneBtn.setBackground(new Color(97, 152, 232));
 			}
 			
 		});
@@ -290,10 +290,10 @@ public class MainFrame extends JFrame {
 				hotelBtn.setBackground(new Color(97, 168, 232));
 				selectHotel.setVisible(true);
 				
-				attrBtn.setBackground(new Color(97, 152, 232));
+				attrazioneBtn.setBackground(new Color(97, 152, 232));
 				selectAttr.setVisible(false);
 				
-				foodBtn.setBackground(new Color(97, 152, 232));
+				ristorantiBtn.setBackground(new Color(97, 152, 232));
 				selectFood.setVisible(false);
 				
 				foodBtnIsPressed = false;
