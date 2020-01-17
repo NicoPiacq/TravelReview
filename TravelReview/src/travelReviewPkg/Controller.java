@@ -7,8 +7,8 @@ public class Controller {
 	
 	public Controller() {
 		
-		frameLogin.setVisible(true);
-		//frameMain.setVisible(true);
+		//frameLogin.setVisible(true);
+		frameMain.setVisible(true);
 		
 	}
 	
