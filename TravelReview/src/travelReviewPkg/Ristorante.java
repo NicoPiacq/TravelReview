@@ -1,10 +1,16 @@
 package travelReviewPkg;
 
-public class Ristorante extends Inserzione{
+public class Ristorante {
 	private String nome;
 	private String via;
-	private String città;
+	private String citta;
 	
+	public String getCitta() {
+		return citta;
+	}
+	public void setCitta(String citta) {
+		this.citta = citta;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -16,11 +22,5 @@ public class Ristorante extends Inserzione{
 	}
 	public void setVia(String via) {
 		this.via = via;
-	}
-	public String getCittà() {
-		return città;
-	}
-	public void setCittà(String città) {
-		this.città = città;
 	}
 }

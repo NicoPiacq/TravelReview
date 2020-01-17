@@ -12,6 +12,8 @@ import keeptoo.KGradientPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
+import java.awt.CardLayout;
+import java.awt.GridLayout;
 
 public class MainFrame extends JFrame {
 	
@@ -99,13 +101,13 @@ public class MainFrame extends JFrame {
 		JLabel lblUserTitle = new JLabel("<html>\r\n<body>\r\n<center>Josh Kennedy</center>\r\n</body>\r\n</hml>");
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 29));
-		lblUserTitle.setBounds(41, 11, 174, 47);
+		lblUserTitle.setBounds(31, 11, 174, 47);
 		userPanel.add(lblUserTitle);
 		
 		JLabel lblUsername = new JLabel("JoKen");
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblUsername.setBounds(94, 39, 121, 47);
+		lblUsername.setBounds(84, 39, 121, 47);
 		userPanel.add(lblUsername);
 		
 		JPanel userPanelShadow2 = new JPanel();
@@ -139,9 +141,9 @@ public class MainFrame extends JFrame {
 		AddRewBtn.setLayout(null);
 		
 		JLabel lblAddRewBtnTitle = new JLabel("Pubblica un'inserzione");
-		lblAddRewBtnTitle.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblAddRewBtnTitle.setFont(new Font("Ubuntu", Font.BOLD, 17));
 		lblAddRewBtnTitle.setForeground(new Color(0, 0, 0));
-		lblAddRewBtnTitle.setBounds(16, 11, 195, 27);
+		lblAddRewBtnTitle.setBounds(20, 11, 183, 27);
 		AddRewBtn.add(lblAddRewBtnTitle);
 		
 		JLabel lblAddRewBtnIcon = new JLabel("");
@@ -153,22 +155,19 @@ public class MainFrame extends JFrame {
 		mainPanel.setBackground(new Color(255, 255, 255));
 		mainPanel.setBounds(233, 65, 851, 496);
 		contentPane.add(mainPanel);
-		mainPanel.setLayout(null);
+		mainPanel.setLayout(new CardLayout(0, 0));
 		
-		JLabel lblOops = new JLabel("Oops!");
-		lblOops.setFont(new Font("Segoe UI Light", Font.PLAIN, 43));
-		lblOops.setBounds(237, 245, 117, 58);
-		mainPanel.add(lblOops);
+		JPanel insertionListPanel = new JPanel();
+		mainPanel.add(insertionListPanel, "name_178076897491400");
+		insertionListPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblNewLabel = new JLabel("<html>\r\n<body>\r\nSembra esserci un errore... <br>\r\nProva a riavviare il software.\r\n</body>\r\n</html>");
-		lblNewLabel.setFont(new Font("Ubuntu", Font.PLAIN, 27));
-		lblNewLabel.setBounds(237, 316, 467, 74);
-		mainPanel.add(lblNewLabel);
+		JPanel reviewPanel = new JPanel();
+		mainPanel.add(reviewPanel, "name_178114842332600");
+		reviewPanel.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel(":(");
-		lblNewLabel_1.setFont(new Font("Segoe UI Light", Font.PLAIN, 82));
-		lblNewLabel_1.setBounds(237, 72, 57, 160);
-		mainPanel.add(lblNewLabel_1);
+		JPanel reviewListPanel = new JPanel();
+		reviewListPanel.setBounds(0, 216, 851, 280);
+		reviewPanel.add(reviewListPanel);
 		
 		registerMouseListener(foodBtn, attrBtn, hotelBtn, AddRewBtn, selectFood, selectAttr, selectHotel);
 		
@@ -217,18 +216,17 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel ristorantiBtn, JPanel attrazioneBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel) {
+	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel AddRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel) {
 		
-		ristorantiBtn.addMouseListener(new MouseAdapter() {
+		foodBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				ristorantiBtn.setBackground(new Color(97, 168, 232));
+				foodBtn.setBackground(new Color(97, 168, 232));
 				selectFood.setVisible(true);
 				
-				attrazioneBtn.setBackground(new Color(97, 152, 232));
+				attrBtn.setBackground(new Color(97, 152, 232));
 				selectAttr.setVisible(false);
 				
 				hotelBtn.setBackground(new Color(97, 152, 232));
@@ -242,24 +240,24 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				if(!foodBtnIsPressed)
-					ristorantiBtn.setBackground(new Color(97, 152, 232));
+					foodBtn.setBackground(new Color(97, 152, 232));
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				ristorantiBtn.setBackground(new Color(97, 168, 232));
+				foodBtn.setBackground(new Color(97, 168, 232));
 			}
 			
 		});
 		
-		attrazioneBtn.addMouseListener(new MouseAdapter() {
+		attrBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				attrazioneBtn.setBackground(new Color(97, 168, 232));
+				attrBtn.setBackground(new Color(97, 168, 232));
 				selectAttr.setVisible(true);
 				
-				ristorantiBtn.setBackground(new Color(97, 152, 232));
+				foodBtn.setBackground(new Color(97, 152, 232));
 				selectFood.setVisible(false);
 				
 				hotelBtn.setBackground(new Color(97, 152, 232));
@@ -272,13 +270,13 @@ public class MainFrame extends JFrame {
 			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				attrazioneBtn.setBackground(new Color(97, 168, 232));
+				attrBtn.setBackground(new Color(97, 168, 232));
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				if(!attrBtnIsPressed)
-					attrazioneBtn.setBackground(new Color(97, 152, 232));
+					attrBtn.setBackground(new Color(97, 152, 232));
 			}
 			
 		});
@@ -290,10 +288,10 @@ public class MainFrame extends JFrame {
 				hotelBtn.setBackground(new Color(97, 168, 232));
 				selectHotel.setVisible(true);
 				
-				attrazioneBtn.setBackground(new Color(97, 152, 232));
+				attrBtn.setBackground(new Color(97, 152, 232));
 				selectAttr.setVisible(false);
 				
-				ristorantiBtn.setBackground(new Color(97, 152, 232));
+				foodBtn.setBackground(new Color(97, 152, 232));
 				selectFood.setVisible(false);
 				
 				foodBtnIsPressed = false;

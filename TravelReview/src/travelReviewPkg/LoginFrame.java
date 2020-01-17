@@ -28,7 +28,7 @@ public class LoginFrame extends JFrame {
 	private JPanel cardLayoutPanel;
 	private JTextField txtUsername;
 	private JTextField txtPassword;
-	private CardLayout cardLayout;
+	private CardLayout cl_cardLayoutPanel;
 	private Controller ctrl;
 	private JTextField txtRegUsername;
 	private JTextField txtRegName;
@@ -57,12 +57,23 @@ public class LoginFrame extends JFrame {
 		gradientMainBg.setBounds(0, 0, 899, 493);
 		contentPane.add(gradientMainBg);
 		gradientMainBg.setLayout(null);
+		KGradientPanel errorPanel = new KGradientPanel();
+		
+		errorPanel.kEndColor = new Color(255, 69, 0);
+		errorPanel.kStartColor = new Color(204, 51, 0);
+		errorPanel.setBounds(0, 0, 899, 24);
+		gradientMainBg.add(errorPanel);
+		
+		JLabel lblErrorMsg = new JLabel("Connessione al Database assente! Per riprovare, riavvia il software.");
+		lblErrorMsg.setForeground(new Color(255, 255, 255));
+		lblErrorMsg.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		errorPanel.add(lblErrorMsg);
 		
 		cardLayoutPanel = new JPanel();
 		cardLayoutPanel.setBounds(466, 0, 450, 530);
 		gradientMainBg.add(cardLayoutPanel);
 		cardLayoutPanel.setLayout(new CardLayout(0, 0));
-		cardLayout = (CardLayout) cardLayoutPanel.getLayout();
+		cl_cardLayoutPanel = (CardLayout) cardLayoutPanel.getLayout();
 		
 		JPanel loginPanel = new JPanel();
 		cardLayoutPanel.add(loginPanel, "loginPanel_name");
@@ -109,18 +120,18 @@ public class LoginFrame extends JFrame {
 		
 		JLabel lblNonSeiRegistrato = new JLabel("Non sei registrato?");
 		lblNonSeiRegistrato.setFont(new Font("Ubuntu", Font.PLAIN, 17));
-		lblNonSeiRegistrato.setBounds(108, 440, 237, 21);
+		lblNonSeiRegistrato.setBounds(109, 430, 237, 21);
 		loginPanel.add(lblNonSeiRegistrato);
 		
 		JLabel lblRegistratiOra = new JLabel("<html>\r\n<body>\r\n<u>Registrati ora, \u00E8 gratuito!</u>\r\n</body>\r\n</html>");
 		lblRegistratiOra.setFont(new Font("Ubuntu", Font.BOLD, 17));
-		lblRegistratiOra.setBounds(108, 458, 237, 31);
+		lblRegistratiOra.setBounds(109, 448, 237, 31);
 		loginPanel.add(lblRegistratiOra);
 		
 		JSeparator loginSeparator = new JSeparator();
 		loginSeparator.setForeground(new Color(0, 0, 0));
 		loginSeparator.setBackground(new Color(0, 0, 0));
-		loginSeparator.setBounds(83, 420, 300, 10);
+		loginSeparator.setBounds(83, 410, 300, 10);
 		loginPanel.add(loginSeparator);
 		
 		JCheckBox chckbxMantieniLaSessione = new JCheckBox("Mantieni la sessione");
@@ -237,6 +248,10 @@ public class LoginFrame extends JFrame {
 		gradientMainBg.add(lblTravelreview);
 		
 		registerMouseListener(ctrl, gradientLoginBtn, gradientRegBtn, lblRegistratiOra);
+		
+		if(c.isConnected()) {
+			errorPanel.setVisible(false);
+		}
 	}
 	
 	
@@ -245,7 +260,7 @@ public class LoginFrame extends JFrame {
 		lblRegistratiOra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				cardLayout.show(cardLayoutPanel, "registrationPanel_name");
+				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_name");
 			}
 			
 			@Override
@@ -257,7 +272,4 @@ public class LoginFrame extends JFrame {
 		
 		
 	}
-	
-
-	
 }

@@ -1,19 +1,32 @@
 package travelReviewPkg;
 
 public class Inserzione {
+	
+	private enum TipoInserzione {
+		RISTORANTE,
+		ALLOGGIO,
+		ATTRAZIONE;
+	}
+	
+	TipoInserzione tipo;
+
 	private String codice;
-	private Utente autore;
+
 	
 	public String getCodice() {
 		return codice;
 	}
+
 	public void setCodice(String codice) {
-		this.codice = codice;
+		this.codice = codice;	
 	}
-	public Utente getAutore() {
-		return autore;
+	
+	public TipoInserzione getTipo() {
+		return tipo;
 	}
-	public void setAutore(Utente autore) {
-		this.autore = autore;
+
+	public void setTipo(TipoInserzione tipo) {
+		this.tipo = tipo;
 	}
+	
 }

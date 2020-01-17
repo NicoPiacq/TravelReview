@@ -1,9 +1,24 @@
 package travelReviewPkg;
 
-public class Alloggio extends Inserzione {
+public class Alloggio {
 	private String nome;
 	private String via;
-	private String città;
+	private String citta;
+	
+	public String getVia() {
+		return via;
+	}
+	public void setVia(String via) {
+		this.via = via;
+	}
+	
+	
+	public String getCitta() {
+		return citta;
+	}
+	public void setCitta(String citta) {
+		this.citta = citta;
+	}
 	
 	public String getNome() {
 		return nome;
@@ -11,16 +26,5 @@ public class Alloggio extends Inserzione {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getVia() {
-		return via;
-	}
-	public void setVia(String via) {
-		this.via = via;
-	}
-	public String getCittà() {
-		return città;
-	}
-	public void setCittà(String città) {
-		this.città = città;
-	}
+	
 }
