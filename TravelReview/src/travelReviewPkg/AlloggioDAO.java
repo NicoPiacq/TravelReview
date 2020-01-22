@@ -10,7 +10,7 @@ public class AlloggioDAO {
 		
 	}
 	
-	public ResultSet searchByCitta(Alloggio alloggio) {
+	/* public ResultSet searchByCitta(Alloggio alloggio) {
 		String citta = alloggio.getCitta();
-	}
+	} */
 }

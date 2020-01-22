@@ -10,9 +10,9 @@ public class AttrazioneDAO {
 		
 	}
 	
-	public ResultSet searchByCitta(Attrazione attrazione) {
+	/* public ResultSet searchByCitta(Attrazione attrazione) {
 		String citta = attrazione.getCitta();
-	}
+	} */
 	
 	
 }

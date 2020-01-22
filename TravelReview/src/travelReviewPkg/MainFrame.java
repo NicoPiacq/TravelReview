@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
 		menuPanel.setLayout(null);
 		
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TravelReview\\resources\\logo_small.png"));
+		lblLogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/logo_small.png")));
 		lblLogo.setBounds(5, 0, 65, 57);
 		menuPanel.add(lblLogo);
 		
@@ -116,8 +116,8 @@ public class MainFrame extends JFrame {
 		userPanel.add(userPanelShadow2);
 		
 		JLabel lblImgProfile = new JLabel("");
+		lblImgProfile.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/profile_nopic_ph.png")));
 		lblImgProfile.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImgProfile.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TravelReview\\resources\\profile_nopic_ph.png"));
 		lblImgProfile.setBounds(31, 97, 160, 160);
 		userPanel.add(lblImgProfile);
 		
@@ -178,7 +178,7 @@ public class MainFrame extends JFrame {
 		hotelBtn.add(lblAlloggi);
 		
 		JLabel lblHotelIcon = new JLabel("");
-		lblHotelIcon.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TravelReview\\resources\\hostel_30px.png"));
+		lblHotelIcon.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/hostel_30px.png")));
 		lblHotelIcon.setBounds(15, 12, 30, 30);
 		hotelBtn.add(lblHotelIcon);
 		
@@ -189,7 +189,7 @@ public class MainFrame extends JFrame {
 		attrBtn.add(lblAttrazioni);
 		
 		JLabel lblAttrIcon = new JLabel("");
-		lblAttrIcon.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TravelReview\\resources\\exhibition_30px.png"));
+		lblAttrIcon.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/exhibition_30px.png")));
 		lblAttrIcon.setBounds(15, 12, 30, 30);
 		attrBtn.add(lblAttrIcon);
 		
@@ -200,7 +200,7 @@ public class MainFrame extends JFrame {
 		lblRistoranti.setFont(new Font("Ubuntu", Font.PLAIN, 26));
 		
 		JLabel lblFoodIcon = new JLabel("");
-		lblFoodIcon.setIcon(new ImageIcon("J:\\Personal Category\\Documenti vari\\Eclipse WorkSpace\\TravelReview\\resources\\food_and_wine_30px.png"));
+		lblFoodIcon.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/food_and_wine_30px.png")));
 		lblFoodIcon.setBounds(15, 12, 30, 30);
 		foodBtn.add(lblFoodIcon);
 		

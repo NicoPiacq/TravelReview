@@ -13,11 +13,6 @@ public class Controller {
 	private MainFrame frameMain = new MainFrame(this);
 	private boolean connected = false;
 
-
-	public boolean isConnected() {
-		return connected;
-	}
-
 	// ELEMENTI PER IL DATABASE
 	private Properties props = new Properties();
 	private Connection con;
@@ -26,7 +21,7 @@ public class Controller {
 	public Controller() {
 		
 		frameLogin.setVisible(true);
-		frameMain.setVisible(true);
+		//frameMain.setVisible(true);
 		
 		// CREAZIONE CONNESSIONE AL DATABASE
 		props.setProperty("username", "postgres");
@@ -41,6 +36,25 @@ public class Controller {
 			connected = false;
 		}
 		
+	}
+	
+	public boolean isConnected() {
+		return connected;
+	}
+	
+	public void verifyAccess() {
+		
+		String username = frameLogin.getTxtUsername();
+		String password = frameLogin.getTxtPassword();
+		
+		if( username.equals("admin") && password.equals("admin")) {
+			frameMain.setVisible(true);
+			frameLogin.setVisible(false);
+		} 
+		else {
+			JOptionPane.showMessageDialog(null, "CREDENZIALI ERRATE!");
+			frameLogin.resetTxtPassword();
+		}
 	}
 	
 }

@@ -10,9 +10,9 @@ public class RistoranteDAO {
 		
 	}
 	
-	public ResultSet searchByCitta(Ristorante ristorante) {
+	/* public ResultSet searchByCitta(Ristorante ristorante) {
 		String citta = ristorante.getCitta();
-	}
+	} */
 		
 }
 	
