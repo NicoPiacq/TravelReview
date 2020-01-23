@@ -52,9 +52,78 @@ public class Controller {
 			frameLogin.setVisible(false);
 		} 
 		else {
-			JOptionPane.showMessageDialog(null, "CREDENZIALI ERRATE!");
+			frameLogin.setErrorMessage("Credenziali errate!");
 			frameLogin.resetTxtPassword();
+			frameLogin.resetTxtUsername();
 		}
+	}
+	
+	public void checkDate(int day, int month, int year) {
+		
+		System.out.println(day+" "+month+" "+year);
+		
+		switch(month) {
+		
+			case 2: {
+				if( ! ( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
+					frameLogin.hideDateError();
+				else {
+					System.out.println("NON BISESTILE");
+					frameLogin.hideDateError();
+					frameLogin.showDateError();
+				}
+				
+				if(day == 30 || day == 31)
+					frameLogin.showDateError();
+				else
+					frameLogin.hideDateError();
+				
+				break;
+			}
+			
+			case 4: {
+				if(day == 31)
+					frameLogin.showDateError();
+				else
+					frameLogin.hideDateError();
+				
+				break;
+			}
+			
+			case 6: {
+				if(day == 31)
+					frameLogin.showDateError();
+				else
+					frameLogin.hideDateError();
+				
+				break;
+			}
+			
+			case 9: {
+				if(day == 31)
+					frameLogin.showDateError();
+				else
+					frameLogin.hideDateError();
+				
+				break;
+			}
+			
+			case 11: {
+				if(day == 31)
+					frameLogin.showDateError();
+				else
+					frameLogin.hideDateError();
+				
+				break;
+			}
+			
+			default: {
+				frameLogin.hideDateError();
+				break;
+			}
+			
+		}
+		
 	}
 	
 }

@@ -11,20 +11,22 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 import javax.swing.JTextField;
+import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import javax.swing.JCheckBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.awt.CardLayout;
 import javax.swing.JPasswordField;
 import javax.swing.JComboBox;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.SwingConstants;
 
 public class LoginFrame extends JFrame {
-	private static final long serialVersionUID = -1361424214147021740L;
-	
 	
 	private JPanel contentPane;
 	private JPanel cardLayoutPanel;
@@ -59,6 +61,7 @@ public class LoginFrame extends JFrame {
 	private JLabel lblRegisterNow_1;
 	private JLabel lblLogo;
 	private JLabel lblTravelReview;
+	private JLabel lblTurnBackIcon;
 	private JTextField txtUsername;
 	private JPasswordField txtPassword;
 	private CardLayout cl_cardLayoutPanel;
@@ -67,7 +70,13 @@ public class LoginFrame extends JFrame {
 	private JTextField txtRegistrationFirstName;
 	private JTextField txtRegistrationSurname;
 	private JPasswordField txtRegistrationPassword;
-
+	private JLabel lblDateError;
+	
+	private Integer[] days = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
+	private Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+	private int numYears = Calendar.getInstance().get(Calendar.YEAR)+1 - 1900;
+	private Integer[] year = new Integer[numYears];
+ 
 	public LoginFrame(Controller c) {
 		setTitle("TravelReview - Read before you go");
 		
@@ -103,13 +112,43 @@ public class LoginFrame extends JFrame {
 		errorPanel.add(lblErrorMessage);
 		
 		cardLayoutPanel = new JPanel();
-		cardLayoutPanel.setBounds(466, 0, 450, 530);
+		cardLayoutPanel.setBounds(466, 0, 433, 493);
 		gradientMainBackground.add(cardLayoutPanel);
 		cardLayoutPanel.setLayout(new CardLayout(0, 0));
 		cl_cardLayoutPanel = (CardLayout) cardLayoutPanel.getLayout();
 		
+		lblLogo = new JLabel("");
+		lblLogo.setIcon(new ImageIcon(LoginFrame.class.getResource("/resources/logo_big.png")));
+		lblLogo.setBounds(24, 87, 432, 375);
+		gradientMainBackground.add(lblLogo);
+		
+		lblTravelReview = new JLabel("TravelReview");
+		lblTravelReview.setForeground(new Color(255, 255, 255));
+		lblTravelReview.setFont(new Font("Quicksand Medium", Font.PLAIN, 52));
+		lblTravelReview.setBounds(10, 39, 361, 83);
+		gradientMainBackground.add(lblTravelReview);
+		
+		for(int anno = 1900, i = 0; anno <= Calendar.getInstance().get(Calendar.YEAR); anno++, i++) {
+			year[i] = anno;
+		}
+		
+		displayLogin();
+		
+		displayRegistration();
+		
+		registerMouseListener(ctrl, gradientLoginBtn, gradientRegistrationBtn, lblRegisterNow, lblTurnBackIcon);
+		
+		registerKeyListener(ctrl, txtUsername, txtPassword);
+		
+		if(c.isConnected()) {
+			errorPanel.setVisible(false);
+		}
+	}
+	
+	public void displayLogin() {
+		
 		loginPanel = new JPanel();
-		cardLayoutPanel.add(loginPanel, "loginPanel_name");
+		cardLayoutPanel.add(loginPanel, "loginPanel_card");
 		loginPanel.setBorder(new MatteBorder(0, 0, 0, 0, (Color) new Color(255, 255, 255)));
 		loginPanel.setBackground(new Color(255, 255, 255));
 		loginPanel.setLayout(null);
@@ -177,6 +216,25 @@ public class LoginFrame extends JFrame {
 		lblWelcomeDescription2.setBounds(56, 90, 363, 21);
 		loginPanel.add(lblWelcomeDescription2);
 		
+		lblEmptyPassword = new JLabel("Campo vuoto!");
+		lblEmptyPassword.setVisible(false);
+		lblEmptyPassword.setForeground(Color.RED);
+		lblEmptyPassword.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblEmptyPassword.setBounds(202, 211, 87, 14);
+		loginPanel.add(lblEmptyPassword);
+		
+		lblEmptyUsername = new JLabel("Campo vuoto!");
+		lblEmptyUsername.setVisible(false);
+		lblEmptyUsername.setForeground(Color.RED);
+		lblEmptyUsername.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblEmptyUsername.setBounds(202, 138, 87, 14);
+		loginPanel.add(lblEmptyUsername);
+		
+		
+	}
+	
+	public void displayRegistration() {
+		
 		registrationPanel = new JPanel();
 		registrationPanel.setBackground(Color.WHITE);
 		cardLayoutPanel.add(registrationPanel, "registrationPanel_card");
@@ -206,15 +264,15 @@ public class LoginFrame extends JFrame {
 		txtRegistrationPassword.setBounds(74, 197, 319, 28);
 		registrationPanel.add(txtRegistrationPassword);
 		
-		comboBirthDay = new JComboBox();
+		comboBirthDay = new JComboBox(days);
 		comboBirthDay.setBounds(74, 349, 99, 28);
 		registrationPanel.add(comboBirthDay);
 		
-		comboBirthMonth = new JComboBox();
+		comboBirthMonth = new JComboBox(months);
 		comboBirthMonth.setBounds(185, 349, 98, 28);
 		registrationPanel.add(comboBirthMonth);
 		
-		comboBirthYear = new JComboBox();
+		comboBirthYear = new JComboBox(year);
 		comboBirthYear.setBounds(294, 349, 99, 28);
 		registrationPanel.add(comboBirthYear);
 		
@@ -263,46 +321,27 @@ public class LoginFrame extends JFrame {
 		lblRegisterNow_1.setFont(new Font("Ubuntu", Font.BOLD, 15));
 		lblRegisterNow_1.setForeground(Color.WHITE);
 		
-		lblLogo = new JLabel("");
-		lblLogo.setIcon(new ImageIcon(LoginFrame.class.getResource("/resources/logo_big.png")));
-		lblLogo.setBounds(24, 87, 432, 375);
-		gradientMainBackground.add(lblLogo);
+		lblTurnBackIcon = new JLabel("");
+		lblTurnBackIcon.setIcon(new ImageIcon(LoginFrame.class.getResource("/resources/turnBack_50px.png")));
+		lblTurnBackIcon.setBounds(4, 7, 54, 28);
+		registrationPanel.add(lblTurnBackIcon);
 		
-		lblTravelReview = new JLabel("TravelReview");
-		lblTravelReview.setForeground(new Color(255, 255, 255));
-		lblTravelReview.setFont(new Font("Quicksand Medium", Font.PLAIN, 52));
-		lblTravelReview.setBounds(10, 39, 361, 83);
-		gradientMainBackground.add(lblTravelReview);
+		lblDateError = new JLabel("Data non valida");
+		lblDateError.setForeground(Color.RED);
+		lblDateError.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblDateError.setBounds(224, 330, 111, 14);
+		lblDateError.setVisible(false);
+		registrationPanel.add(lblDateError);
 		
-		lblEmptyUsername = new JLabel("Campo vuoto!");
-		lblEmptyUsername.setVisible(false);
-		lblEmptyUsername.setForeground(Color.RED);
-		lblEmptyUsername.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblEmptyUsername.setBounds(202, 138, 87, 14);
-		loginPanel.add(lblEmptyUsername);
-		
-		lblEmptyPassword = new JLabel("Campo vuoto!");
-		lblEmptyPassword.setVisible(false);
-		lblEmptyPassword.setForeground(Color.RED);
-		lblEmptyPassword.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblEmptyPassword.setBounds(202, 211, 87, 14);
-		loginPanel.add(lblEmptyPassword);
-		
-		registerMouseListener(ctrl, gradientLoginBtn, gradientRegistrationBtn, lblRegisterNow);
-		registerKeyListener(ctrl, txtUsername, txtPassword);
-		
-		if(c.isConnected()) {
-			errorPanel.setVisible(false);
-		}
 	}
-	
-	
-	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow) {
+
+	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow, JLabel lblTunrBackIcon) {
 		
 		lblRegisterNow.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_card");
+				errorPanel.setVisible(false);
 			}
 			
 			@Override
@@ -337,6 +376,30 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				gradientLoginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		
+		lblTurnBackIcon.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblTurnBackIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutPanel.show(cardLayoutPanel, "loginPanel_card");
+				errorPanel.setVisible(false);
+			}
+		});
+		
+		gradientRegistrationBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				ctrl.checkDate(getComboBirthDay(), getComboBirthMonth(), getComboBirthYear());
+				
 			}
 		});
 		
@@ -459,4 +522,23 @@ public class LoginFrame extends JFrame {
 	public void resetTxtPassword() {
 		this.txtPassword.setText("");;
 	}
+	
+	public void resetTxtUsername() {
+		this.txtUsername.setText("");;
+	}
+
+	public void setErrorMessage(String text) {
+		lblErrorMessage.setText(text);
+		errorPanel.setVisible(true);
+		
+	}
+	
+	public void showDateError() {
+		lblDateError.setVisible(true);
+	}
+	
+	public void hideDateError() {
+		lblDateError.setVisible(false);
+	}
+
 }
