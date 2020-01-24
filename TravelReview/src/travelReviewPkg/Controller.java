@@ -64,7 +64,7 @@ public class Controller {
 		
 			case 2: {
 				checkBissextile(day, year);
-				checkLastDay(day, month);
+				checkLastDay(day, 2);
 				break;
 			}
 			
@@ -97,15 +97,14 @@ public class Controller {
 
 	private void checkLastDay(int day, int month) {
 		
-		if( (day == 30 || day == 31) && month == 2)
+		if (day == 30 && month == 2)
 			frameLogin.showDateError();
-		else
-			frameLogin.hideDateError();
+		else if(day == 31)
+				frameLogin.showDateError();
+			else
+				frameLogin.hideDateError();		
 		
-		if(day == 31)
-			frameLogin.showDateError();
-		else
-			frameLogin.hideDateError();
+		
 		
 	}
 	
