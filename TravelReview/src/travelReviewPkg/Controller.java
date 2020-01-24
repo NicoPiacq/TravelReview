@@ -63,28 +63,27 @@ public class Controller {
 		switch(month) {
 		
 			case 2: {
-				checkBissextile(day, year);
-				checkLastDay(day, 2);
+				checkLastDay(day, 2, year);
 				break;
 			}
 			
 			case 4: {
-				checkLastDay(day, month);
+				checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 6: {
-				checkLastDay(day, month);
+				checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 9: {
-				checkLastDay(day, month);
+				checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 11: {
-				checkLastDay(day, month);
+				checkLastDay(day, month, year);
 				break;
 			}
 			
@@ -95,7 +94,7 @@ public class Controller {
 		}
 	}
 
-	private void checkLastDay(int day, int month) {
+	private void checkLastDay(int day, int month, int year) {
 		
 		try {
 			if (day == 30 && month == 2)
@@ -108,12 +107,6 @@ public class Controller {
 			frameLogin.showDateError();
 		}
 		
-		
-		
-	}
-	
-	private void checkBissextile(int day, int year) {
-	
 		try {
 			if( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
 				frameLogin.hideDateError();
@@ -122,7 +115,6 @@ public class Controller {
 		}catch(InvalidDateException e) {
 			frameLogin.showDateError();
 		}
-		
 		
 	}
 
