@@ -53,7 +53,7 @@ public class LoginFrame extends JFrame {
 	private JComboBox comboBirthYear;
 	private JLabel lblRegistrationUsername;
 	private JLabel lblRegistrationPassword;
-	private JLabel lblRegistrationName;
+	private JLabel lblRegistrationFirstName;
 	private JLabel lblRegistrationSurname;
 	private JLabel lblRegistrationBirthdate;
 	private JCheckBox checkboxRegistration;
@@ -76,6 +76,7 @@ public class LoginFrame extends JFrame {
 	private Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 	private int numYears = Calendar.getInstance().get(Calendar.YEAR)+1 - 1900;
 	private Integer[] year = new Integer[numYears];
+	private JLabel lblRegistrationError;
  
 	public LoginFrame(Controller c) {
 		setTitle("TravelReview - Read before you go");
@@ -128,7 +129,7 @@ public class LoginFrame extends JFrame {
 		lblTravelReview.setBounds(10, 39, 361, 83);
 		gradientMainBackground.add(lblTravelReview);
 		
-		for(int anno = 1900, i = 0; anno <= Calendar.getInstance().get(Calendar.YEAR); anno++, i++) {
+		for(int anno = Calendar.getInstance().get(Calendar.YEAR), i = 0; anno >= 1900; anno--, i++) {
 			year[i] = anno;
 		}
 		
@@ -242,76 +243,76 @@ public class LoginFrame extends JFrame {
 		
 		lblRegistrationDescription = new JLabel("Registrazione in TravelReview");
 		lblRegistrationDescription.setFont(new Font("Ubuntu", Font.BOLD, 22));
-		lblRegistrationDescription.setBounds(74, 23, 319, 57);
+		lblRegistrationDescription.setBounds(63, 23, 319, 57);
 		registrationPanel.add(lblRegistrationDescription);
 		
 		txtRegistrationUsername = new JTextField();
-		txtRegistrationUsername.setBounds(74, 126, 319, 28);
+		txtRegistrationUsername.setBounds(63, 120, 319, 28);
 		registrationPanel.add(txtRegistrationUsername);
 		txtRegistrationUsername.setColumns(10);
 		
 		txtRegistrationFirstName = new JTextField();
-		txtRegistrationFirstName.setBounds(74, 269, 140, 28);
+		txtRegistrationFirstName.setBounds(63, 263, 140, 28);
 		registrationPanel.add(txtRegistrationFirstName);
 		txtRegistrationFirstName.setColumns(10);
 		
 		txtRegistrationSurname = new JTextField();
-		txtRegistrationSurname.setBounds(249, 269, 144, 28);
+		txtRegistrationSurname.setBounds(238, 263, 144, 28);
 		registrationPanel.add(txtRegistrationSurname);
 		txtRegistrationSurname.setColumns(10);
 		
 		txtRegistrationPassword = new JPasswordField();
-		txtRegistrationPassword.setBounds(74, 197, 319, 28);
+		txtRegistrationPassword.setBounds(63, 191, 319, 28);
 		registrationPanel.add(txtRegistrationPassword);
 		
 		comboBirthDay = new JComboBox(days);
-		comboBirthDay.setBounds(74, 349, 99, 28);
+		comboBirthDay.setBounds(63, 343, 99, 28);
 		registrationPanel.add(comboBirthDay);
 		
 		comboBirthMonth = new JComboBox(months);
-		comboBirthMonth.setBounds(185, 349, 98, 28);
+		comboBirthMonth.setBounds(174, 343, 98, 28);
 		registrationPanel.add(comboBirthMonth);
 		
 		comboBirthYear = new JComboBox(year);
-		comboBirthYear.setBounds(294, 349, 99, 28);
+		comboBirthYear.setBounds(283, 343, 99, 28);
 		registrationPanel.add(comboBirthYear);
 		
 		lblRegistrationUsername = new JLabel("Username");
 		lblRegistrationUsername.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegistrationUsername.setBounds(74, 103, 99, 21);
+		lblRegistrationUsername.setBounds(63, 97, 99, 21);
 		registrationPanel.add(lblRegistrationUsername);
 		
 		lblRegistrationPassword = new JLabel("Password");
 		lblRegistrationPassword.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegistrationPassword.setBounds(74, 174, 140, 21);
+		lblRegistrationPassword.setBounds(63, 168, 140, 21);
 		registrationPanel.add(lblRegistrationPassword);
 		
-		lblRegistrationName = new JLabel("Nome");
-		lblRegistrationName.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegistrationName.setBounds(74, 246, 85, 21);
-		registrationPanel.add(lblRegistrationName);
+		lblRegistrationFirstName = new JLabel("Nome");
+		lblRegistrationFirstName.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblRegistrationFirstName.setBounds(63, 240, 85, 21);
+		registrationPanel.add(lblRegistrationFirstName);
 		
 		lblRegistrationSurname = new JLabel("Cognome");
 		lblRegistrationSurname.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegistrationSurname.setBounds(249, 246, 99, 21);
+		lblRegistrationSurname.setBounds(238, 240, 99, 21);
 		registrationPanel.add(lblRegistrationSurname);
 		
 		lblRegistrationBirthdate = new JLabel("Data di Nascita");
 		lblRegistrationBirthdate.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblRegistrationBirthdate.setBounds(74, 326, 140, 21);
+		lblRegistrationBirthdate.setBounds(63, 320, 140, 21);
 		registrationPanel.add(lblRegistrationBirthdate);
 		
 		checkboxRegistration = new JCheckBox("<html>\r\n<body>\r\nAccetto i <u>Termini e Condizioni</u> del servizio.\r\n</body>\r\n</html>");
 		checkboxRegistration.setBackground(Color.WHITE);
 		checkboxRegistration.setFont(new Font("Ubuntu", Font.PLAIN, 14));
-		checkboxRegistration.setBounds(74, 395, 330, 34);
+		checkboxRegistration.setBounds(63, 389, 330, 34);
 		registrationPanel.add(checkboxRegistration);
 		
 		gradientRegistrationBtn = new KGradientPanel();
 		gradientRegistrationBtn.kGradientFocus = 175;
 		gradientRegistrationBtn.kEndColor = new Color(50, 205, 50);
 		gradientRegistrationBtn.kStartColor = Color.GREEN;
-		gradientRegistrationBtn.setBounds(74, 435, 319, 42);
+		gradientRegistrationBtn.setBounds(63, 429, 319, 42);
 		registrationPanel.add(gradientRegistrationBtn);
 		gradientRegistrationBtn.setLayout(null);
 		
@@ -329,13 +330,20 @@ public class LoginFrame extends JFrame {
 		lblDateError = new JLabel("Data non valida");
 		lblDateError.setForeground(Color.RED);
 		lblDateError.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblDateError.setBounds(224, 330, 111, 14);
+		lblDateError.setBounds(213, 324, 111, 14);
 		lblDateError.setVisible(false);
 		registrationPanel.add(lblDateError);
 		
+		lblRegistrationError = new JLabel("C'\u00E8 qualche errore, ricontrolla i campi rossi!");
+		lblRegistrationError.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblRegistrationError.setForeground(Color.RED);
+		lblRegistrationError.setBounds(85, 74, 280, 14);
+		lblRegistrationError.setVisible(false);
+		registrationPanel.add(lblRegistrationError);
+		
 	}
 
-	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow, JLabel lblTunrBackIcon) {
+	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow, JLabel lblTurnBackIcon) {
 		
 		lblRegisterNow.addMouseListener(new MouseAdapter() {
 			@Override
@@ -350,8 +358,7 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		
-		gradientLoginBtn.addMouseListener(new MouseAdapter() {
-			
+		gradientLoginBtn.addMouseListener(new MouseAdapter() {	
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(txtUsername.getText().length() == 0 && txtPassword.getPassword().length == 0) {
@@ -381,7 +388,6 @@ public class LoginFrame extends JFrame {
 		
 		
 		lblTurnBackIcon.addMouseListener(new MouseAdapter() {
-			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblTurnBackIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -398,6 +404,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
+				ctrl.checkRegistration(getTxtRegistrationUsername(), getTxtRegistrationPassword(), getTxtRegistrationFirstName(), getTxtRegistrationSurname(), isTermsAccepted());
 				ctrl.checkDate(getComboBirthDay(), getComboBirthMonth(), getComboBirthYear());
 				
 			}
@@ -517,6 +524,14 @@ public class LoginFrame extends JFrame {
 		
 		return password;
 	}
+	
+	public boolean isTermsAccepted() {
+		
+		if(checkboxRegistration.isSelected())
+			return true;
+		else
+			return false;
+	}
 
 
 	public void resetTxtPassword() {
@@ -534,11 +549,59 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void showDateError() {
+		lblRegistrationError.setVisible(true);
 		lblDateError.setVisible(true);
+		lblRegistrationBirthdate.setForeground(Color.RED);
 	}
 	
 	public void hideDateError() {
+		lblRegistrationError.setVisible(true);
 		lblDateError.setVisible(false);
+		lblRegistrationBirthdate.setForeground(Color.BLACK);
 	}
-
+	
+	public void showUsernameError() {
+		lblRegistrationError.setVisible(true);
+		lblRegistrationUsername.setForeground(Color.RED);
+	}
+	
+	public void hideUsernameError() {
+		lblRegistrationUsername.setForeground(Color.BLACK);
+	}
+	
+	public void showPasswordError() {
+		lblRegistrationError.setVisible(true);
+		lblRegistrationPassword.setForeground(Color.RED);
+	}
+	
+	public void hidePasswordError() {
+		lblRegistrationPassword.setForeground(Color.BLACK);
+	}
+	
+	public void showFirstNameError() {
+		lblRegistrationError.setVisible(true);
+		lblRegistrationFirstName.setForeground(Color.RED);
+	}
+	
+	public void hideFirstNameError() {
+		lblRegistrationFirstName.setForeground(Color.BLACK);
+	}
+	
+	public void showSurnameError() {
+		lblRegistrationError.setVisible(true);
+		lblRegistrationSurname.setForeground(Color.RED);
+	}
+	
+	public void hideSurnameError() {
+		lblRegistrationSurname.setForeground(Color.BLACK);
+	}
+	
+	public void showTermsError() {
+		lblRegistrationError.setVisible(true);
+		checkboxRegistration.setForeground(Color.RED);
+	}
+	
+	public void hideTermsError() {
+		checkboxRegistration.setForeground(Color.BLACK);
+	}
 }

@@ -60,60 +60,31 @@ public class Controller {
 	
 	public void checkDate(int day, int month, int year) {
 		
-		System.out.println(day+" "+month+" "+year);
-		
 		switch(month) {
 		
 			case 2: {
-				if( ! ( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
-					frameLogin.hideDateError();
-				else {
-					System.out.println("NON BISESTILE");
-					frameLogin.hideDateError();
-					frameLogin.showDateError();
-				}
-				
-				if(day == 30 || day == 31)
-					frameLogin.showDateError();
-				else
-					frameLogin.hideDateError();
-				
+				checkBissextile(day, year);
+				checkLastDay(day, month);
 				break;
 			}
 			
 			case 4: {
-				if(day == 31)
-					frameLogin.showDateError();
-				else
-					frameLogin.hideDateError();
-				
+				checkLastDay(day, month);
 				break;
 			}
 			
 			case 6: {
-				if(day == 31)
-					frameLogin.showDateError();
-				else
-					frameLogin.hideDateError();
-				
+				checkLastDay(day, month);
 				break;
 			}
 			
 			case 9: {
-				if(day == 31)
-					frameLogin.showDateError();
-				else
-					frameLogin.hideDateError();
-				
+				checkLastDay(day, month);
 				break;
 			}
 			
 			case 11: {
-				if(day == 31)
-					frameLogin.showDateError();
-				else
-					frameLogin.hideDateError();
-				
+				checkLastDay(day, month);
 				break;
 			}
 			
@@ -121,9 +92,58 @@ public class Controller {
 				frameLogin.hideDateError();
 				break;
 			}
-			
 		}
+	}
+
+	private void checkLastDay(int day, int month) {
 		
+		if( (day == 30 || day == 31) && month == 2)
+			frameLogin.showDateError();
+		else
+			frameLogin.hideDateError();
+		
+		if(day == 31)
+			frameLogin.showDateError();
+		else
+			frameLogin.hideDateError();
+		
+	}
+	
+	private void checkBissextile(int day, int year) {
+	
+		if( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
+			frameLogin.hideDateError();
+		else
+			frameLogin.showDateError();
+		
+	}
+
+	public void checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {
+		
+		if(username.length() == 0)
+			frameLogin.showUsernameError();
+		else
+			frameLogin.hideUsernameError();
+		
+		if(password.length() == 0)
+			frameLogin.showPasswordError();
+		else
+			frameLogin.hidePasswordError();
+		
+		if(firstName.length() == 0)
+			frameLogin.showFirstNameError();
+		else
+			frameLogin.hideFirstNameError();
+		
+		if(lastName.length() == 0)
+			frameLogin.showSurnameError();
+		else
+			frameLogin.hideSurnameError();
+		
+		if(!termsAccepted)
+			frameLogin.showTermsError();
+		else
+			frameLogin.hideTermsError();
 	}
 	
 }
