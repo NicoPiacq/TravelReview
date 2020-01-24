@@ -97,12 +97,16 @@ public class Controller {
 
 	private void checkLastDay(int day, int month) {
 		
-		if (day == 30 && month == 2)
+		try {
+			if (day == 30 && month == 2)
+				throw new InvalidDateException();
+			else if(day == 31)
+					throw new InvalidDateException();
+				else
+					frameLogin.hideDateError();
+		}catch(InvalidDateException e) {
 			frameLogin.showDateError();
-		else if(day == 31)
-				frameLogin.showDateError();
-			else
-				frameLogin.hideDateError();		
+		}
 		
 		
 		
@@ -110,39 +114,63 @@ public class Controller {
 	
 	private void checkBissextile(int day, int year) {
 	
-		if( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
-			frameLogin.hideDateError();
-		else
+		try {
+			if( (day == 29) && ( (year%400 == 0) || ( (year%4 == 0) && (year%100 != 0) ) ) )
+				frameLogin.hideDateError();
+			else
+				throw new InvalidDateException();
+		}catch(InvalidDateException e) {
 			frameLogin.showDateError();
+		}
+		
 		
 	}
 
 	public void checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {
-		
-		if(username.length() == 0)
+		try {
+			if(username.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hideUsernameError();
+		} catch(EmptyFieldException e) {
 			frameLogin.showUsernameError();
-		else
-			frameLogin.hideUsernameError();
+		}
 		
-		if(password.length() == 0)
+		try {
+			if(password.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hidePasswordError();
+		} catch (EmptyFieldException e) {
 			frameLogin.showPasswordError();
-		else
-			frameLogin.hidePasswordError();
+		}
 		
-		if(firstName.length() == 0)
+		try {
+			if(firstName.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hideFirstNameError();
+		} catch (EmptyFieldException e) {
 			frameLogin.showFirstNameError();
-		else
-			frameLogin.hideFirstNameError();
+		}
 		
-		if(lastName.length() == 0)
+		try {
+			if(lastName.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hideSurnameError();
+		} catch (EmptyFieldException e) {
 			frameLogin.showSurnameError();
-		else
-			frameLogin.hideSurnameError();
+		}
 		
-		if(!termsAccepted)
+		try {
+			if(!termsAccepted)
+				throw new UncheckedTermsException();
+			else
+				frameLogin.hideTermsError();
+		} catch (Exception e) {
 			frameLogin.showTermsError();
-		else
-			frameLogin.hideTermsError();
+		}
 	}
 	
 }

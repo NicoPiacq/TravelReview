@@ -221,16 +221,15 @@ public class LoginFrame extends JFrame {
 		lblEmptyPassword.setVisible(false);
 		lblEmptyPassword.setForeground(Color.RED);
 		lblEmptyPassword.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblEmptyPassword.setBounds(202, 211, 87, 14);
+		lblEmptyPassword.setBounds(202, 211, 99, 14);
 		loginPanel.add(lblEmptyPassword);
 		
 		lblEmptyUsername = new JLabel("Campo vuoto!");
 		lblEmptyUsername.setVisible(false);
 		lblEmptyUsername.setForeground(Color.RED);
 		lblEmptyUsername.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblEmptyUsername.setBounds(202, 138, 87, 14);
+		lblEmptyUsername.setBounds(202, 138, 99, 14);
 		loginPanel.add(lblEmptyUsername);
-		
 		
 	}
 	
