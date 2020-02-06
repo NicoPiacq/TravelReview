@@ -13,9 +13,9 @@ public class UtenteDAO {
 		
 	}
 	
-	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) throws Exception {
+	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) {
 		
-		String query = "SELECT username, psw, nome, cognome FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
+		String query = "SELECT * FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
 		
 		try {
 			ps = con.prepareStatement(query);
@@ -27,11 +27,11 @@ public class UtenteDAO {
 				utente.setCognome(rs.getString("cognome"));
 			}
 			else {
-				throw new Exception();
+				throw new SQLException();
 			}
 			
 		} catch (SQLException e) {
-			
+			return utente = null;
 		}
 		
 		return utente;

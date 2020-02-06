@@ -62,8 +62,14 @@ public class Controller {
 		
 		try {
 			utente = utenteDAO.login(con, ps, rs, username, password);
-			frameLogin.setVisible(false);
-			frameMain.setVisible(true);
+			
+			if(utente.equals(null)) {
+				throw new Exception();
+			}
+			else {
+				frameLogin.setVisible(false);
+				frameLogin.setVisible(true);
+			}
 		}	
 		catch(Exception ex) {
 			frameLogin.setErrorMessage("Credenziali errate!");
