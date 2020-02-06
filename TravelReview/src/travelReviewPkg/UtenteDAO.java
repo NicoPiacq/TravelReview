@@ -1,6 +1,9 @@
 package travelReviewPkg;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UtenteDAO {
 
@@ -10,12 +13,16 @@ public class UtenteDAO {
 		
 	}
 	
-	public boolean Login(Utente utente) {
+	public void login(Connection con, PreparedStatement ps, String username, String password) {
 		
-		String username = utente.getUsername();
-		String password = utente.getPassword();
+		String query = "SELECT username, psw FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
 		
-		return true;
+		try {
+			ps = con.prepareStatement(query);
+		} catch (SQLException e) {
+			System.out.println("CIAO");
+		}
+		
 	}
 	
 }

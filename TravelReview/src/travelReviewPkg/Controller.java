@@ -3,7 +3,7 @@ package travelReviewPkg;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -11,17 +11,26 @@ public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
 	private MainFrame frameMain = new MainFrame(this);
+	private JFileChooser chooser = new JFileChooser();
+	private int chooserReturn;
 	private boolean connected = false;
 
 	// ELEMENTI PER IL DATABASE
 	private Properties props = new Properties();
-	private Connection con;
-	private String url = "JDBC:postgressql://localhost/TravelReview";
+	public Connection con;
+	public ResultSet rs;
+	public PreparedStatement ps;
+	private String url = "JDBC:postgressql://localhost/travelreview";
+	
+	// CLASSI DAO
+	private UtenteDAO utenteDAO = new UtenteDAO(this);
+	
+	// CLASSI
+	private Utente utente = new Utente();
 	
 	public Controller() {
 		
 		frameLogin.setVisible(true);
-		//frameMain.setVisible(true);
 		
 		// CREAZIONE CONNESSIONE AL DATABASE
 		props.setProperty("username", "postgres");
@@ -47,11 +56,11 @@ public class Controller {
 		String username = frameLogin.getTxtUsername();
 		String password = frameLogin.getTxtPassword();
 		
-		if( username.equals("admin") && password.equals("admin")) {
-			frameMain.setVisible(true);
-			frameLogin.setVisible(false);
-		} 
-		else {
+		
+		try {
+			utenteDAO.login(con, ps, username, password);
+		}	
+		catch(Exception ex) {
 			frameLogin.setErrorMessage("Credenziali errate!");
 			frameLogin.resetTxtPassword();
 			frameLogin.resetTxtUsername();
@@ -163,6 +172,22 @@ public class Controller {
 		} catch (Exception e) {
 			frameLogin.showTermsError();
 		}
+	}
+	
+	public void uploadImgProfile() {
+		chooser = new JFileChooser();
+		chooserReturn = chooser.showOpenDialog(null);
+		
+		switch(chooserReturn) {
+			default: {
+				break;
+			}
+		}
+	}
+	
+	public void uploadImgInsertion() {
+		chooser = new JFileChooser();
+		chooserReturn = chooser.showOpenDialog(null);
 	}
 	
 }

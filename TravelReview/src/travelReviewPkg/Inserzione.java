@@ -8,8 +8,7 @@ public class Inserzione {
 		ATTRAZIONE;
 	}
 	
-	TipoInserzione tipo;
-
+	private TipoInserzione tipo;
 	private String codice;
 
 	
