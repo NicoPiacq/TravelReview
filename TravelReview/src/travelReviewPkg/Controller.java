@@ -39,7 +39,7 @@ public class Controller {
 		// CREAZIONE CONNESSIONE AL DATABASE
 		
 		try {
-			con = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", "postgres", "postgres");
+			con = DriverManager.getConnection("jdbc:postgresql://localhost/travelreview", "postgres", "postgres");
 			connected = true;
 		}
 		catch(SQLException ex) {
@@ -63,12 +63,12 @@ public class Controller {
 		try {
 			utente = utenteDAO.login(con, ps, rs, username, password);
 			
-			if(utente.equals(null)) {
+			if(utente == null) {
 				throw new Exception();
 			}
 			else {
 				frameLogin.setVisible(false);
-				frameLogin.setVisible(true);
+				frameMain.setVisible(true);
 			}
 		}	
 		catch(Exception ex) {

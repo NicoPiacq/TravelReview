@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class UtenteDAO {
 
 	private Utente utente = new Utente();
@@ -15,26 +17,29 @@ public class UtenteDAO {
 	
 	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) {
 		
-		String query = "SELECT * FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
+		boolean user = false;
 		
 		try {
+			String query = "SELECT * FROM public.\"utente\" WHERE username='"+username+"' AND psw='"+password+"'";
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			
-			if(rs.next()) {
-				utente.setUsername(rs.getString("username"));
-				utente.setNome(rs.getString("nome"));
-				utente.setCognome(rs.getString("cognome"));
+			while(rs.next()) {
+					utente.setUsername(rs.getString("username"));
+					utente.setNome(rs.getString("nome"));
+					utente.setCognome(rs.getString("cognome"));
+					System.out.println("DISNEY");
+					user = true;
 			}
-			else {
-				throw new SQLException();
-			}
-			
-		} catch (SQLException e) {
-			return utente = null;
+		} 
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Errore sconosciuto");
 		}
 		
-		return utente;
+		if(user)
+			return utente;
+		else
+			return utente = null;
 	}
 	
 }
