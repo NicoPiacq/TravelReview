@@ -20,7 +20,6 @@ public class Controller {
 	public Connection con;
 	public ResultSet rs;
 	public PreparedStatement ps;
-	private String url = "JDBC:postgressql://localhost/travelreview";
 	
 	// CLASSI DAO
 	private UtenteDAO utenteDAO = new UtenteDAO(this);
@@ -38,11 +37,9 @@ public class Controller {
 		}
 		
 		// CREAZIONE CONNESSIONE AL DATABASE
-		props.setProperty("username", "postgres");
-		props.setProperty("password", "postgres");
 		
 		try {
-			con = DriverManager.getConnection(url, props);
+			con = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", "postgres", "postgres");
 			
 			connected = true;
 		}
