@@ -102,12 +102,13 @@ public class LoginFrame extends JFrame {
 		gradientMainBackground.setLayout(null);
 		
 		errorPanel = new KGradientPanel();
+		errorPanel.setVisible(false);
 		errorPanel.kEndColor = new Color(255, 69, 0);
 		errorPanel.kStartColor = new Color(204, 51, 0);
 		errorPanel.setBounds(0, 0, 899, 24);
 		gradientMainBackground.add(errorPanel);
 		
-		lblErrorMessage = new JLabel("Connessione al Database assente! Per riprovare, riavvia il software.");
+		lblErrorMessage = new JLabel("");
 		lblErrorMessage.setForeground(new Color(255, 255, 255));
 		lblErrorMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
 		errorPanel.add(lblErrorMessage);
@@ -544,7 +545,10 @@ public class LoginFrame extends JFrame {
 	public void setErrorMessage(String text) {
 		lblErrorMessage.setText(text);
 		errorPanel.setVisible(true);
-		
+	}
+	
+	public void hideErrorMessage() {
+		errorPanel.setVisible(false);
 	}
 	
 	public void showDateError() {

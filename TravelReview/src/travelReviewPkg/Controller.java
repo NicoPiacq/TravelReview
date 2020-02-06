@@ -13,7 +13,7 @@ public class Controller {
 	private MainFrame frameMain = new MainFrame(this);
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
-	private boolean connected = false;
+	private boolean connected = true;
 
 	// ELEMENTI PER IL DATABASE
 	private Properties props = new Properties();
@@ -40,12 +40,11 @@ public class Controller {
 		
 		try {
 			con = DriverManager.getConnection("jdbc:postgresql://localhost/postgres", "postgres", "postgres");
-			
 			connected = true;
 		}
 		catch(SQLException ex) {
 			connected = false;
-			ex.printStackTrace();
+			frameLogin.setErrorMessage("Connessione al Database assente! Riavvia il software.");
 		}
 		
 		

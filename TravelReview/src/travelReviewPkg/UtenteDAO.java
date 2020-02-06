@@ -13,7 +13,7 @@ public class UtenteDAO {
 		
 	}
 	
-	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) {
+	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) throws Exception {
 		
 		String query = "SELECT username, psw, nome, cognome FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
 		
@@ -25,6 +25,9 @@ public class UtenteDAO {
 				utente.setUsername(rs.getString("username"));
 				utente.setNome(rs.getString("nome"));
 				utente.setCognome(rs.getString("cognome"));
+			}
+			else {
+				throw new Exception();
 			}
 			
 		} catch (SQLException e) {
