@@ -148,7 +148,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel("<html>\r\n<body>\r\n<center>Josh Kennedy</center>\r\n</body>\r\n</hml>");
+		lblUserTitle = new JLabel("");
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 29));
 		lblUserTitle.setBounds(31, 11, 174, 47);

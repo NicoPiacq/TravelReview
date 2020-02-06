@@ -26,11 +26,16 @@ public class Controller {
 	private UtenteDAO utenteDAO = new UtenteDAO(this);
 	
 	// CLASSI
-	private Utente utente = new Utente();
+	private Utente utente;
 	
 	public Controller() {
 		
-		frameLogin.setVisible(true);
+		try {
+			Class.forName("org.postgresql.Driver");
+		}
+		catch(ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
 		
 		// CREAZIONE CONNESSIONE AL DATABASE
 		props.setProperty("username", "postgres");
@@ -43,8 +48,11 @@ public class Controller {
 		}
 		catch(SQLException ex) {
 			connected = false;
+			ex.printStackTrace();
 		}
 		
+		
+		frameLogin.setVisible(true);
 	}
 	
 	public boolean isConnected() {
@@ -56,9 +64,10 @@ public class Controller {
 		String username = frameLogin.getTxtUsername();
 		String password = frameLogin.getTxtPassword();
 		
-		
 		try {
-			utenteDAO.login(con, ps, username, password);
+			utente = utenteDAO.login(con, ps, rs, username, password);
+			frameLogin.setVisible(false);
+			frameMain.setVisible(true);
 		}	
 		catch(Exception ex) {
 			frameLogin.setErrorMessage("Credenziali errate!");
@@ -188,6 +197,10 @@ public class Controller {
 	public void uploadImgInsertion() {
 		chooser = new JFileChooser();
 		chooserReturn = chooser.showOpenDialog(null);
+	}
+
+	public Utente getUtente() {
+		return utente;
 	}
 	
 }

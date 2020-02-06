@@ -13,16 +13,25 @@ public class UtenteDAO {
 		
 	}
 	
-	public void login(Connection con, PreparedStatement ps, String username, String password) {
+	public Utente login(Connection con, PreparedStatement ps, ResultSet rs, String username, String password) {
 		
-		String query = "SELECT username, psw FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
+		String query = "SELECT username, psw, nome, cognome FROM utente WHERE username='"+username+"' AND psw='"+password+"'";
 		
 		try {
 			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				utente.setUsername(rs.getString("username"));
+				utente.setNome(rs.getString("nome"));
+				utente.setCognome(rs.getString("cognome"));
+			}
+			
 		} catch (SQLException e) {
-			System.out.println("CIAO");
+			
 		}
 		
+		return utente;
 	}
 	
 }
