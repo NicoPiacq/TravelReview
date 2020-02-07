@@ -16,7 +16,6 @@ public class Controller {
 	private boolean connected = true;
 
 	// ELEMENTI PER IL DATABASE
-	private Properties props = new Properties();
 	public Connection con;
 	public ResultSet rs;
 	public PreparedStatement ps;
@@ -44,7 +43,7 @@ public class Controller {
 		}
 		catch(SQLException ex) {
 			connected = false;
-			frameLogin.setErrorMessage("Connessione al Database assente! Riavvia il software.");
+			frameLogin.setMessage("Connessione al Database assente! Riavvia il software.", false);
 		}
 		
 		
@@ -61,7 +60,7 @@ public class Controller {
 		String password = frameLogin.getTxtPassword();
 		
 		try {
-			utente = utenteDAO.login(con, ps, rs, username, password);
+			utente = utenteDAO.login(con, ps, username, password);
 			
 			if(utente == null) {
 				throw new Exception();
@@ -72,49 +71,78 @@ public class Controller {
 			}
 		}	
 		catch(Exception ex) {
-			frameLogin.setErrorMessage("Credenziali errate!");
+			frameLogin.setMessage("Credenziali errate!", false);
 			frameLogin.resetTxtPassword();
 			frameLogin.resetTxtUsername();
 		}
 	}
 	
-	public void checkDate(int day, int month, int year) {
+	public void verifyRegistration() {
+		
+		String username = frameLogin.getTxtRegistrationUsername();
+		String password = frameLogin.getTxtRegistrationPassword();
+		String name = frameLogin.getTxtRegistrationFirstName();
+		String surname = frameLogin.getTxtRegistrationSurname();
+		Date birthdate = new Date(frameLogin.getComboBirthYear(), frameLogin.getComboBirthMonth(), frameLogin.getComboBirthDay());
+		
+		try {
+			
+			if(!utenteDAO.register(con, ps, username, password, name, surname, birthdate)) {
+				throw new Exception();
+			}
+			else {
+				frameLogin.setMessage("Utente registrato con successo!", true);
+				frameLogin.returnToLogin();
+			}
+			
+		}
+		catch(Exception ex ) {
+			frameLogin.setRegistrationMessage("Username non disponibile!", false);
+		}
+		
+	}
+	
+	public boolean checkDate(int day, int month, int year) {
+		
+		boolean check;
 		
 		switch(month) {
 		
 			case 2: {
-				checkLastDay(day, 2, year);
+				check = checkLastDay(day, 2, year);
 				break;
 			}
 			
 			case 4: {
-				checkLastDay(day, month, year);
+				check = checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 6: {
-				checkLastDay(day, month, year);
+				check = checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 9: {
-				checkLastDay(day, month, year);
+				check = checkLastDay(day, month, year);
 				break;
 			}
 			
 			case 11: {
-				checkLastDay(day, month, year);
+				check = checkLastDay(day, month, year);
 				break;
 			}
 			
 			default: {
 				frameLogin.hideDateError();
+				check = true;
 				break;
 			}
 		}
+		return check;
 	}
 
-	private void checkLastDay(int day, int month, int year) {
+	private boolean checkLastDay(int day, int month, int year) {
 		
 		try {
 			if (day == 30 && month == 2)
@@ -134,11 +162,18 @@ public class Controller {
 				throw new InvalidDateException();
 		}catch(InvalidDateException e) {
 			frameLogin.showDateError();
+			return false;
 		}
+		
+		return true;
 		
 	}
 
-	public void checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {
+	public boolean checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {
+		
+		boolean checkFields = true;
+		boolean checkDate;
+		
 		try {
 			if(username.length() == 0)
 				throw new EmptyFieldException();
@@ -146,6 +181,7 @@ public class Controller {
 				frameLogin.hideUsernameError();
 		} catch(EmptyFieldException e) {
 			frameLogin.showUsernameError();
+			checkFields = false;
 		}
 		
 		try {
@@ -155,6 +191,7 @@ public class Controller {
 				frameLogin.hidePasswordError();
 		} catch (EmptyFieldException e) {
 			frameLogin.showPasswordError();
+			checkFields = false;
 		}
 		
 		try {
@@ -164,6 +201,7 @@ public class Controller {
 				frameLogin.hideFirstNameError();
 		} catch (EmptyFieldException e) {
 			frameLogin.showFirstNameError();
+			checkFields = false;
 		}
 		
 		try {
@@ -173,6 +211,7 @@ public class Controller {
 				frameLogin.hideSurnameError();
 		} catch (EmptyFieldException e) {
 			frameLogin.showSurnameError();
+			checkFields = false;
 		}
 		
 		try {
@@ -182,7 +221,16 @@ public class Controller {
 				frameLogin.hideTermsError();
 		} catch (Exception e) {
 			frameLogin.showTermsError();
+			checkFields = false;
 		}
+		
+		checkDate = checkDate(frameLogin.getComboBirthDay(), frameLogin.getComboBirthMonth(), frameLogin.getComboBirthYear());
+		
+		if(checkFields && checkDate)
+			return true;
+		else
+			return false;
+			
 	}
 	
 	public void uploadImgProfile() {

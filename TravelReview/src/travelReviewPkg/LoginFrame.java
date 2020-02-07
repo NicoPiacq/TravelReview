@@ -30,14 +30,14 @@ public class LoginFrame extends JFrame {
 	
 	private JPanel contentPane;
 	private JPanel cardLayoutPanel;
-	private JLabel lblErrorMessage;
+	private JLabel lblMessage;
 	private JPanel loginPanel;
 	private JLabel lblWelcomeTitle;
 	private JLabel lblUsername;
 	private JLabel lblPassword;
 	private KGradientPanel gradientMainBackground;
 	private KGradientPanel gradientLoginBtn;
-	private KGradientPanel errorPanel;
+	private KGradientPanel messagePanel;
 	private JLabel lblSignIn;
 	private JLabel lblNotRegistered;
 	private JLabel lblRegisterNow;
@@ -76,7 +76,7 @@ public class LoginFrame extends JFrame {
 	private Integer[] months = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 	private int numYears = Calendar.getInstance().get(Calendar.YEAR)+1 - 1900;
 	private Integer[] year = new Integer[numYears];
-	private JLabel lblRegistrationError;
+	private JLabel lblRegistrationMessage;
  
 	public LoginFrame(Controller c) {
 		setTitle("TravelReview - Read before you go");
@@ -101,17 +101,17 @@ public class LoginFrame extends JFrame {
 		contentPane.add(gradientMainBackground);
 		gradientMainBackground.setLayout(null);
 		
-		errorPanel = new KGradientPanel();
-		errorPanel.setVisible(false);
-		errorPanel.kEndColor = new Color(255, 69, 0);
-		errorPanel.kStartColor = new Color(204, 51, 0);
-		errorPanel.setBounds(0, 0, 899, 24);
-		gradientMainBackground.add(errorPanel);
+		messagePanel = new KGradientPanel();
+		messagePanel.setVisible(false);
+		messagePanel.kEndColor = new Color(255, 69, 0);
+		messagePanel.kStartColor = new Color(204, 51, 0);
+		messagePanel.setBounds(0, 0, 899, 24);
+		gradientMainBackground.add(messagePanel);
 		
-		lblErrorMessage = new JLabel("");
-		lblErrorMessage.setForeground(new Color(255, 255, 255));
-		lblErrorMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		errorPanel.add(lblErrorMessage);
+		lblMessage = new JLabel("");
+		lblMessage.setForeground(new Color(255, 255, 255));
+		lblMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		messagePanel.add(lblMessage);
 		
 		cardLayoutPanel = new JPanel();
 		cardLayoutPanel.setBounds(466, 0, 433, 493);
@@ -143,7 +143,7 @@ public class LoginFrame extends JFrame {
 		registerKeyListener(ctrl, txtUsername, txtPassword);
 		
 		if(c.isConnected()) {
-			errorPanel.setVisible(false);
+			messagePanel.setVisible(false);
 		}
 	}
 	
@@ -334,12 +334,12 @@ public class LoginFrame extends JFrame {
 		lblDateError.setVisible(false);
 		registrationPanel.add(lblDateError);
 		
-		lblRegistrationError = new JLabel("C'\u00E8 qualche errore, ricontrolla i campi rossi!");
-		lblRegistrationError.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblRegistrationError.setForeground(Color.RED);
-		lblRegistrationError.setBounds(85, 74, 280, 14);
-		lblRegistrationError.setVisible(false);
-		registrationPanel.add(lblRegistrationError);
+		lblRegistrationMessage = new JLabel("C'\u00E8 qualche errore, ricontrolla i campi rossi!");
+		lblRegistrationMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblRegistrationMessage.setForeground(Color.RED);
+		lblRegistrationMessage.setBounds(85, 74, 280, 14);
+		lblRegistrationMessage.setVisible(false);
+		registrationPanel.add(lblRegistrationMessage);
 		
 	}
 
@@ -349,7 +349,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_card");
-				errorPanel.setVisible(false);
+				messagePanel.setVisible(false);
 			}
 			
 			@Override
@@ -396,7 +396,7 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				cl_cardLayoutPanel.show(cardLayoutPanel, "loginPanel_card");
-				errorPanel.setVisible(false);
+				messagePanel.setVisible(false);
 			}
 		});
 		
@@ -404,9 +404,12 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				ctrl.checkRegistration(getTxtRegistrationUsername(), getTxtRegistrationPassword(), getTxtRegistrationFirstName(), getTxtRegistrationSurname(), isTermsAccepted());
-				ctrl.checkDate(getComboBirthDay(), getComboBirthMonth(), getComboBirthYear());
-				
+				if(ctrl.checkRegistration(getTxtRegistrationUsername(), getTxtRegistrationPassword(), getTxtRegistrationFirstName(), getTxtRegistrationSurname(), isTermsAccepted()) ) {
+					ctrl.verifyRegistration();
+				}
+				else {
+					lblRegistrationMessage.setVisible(true);
+				}
 			}
 		});
 		
@@ -542,29 +545,39 @@ public class LoginFrame extends JFrame {
 		this.txtUsername.setText("");;
 	}
 
-	public void setErrorMessage(String text) {
-		lblErrorMessage.setText(text);
-		errorPanel.setVisible(true);
+	public void setMessage(String text, boolean type) {
+		lblMessage.setText(text);
+		
+		if(type) {
+			messagePanel.kEndColor = new Color(0, 220, 0);
+			messagePanel.kStartColor = new Color(0, 199, 0);
+		}
+		else {
+			messagePanel.kEndColor = new Color(255, 69, 0);
+			messagePanel.kStartColor = new Color(204, 51, 0);
+		}
+		
+		messagePanel.setVisible(true);
 	}
 	
-	public void hideErrorMessage() {
-		errorPanel.setVisible(false);
+	public void hideMessage() {
+		messagePanel.setVisible(false);
 	}
 	
 	public void showDateError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblDateError.setVisible(true);
 		lblRegistrationBirthdate.setForeground(Color.RED);
 	}
 	
 	public void hideDateError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblDateError.setVisible(false);
 		lblRegistrationBirthdate.setForeground(Color.BLACK);
 	}
 	
 	public void showUsernameError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblRegistrationUsername.setForeground(Color.RED);
 	}
 	
@@ -573,7 +586,7 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void showPasswordError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblRegistrationPassword.setForeground(Color.RED);
 	}
 	
@@ -582,7 +595,7 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void showFirstNameError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblRegistrationFirstName.setForeground(Color.RED);
 	}
 	
@@ -591,7 +604,7 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void showSurnameError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		lblRegistrationSurname.setForeground(Color.RED);
 	}
 	
@@ -600,11 +613,28 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void showTermsError() {
-		lblRegistrationError.setVisible(true);
+		lblRegistrationMessage.setVisible(true);
 		checkboxRegistration.setForeground(Color.RED);
 	}
 	
 	public void hideTermsError() {
 		checkboxRegistration.setForeground(Color.BLACK);
+	}
+	
+	public void setRegistrationMessage(String message, boolean registrationResult) {
+		lblRegistrationMessage.setText(message);
+		if(registrationResult)
+			lblRegistrationMessage.setForeground(Color.GREEN);
+		else
+			lblRegistrationMessage.setForeground(Color.RED);
+		lblRegistrationMessage.setVisible(true);
+	}
+	
+	public void hideRegistrationMessage() {
+		lblRegistrationMessage.setVisible(false);
+	}
+	
+	public void returnToLogin() {
+		cl_cardLayoutPanel.show(cardLayoutPanel, "loginPanel_card");
 	}
 }
