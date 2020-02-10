@@ -68,8 +68,21 @@ public class MainFrame extends JFrame {
 	private JLabel lblFoodIcon;
 	private JPanel mainPanelShadow2;
 	private JPanel mainPanelShadow;
+	private KGradientPanel uploadImageBtn;
+	private KGradientPanel addInsertionBtn;
+	private KGradientPanel cancelInsertionBtn;
+	private JLabel lblAdsBackground;
+	private JLabel lblAddInsertion;
+	private JLabel lblCancelInsertion;
+	private JLabel lblUploadImage;
 	
 	private String[] insertionType = {"Ristorante", "Alloggio", "Attrazione"};
+	private JPanel welcomePanel;
+	private JLabel lblWelcomeTitle;
+	private JLabel lblNewLabel_1;
+	private JLabel lblWelcomeLogo;
+	private JLabel lblWelcomeDescription;
+	private JLabel lblAddInsertionError;
 
 	public MainFrame(Controller c) {
 		
@@ -148,13 +161,13 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel("");
+		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 29));
 		lblUserTitle.setBounds(31, 11, 174, 47);
 		userPanel.add(lblUserTitle);
 		
-		lblUsername = new JLabel("JoKen");
+		lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblUsername.setBounds(84, 39, 121, 47);
@@ -178,7 +191,7 @@ public class MainFrame extends JFrame {
 		lblNumRewTitle.setBounds(22, 280, 181, 58);
 		userPanel.add(lblNumRewTitle);
 		
-		lblNumReviews = new JLabel("57");
+		lblNumReviews = new JLabel("0");
 		lblNumReviews.setFont(new Font("Segoe UI Light", Font.PLAIN, 44));
 		lblNumReviews.setForeground(new Color(255, 255, 255));
 		lblNumReviews.setBounds(92, 320, 67, 47);
@@ -204,6 +217,31 @@ public class MainFrame extends JFrame {
 		mainPanel.setLayout(new CardLayout(0, 0));
 		cl_cardLayoutPanel = (CardLayout) mainPanel.getLayout();
 		
+		welcomePanel = new JPanel();
+		welcomePanel.setBackground(Color.WHITE);
+		mainPanel.add(welcomePanel, "welcomePanel_card");
+		welcomePanel.setLayout(null);
+		
+		lblWelcomeTitle = new JLabel("TravelReview");
+		lblWelcomeTitle.setFont(new Font("Quicksand Medium", Font.PLAIN, 45));
+		lblWelcomeTitle.setBounds(362, 109, 355, 57);
+		welcomePanel.add(lblWelcomeTitle);
+		
+		lblNewLabel_1 = new JLabel("Benvenuto in...");
+		lblNewLabel_1.setFont(new Font("Ubuntu", Font.BOLD, 20));
+		lblNewLabel_1.setBounds(362, 87, 145, 22);
+		welcomePanel.add(lblNewLabel_1);
+		
+		lblWelcomeLogo = new JLabel("");
+		lblWelcomeLogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/logo_medium.png")));
+		lblWelcomeLogo.setBounds(133, 33, 216, 216);
+		welcomePanel.add(lblWelcomeLogo);
+		
+		lblWelcomeDescription = new JLabel("<html>\r\nCiao! <br>\r\nQuesta \u00E8 la <b>pagina iniziale</b>, da qui puoi scegliere se <b>pubblicare</b> una nuova inserzione oppure <b>cercare</b> delle inserzioni scegliendo una delle tre categorie principali.\r\n</html>");
+		lblWelcomeDescription.setFont(new Font("Ubuntu", Font.PLAIN, 22));
+		lblWelcomeDescription.setBounds(80, 273, 704, 138);
+		welcomePanel.add(lblWelcomeDescription);
+		
 		insertionListPanel = new JPanel();
 		mainPanel.add(insertionListPanel, "insertionListPanel_card");
 		insertionListPanel.setLayout(new GridLayout(1, 0, 0, 0));
@@ -220,63 +258,6 @@ public class MainFrame extends JFrame {
 		createInsertionPanel.setBackground(Color.WHITE);
 		mainPanel.add(createInsertionPanel, "createInsertionPanel_card");
 		createInsertionPanel.setLayout(null);
-		
-		lblNewInsertionTitle = new JLabel("Crea una nuova inserzione");
-		lblNewInsertionTitle.setFont(new Font("Ubuntu", Font.BOLD, 19));
-		lblNewInsertionTitle.setBounds(10, 11, 239, 22);
-		createInsertionPanel.add(lblNewInsertionTitle);
-		
-		txtPlaceTitle = new JTextField();
-		txtPlaceTitle.setBounds(10, 94, 224, 20);
-		createInsertionPanel.add(txtPlaceTitle);
-		txtPlaceTitle.setColumns(10);
-		
-		lblPlaceTitle = new JLabel("Nome del luogo");
-		lblPlaceTitle.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblPlaceTitle.setBounds(10, 69, 143, 14);
-		createInsertionPanel.add(lblPlaceTitle);
-		
-		txtAddress = new JTextField();
-		txtAddress.setBounds(10, 171, 224, 20);
-		createInsertionPanel.add(txtAddress);
-		txtAddress.setColumns(10);
-		
-		lblAddressTitle = new JLabel("Indirizzo");
-		lblAddressTitle.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblAddressTitle.setBounds(10, 146, 100, 14);
-		createInsertionPanel.add(lblAddressTitle);
-		
-		txtCity = new JTextField();
-		txtCity.setBounds(10, 233, 224, 20);
-		createInsertionPanel.add(txtCity);
-		txtCity.setColumns(10);
-		
-		lblCityTitle = new JLabel("Citt\u00E0");
-		lblCityTitle.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblCityTitle.setBounds(10, 208, 46, 14);
-		createInsertionPanel.add(lblCityTitle);
-		
-		comboPlaceType = new JComboBox(insertionType);
-		comboPlaceType.setBounds(10, 304, 100, 20);
-		createInsertionPanel.add(comboPlaceType);
-		
-		lblPlaceType = new JLabel("Tipologia");
-		lblPlaceType.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		lblPlaceType.setBounds(10, 279, 77, 14);
-		createInsertionPanel.add(lblPlaceType);
-		
-		KGradientPanel uploadImageBtn = new KGradientPanel();
-		uploadImageBtn.setkStartColor(new Color(102, 204, 153));
-		uploadImageBtn.kEndColor = new Color(102, 204, 0);
-		uploadImageBtn.setBounds(462, 287, 215, 37);
-		createInsertionPanel.add(uploadImageBtn);
-		uploadImageBtn.setLayout(null);
-		
-		JLabel lblUploadImage = new JLabel("Carica immagine");
-		lblUploadImage.setForeground(new Color(0, 0, 0));
-		lblUploadImage.setFont(new Font("Ubuntu", Font.BOLD, 14));
-		lblUploadImage.setBounds(53, 5, 127, 26);
-		uploadImageBtn.add(lblUploadImage);
 		
 		lblAlloggi = new JLabel("Alloggi");
 		lblAlloggi.setForeground(Color.WHITE);
@@ -321,12 +302,114 @@ public class MainFrame extends JFrame {
 		contentPane.add(mainPanelShadow);
 		mainPanelShadow.setBackground(new Color(79, 57, 232, 70));
 		
-		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile);
+		displayAddInsertion();
+		
+		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn);
+		
+		lblAddInsertionError = new JLabel("Verifica i campi in rosso!");
+		lblAddInsertionError.setForeground(Color.RED);
+		lblAddInsertionError.setVisible(false);
+		lblAddInsertionError.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblAddInsertionError.setBounds(337, 59, 204, 14);
+		createInsertionPanel.add(lblAddInsertionError);
+		
+	}
+	
+	public void displayAddInsertion() {
+		
+		lblNewInsertionTitle = new JLabel("Crea una nuova inserzione");
+		lblNewInsertionTitle.setFont(new Font("Ubuntu", Font.BOLD, 23));
+		lblNewInsertionTitle.setBounds(280, 11, 326, 37);
+		createInsertionPanel.add(lblNewInsertionTitle);
+		
+		txtPlaceTitle = new JTextField();
+		txtPlaceTitle.setBounds(185, 121, 230, 30);
+		createInsertionPanel.add(txtPlaceTitle);
+		txtPlaceTitle.setColumns(10);
+		
+		lblPlaceTitle = new JLabel("Nome del luogo");
+		lblPlaceTitle.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblPlaceTitle.setBounds(185, 88, 151, 22);
+		createInsertionPanel.add(lblPlaceTitle);
+		
+		txtAddress = new JTextField();
+		txtAddress.setBounds(185, 188, 230, 30);
+		createInsertionPanel.add(txtAddress);
+		txtAddress.setColumns(10);
+		
+		lblAddressTitle = new JLabel("Indirizzo");
+		lblAddressTitle.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblAddressTitle.setBounds(185, 162, 116, 25);
+		createInsertionPanel.add(lblAddressTitle);
+		
+		txtCity = new JTextField();
+		txtCity.setBounds(185, 260, 230, 30);
+		createInsertionPanel.add(txtCity);
+		txtCity.setColumns(10);
+		
+		lblCityTitle = new JLabel("Citt\u00E0");
+		lblCityTitle.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblCityTitle.setBounds(185, 235, 83, 20);
+		createInsertionPanel.add(lblCityTitle);
+		
+		comboPlaceType = new JComboBox(insertionType);
+		comboPlaceType.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		comboPlaceType.setBounds(185, 338, 120, 30);
+		createInsertionPanel.add(comboPlaceType);
+		
+		lblPlaceType = new JLabel("Tipologia");
+		lblPlaceType.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblPlaceType.setBounds(185, 301, 100, 30);
+		createInsertionPanel.add(lblPlaceType);
+		
+		uploadImageBtn = new KGradientPanel();
+		uploadImageBtn.setkStartColor(new Color(102, 204, 153));
+		uploadImageBtn.kEndColor = new Color(102, 204, 0);
+		uploadImageBtn.setBounds(542, 175, 215, 37);
+		createInsertionPanel.add(uploadImageBtn);
+		uploadImageBtn.setLayout(null);
+		
+		lblUploadImage = new JLabel("Carica immagine");
+		lblUploadImage.setForeground(new Color(0, 0, 0));
+		lblUploadImage.setFont(new Font("Ubuntu", Font.BOLD, 14));
+		lblUploadImage.setBounds(53, 5, 127, 26);
+		uploadImageBtn.add(lblUploadImage);
+		
+		lblAdsBackground = new JLabel("");
+		lblAdsBackground.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/new_ad_background.png")));
+		lblAdsBackground.setBounds(595, 240, 256, 256);
+		createInsertionPanel.add(lblAdsBackground);
+		
+		addInsertionBtn = new KGradientPanel();
+		addInsertionBtn.kEndColor = new Color(102, 204, 0);
+		addInsertionBtn.kStartColor = new Color(51, 102, 0);
+		addInsertionBtn.setBounds(54, 413, 206, 37);
+		createInsertionPanel.add(addInsertionBtn);
+		addInsertionBtn.setLayout(null);
+		
+		lblAddInsertion = new JLabel("Pubblica");
+		lblAddInsertion.setForeground(new Color(255, 255, 255));
+		lblAddInsertion.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblAddInsertion.setBounds(68, 11, 87, 14);
+		addInsertionBtn.add(lblAddInsertion);
+		
+		cancelInsertionBtn = new KGradientPanel();
+		cancelInsertionBtn.kEndColor = new Color(255, 102, 51);
+		cancelInsertionBtn.kStartColor = new Color(204, 0, 0);
+		cancelInsertionBtn.setBounds(308, 413, 206, 37);
+		createInsertionPanel.add(cancelInsertionBtn);
+		cancelInsertionBtn.setLayout(null);
+		
+		lblCancelInsertion = new JLabel("Annulla");
+		lblCancelInsertion.setForeground(Color.WHITE);
+		lblCancelInsertion.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblCancelInsertion.setBounds(77, 11, 87, 14);
+		cancelInsertionBtn.add(lblCancelInsertion);
 		
 	}
 	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile) {
+	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn) {
 		
 		foodBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -358,6 +441,25 @@ public class MainFrame extends JFrame {
 				foodBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			
+		});
+		
+		addInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				addInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		cancelInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				cancelInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutPanel.show(mainPanel, "welcomePanel_card");
+				resetAddInsertion();
+			}
 		});
 		
 		attrBtn.addMouseListener(new MouseAdapter() {
@@ -462,4 +564,46 @@ public class MainFrame extends JFrame {
 		});
 		
 	}
+
+	public void resetAddInsertion() {
+		txtPlaceTitle.setText("");
+		txtCity.setText("");
+		txtAddress.setText("");
+		comboPlaceType.setSelectedIndex(0);
+	}
+
+	
+	
+	public void showPlaceTitleError() {
+		lblPlaceTitle.setForeground(Color.RED);
+	}
+	
+	public void hidePlaceTitleError() {
+		lblPlaceTitle.setForeground(Color.BLACK);
+	}
+	
+	public void showCityError() {
+		lblCityTitle.setForeground(Color.RED);
+	}
+	
+	public void hideCityError() {
+		lblCityTitle.setForeground(Color.BLACK);
+	}
+	
+	public void showAddressError() {
+		lblAddressTitle.setForeground(Color.RED);
+	}
+	
+	public void hideAddressError() {
+		lblAddressTitle.setForeground(Color.BLACK);
+	}
+	
+	public void showAddInsertionError() {
+		lblAddInsertionError.setVisible(true);
+	}
+	
+	public void hideAddInsertionError() {
+		lblAddInsertionError.setVisible(false);
+	}
+
 }

@@ -547,20 +547,20 @@ public class LoginFrame extends JFrame {
 	}
 	
 	public void resetRegister() {
-		this.txtRegistrationFirstName.setText("");
-		this.txtRegistrationSurname.setText("");
-		this.txtRegistrationUsername.setText("");
-		this.txtRegistrationPassword.setText("");
-		this.comboBirthDay.setSelectedIndex(0);
-		this.comboBirthMonth.setSelectedIndex(0);
-		this.comboBirthDay.setSelectedIndex(0);
-		this.hideDateError();
-		this.hideFirstNameError();
-		this.hideRegistrationMessage();
-		this.hidePasswordError();
-		this.hideSurnameError();
-		this.hideTermsError();
-		this.hideUsernameError();
+		txtRegistrationFirstName.setText("");
+		txtRegistrationSurname.setText("");
+		txtRegistrationUsername.setText("");
+		txtRegistrationPassword.setText("");
+		comboBirthDay.setSelectedIndex(0);
+		comboBirthMonth.setSelectedIndex(0);
+		comboBirthDay.setSelectedIndex(0);
+		hideDateError();
+		hideFirstNameError();
+		hideRegistrationMessage();
+		hidePasswordError();
+		hideSurnameError();
+		hideTermsError();
+		hideUsernameError();
 	}
 
 	public void setMessage(String text, boolean type) {

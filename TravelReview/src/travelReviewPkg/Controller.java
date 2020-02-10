@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
-	private MainFrame frameMain = new MainFrame(this);
+	private MainFrame frameMain;
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
 	private boolean connected = true;
@@ -67,6 +67,9 @@ public class Controller {
 			}
 			else {
 				frameLogin.setVisible(false);
+				
+				frameMain = new MainFrame(this);
+				
 				frameMain.setVisible(true);
 			}
 		}	

@@ -10,6 +10,7 @@ public class Utente {
 	private String password;
 	private Date dataDiNascita;
 	
+	
 	public Utente(String nome, String cognome, String username) {
 		
 		this.nome = nome;
