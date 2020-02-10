@@ -83,7 +83,8 @@ public class Controller {
 		String password = frameLogin.getTxtRegistrationPassword();
 		String name = frameLogin.getTxtRegistrationFirstName();
 		String surname = frameLogin.getTxtRegistrationSurname();
-		Date birthdate = new Date(frameLogin.getComboBirthYear(), frameLogin.getComboBirthMonth(), frameLogin.getComboBirthDay());
+		Date birthdate = new Date(frameLogin.getComboBirthYear()-1900, frameLogin.getComboBirthMonth()-1, frameLogin.getComboBirthDay());
+		
 		
 		try {
 			
@@ -93,6 +94,7 @@ public class Controller {
 			else {
 				frameLogin.setMessage("Utente registrato con successo!", true);
 				frameLogin.returnToLogin();
+				frameLogin.resetRegister();
 			}
 			
 		}

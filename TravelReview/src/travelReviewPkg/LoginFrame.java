@@ -397,6 +397,7 @@ public class LoginFrame extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				cl_cardLayoutPanel.show(cardLayoutPanel, "loginPanel_card");
 				messagePanel.setVisible(false);
+				resetRegister();
 			}
 		});
 		
@@ -543,6 +544,23 @@ public class LoginFrame extends JFrame {
 	
 	public void resetTxtUsername() {
 		this.txtUsername.setText("");;
+	}
+	
+	public void resetRegister() {
+		this.txtRegistrationFirstName.setText("");
+		this.txtRegistrationSurname.setText("");
+		this.txtRegistrationUsername.setText("");
+		this.txtRegistrationPassword.setText("");
+		this.comboBirthDay.setSelectedIndex(0);
+		this.comboBirthMonth.setSelectedIndex(0);
+		this.comboBirthDay.setSelectedIndex(0);
+		this.hideDateError();
+		this.hideFirstNameError();
+		this.hideRegistrationMessage();
+		this.hidePasswordError();
+		this.hideSurnameError();
+		this.hideTermsError();
+		this.hideUsernameError();
 	}
 
 	public void setMessage(String text, boolean type) {

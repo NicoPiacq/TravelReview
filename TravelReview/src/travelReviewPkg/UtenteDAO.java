@@ -47,7 +47,6 @@ public class UtenteDAO {
 	public boolean register(Connection con, PreparedStatement ps, String username, String password, String nome, String cognome, Date dataDiNascita) {
 		
 		try {
-			
 			String query = "INSERT INTO public.\"utente\" VALUES ('"+nome+"', '"+cognome+"', '"+username+"', '"+password+"', '"+dataDiNascita+"', NULL);";
 			
 			ps = con.prepareStatement(query);
@@ -56,7 +55,6 @@ public class UtenteDAO {
 			return true;
 		}
 		catch(SQLException ex) {
-			ex.printStackTrace();
 			return false;
 		}
 	}
