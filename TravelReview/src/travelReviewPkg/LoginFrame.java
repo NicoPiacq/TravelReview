@@ -25,6 +25,13 @@ import javax.swing.JComboBox;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.SwingConstants;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class LoginFrame extends JFrame {
 	
@@ -77,6 +84,7 @@ public class LoginFrame extends JFrame {
 	private int numYears = Calendar.getInstance().get(Calendar.YEAR)+1 - 1900;
 	private Integer[] year = new Integer[numYears];
 	private JLabel lblRegistrationMessage;
+	private JLabel lblCloseMessageIcon;
  
 	public LoginFrame(Controller c) {
 		setTitle("TravelReview - Read before you go");
@@ -107,11 +115,20 @@ public class LoginFrame extends JFrame {
 		messagePanel.kStartColor = new Color(204, 51, 0);
 		messagePanel.setBounds(0, 0, 899, 24);
 		gradientMainBackground.add(messagePanel);
+		messagePanel.setLayout(null);
+		
+		lblCloseMessageIcon = new JLabel("");
+		lblCloseMessageIcon.setBounds(3, 5, 16, 16);
+		lblCloseMessageIcon.setIcon(new ImageIcon(LoginFrame.class.getResource("/resources/close_window_16px.png")));
+		messagePanel.add(lblCloseMessageIcon);
 		
 		lblMessage = new JLabel("");
+		lblMessage.setBounds(20, 2, 879, 20);
+		lblMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+		messagePanel.add(lblMessage);
+		lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMessage.setForeground(new Color(255, 255, 255));
 		lblMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
-		messagePanel.add(lblMessage);
 		
 		cardLayoutPanel = new JPanel();
 		cardLayoutPanel.setBounds(466, 0, 433, 493);
@@ -138,7 +155,7 @@ public class LoginFrame extends JFrame {
 		
 		displayRegistration();
 		
-		registerMouseListener(ctrl, gradientLoginBtn, gradientRegistrationBtn, lblRegisterNow, lblTurnBackIcon);
+		registerMouseListener(ctrl, gradientLoginBtn, gradientRegistrationBtn, lblRegisterNow, lblTurnBackIcon, lblCloseMessageIcon);
 		
 		registerKeyListener(ctrl, txtUsername, txtPassword);
 		
@@ -335,15 +352,16 @@ public class LoginFrame extends JFrame {
 		registrationPanel.add(lblDateError);
 		
 		lblRegistrationMessage = new JLabel("C'\u00E8 qualche errore, ricontrolla i campi rossi!");
+		lblRegistrationMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRegistrationMessage.setFont(new Font("Ubuntu", Font.BOLD, 13));
 		lblRegistrationMessage.setForeground(Color.RED);
-		lblRegistrationMessage.setBounds(85, 74, 280, 14);
+		lblRegistrationMessage.setBounds(0, 74, 433, 14);
 		lblRegistrationMessage.setVisible(false);
 		registrationPanel.add(lblRegistrationMessage);
 		
 	}
 
-	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow, JLabel lblTurnBackIcon) {
+	public void registerMouseListener(Controller ctrl, KGradientPanel gradientLoginBtn, KGradientPanel gradientRegistrationBtn, JLabel lblRegisterNow, JLabel lblTurnBackIcon, JLabel lblCloseMessageIcon) {
 		
 		lblRegisterNow.addMouseListener(new MouseAdapter() {
 			@Override
@@ -358,26 +376,25 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		
+		lblCloseMessageIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblCloseMessageIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				messagePanel.setVisible(false);
+			}
+		});
+		
+		
+		
 		gradientLoginBtn.addMouseListener(new MouseAdapter() {	
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(txtUsername.getText().length() == 0 && txtPassword.getPassword().length == 0) {
-					lblEmptyUsername.setVisible(true);
-					lblEmptyPassword.setVisible(true);
-				}
-				else if(txtUsername.getText().length() == 0) {
-					lblEmptyUsername.setVisible(true);
-					lblEmptyPassword.setVisible(false);
-				}
-				else if(txtPassword.getPassword().length == 0) {
-					lblEmptyUsername.setVisible(false);
-					lblEmptyPassword.setVisible(true);
-				}
-				else {
-					lblEmptyUsername.setVisible(false);
-					lblEmptyPassword.setVisible(false);
+				if(ctrl.checkLoginFields(getTxtUsername(), getTxtPassword()))
 					ctrl.verifyAccess();
-				}
 			}
 			
 			@Override
@@ -422,23 +439,8 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == e.VK_ENTER) {
-					if(txtUsername.getText().length() == 0 && txtPassword.getPassword().length == 0) {
-						lblEmptyUsername.setVisible(true);
-						lblEmptyPassword.setVisible(true);
-					}
-					else if(txtUsername.getText().length() == 0) {
-						lblEmptyUsername.setVisible(true);
-						lblEmptyPassword.setVisible(false);
-					}
-					else if(txtPassword.getPassword().length == 0) {
-						lblEmptyUsername.setVisible(false);
-						lblEmptyPassword.setVisible(true);
-					}
-					else {
-						lblEmptyUsername.setVisible(false);
-						lblEmptyPassword.setVisible(false);
+					if(ctrl.checkLoginFields(getTxtUsername(), getTxtPassword()))
 						ctrl.verifyAccess();
-					}
 				}
 			}
 		});
@@ -447,23 +449,8 @@ public class LoginFrame extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == e.VK_ENTER) {
-					if(txtUsername.getText().length() == 0 && txtPassword.getPassword().length == 0) {
-						lblEmptyUsername.setVisible(true);
-						lblEmptyPassword.setVisible(true);
-					}
-					else if(txtUsername.getText().length() == 0) {
-						lblEmptyUsername.setVisible(true);
-						lblEmptyPassword.setVisible(false);
-					}
-					else if(txtPassword.getPassword().length == 0) {
-						lblEmptyUsername.setVisible(false);
-						lblEmptyPassword.setVisible(true);
-					}
-					else {
-						lblEmptyUsername.setVisible(false);
-						lblEmptyPassword.setVisible(false);
+					if(ctrl.checkLoginFields(getTxtUsername(), getTxtPassword()))
 						ctrl.verifyAccess();
-					}
 				}
 			}	
 		});
@@ -580,6 +567,22 @@ public class LoginFrame extends JFrame {
 	
 	public void hideMessage() {
 		messagePanel.setVisible(false);
+	}
+	
+	public void showUsernameLoginError() {
+		lblEmptyUsername.setVisible(true);
+	}
+	
+	public void hideUsernameLoginError() {
+		lblEmptyUsername.setVisible(false);
+	}
+	
+	public void showPasswordLoginError() {
+		lblEmptyPassword.setVisible(true);
+	}
+	
+	public void hidePasswordLoginError() {
+		lblEmptyPassword.setVisible(false);
 	}
 	
 	public void showDateError() {

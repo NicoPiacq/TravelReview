@@ -19,6 +19,8 @@ import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class MainFrame extends JFrame {
 	
@@ -75,8 +77,12 @@ public class MainFrame extends JFrame {
 	private JLabel lblAddInsertion;
 	private JLabel lblCancelInsertion;
 	private JLabel lblUploadImage;
-	
+	private JComboBox comboPlaceSpecialization;
+	private JLabel lblPlaceSpecialization;
 	private String[] insertionType = {"Ristorante", "Alloggio", "Attrazione"};
+	private String[] restaurantSpecializations = {"Pizzeria", "Braceria", "Pub"};
+	private String[] hotelSpecializations = {"Hotel", "Ostello", "B&B"};
+	private String[] attractionSpecializations = {"Museo", "Parco", "Monumento"};
 	private JPanel welcomePanel;
 	private JLabel lblWelcomeTitle;
 	private JLabel lblNewLabel_1;
@@ -162,15 +168,18 @@ public class MainFrame extends JFrame {
 		userPanel.setLayout(null);
 		
 		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
+		lblUserTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserTitle.setForeground(new Color(255, 255, 255));
-		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 17));
-		lblUserTitle.setBounds(20, 11, 193, 47);
+		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 21));
+		lblUserTitle.setBounds(0, 11, 224, 47);
 		userPanel.add(lblUserTitle);
 		
+		
 		lblUsername = new JLabel(ctrl.getUtente().getUsername());
+		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setForeground(new Color(255, 255, 255));
-		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblUsername.setBounds(40, 39, 140, 47);
+		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		lblUsername.setBounds(0, 39, 224, 47);
 		userPanel.add(lblUsername);
 		
 		userPanelShadow2 = new JPanel();
@@ -192,9 +201,10 @@ public class MainFrame extends JFrame {
 		userPanel.add(lblNumRewTitle);
 		
 		lblNumReviews = new JLabel("0");
+		lblNumReviews.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNumReviews.setFont(new Font("Segoe UI Light", Font.PLAIN, 44));
 		lblNumReviews.setForeground(new Color(255, 255, 255));
-		lblNumReviews.setBounds(92, 320, 67, 47);
+		lblNumReviews.setBounds(0, 320, 224, 47);
 		userPanel.add(lblNumReviews);
 		
 		addRewBtn = new KGradientPanel();
@@ -304,17 +314,28 @@ public class MainFrame extends JFrame {
 		
 		displayAddInsertion();
 		
-		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn);
+		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType);
 		
 	}
 	
 	public void displayAddInsertion() {
 		
+		comboPlaceSpecialization = new JComboBox(restaurantSpecializations);
+		comboPlaceSpecialization.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		comboPlaceSpecialization.setBounds(309, 338, 106, 30);
+		createInsertionPanel.add(comboPlaceSpecialization);
+		
+		lblPlaceSpecialization = new JLabel("Specialit\u00E0");
+		lblPlaceSpecialization.setFont(new Font("Ubuntu", Font.BOLD, 17));
+		lblPlaceSpecialization.setBounds(308, 301, 107, 30);
+		createInsertionPanel.add(lblPlaceSpecialization);
+		
 		lblAddInsertionMessage = new JLabel("Verifica i campi in rosso!");
+		lblAddInsertionMessage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddInsertionMessage.setForeground(Color.RED);
 		lblAddInsertionMessage.setVisible(false);
 		lblAddInsertionMessage.setFont(new Font("Ubuntu", Font.BOLD, 15));
-		lblAddInsertionMessage.setBounds(337, 59, 204, 14);
+		lblAddInsertionMessage.setBounds(209, 59, 421, 14);
 		createInsertionPanel.add(lblAddInsertionMessage);
 		
 		lblNewInsertionTitle = new JLabel("Crea una nuova inserzione");
@@ -354,7 +375,7 @@ public class MainFrame extends JFrame {
 		
 		comboPlaceType = new JComboBox(insertionType);
 		comboPlaceType.setFont(new Font("Ubuntu", Font.PLAIN, 15));
-		comboPlaceType.setBounds(185, 338, 120, 30);
+		comboPlaceType.setBounds(185, 338, 106, 30);
 		createInsertionPanel.add(comboPlaceType);
 		
 		lblPlaceType = new JLabel("Tipologia");
@@ -409,7 +430,40 @@ public class MainFrame extends JFrame {
 	}
 	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn) {
+	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType) {
+		
+		comboPlaceType.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				switch((String) comboPlaceType.getSelectedItem()) {
+					case "Ristorante": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(restaurantSpecializations[0]);
+						comboPlaceSpecialization.addItem(restaurantSpecializations[1]);
+						comboPlaceSpecialization.addItem(restaurantSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+					
+					case "Alloggio": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(hotelSpecializations[0]);
+						comboPlaceSpecialization.addItem(hotelSpecializations[1]);
+						comboPlaceSpecialization.addItem(hotelSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+					
+					case "Attrazione": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(attractionSpecializations[0]);
+						comboPlaceSpecialization.addItem(attractionSpecializations[1]);
+						comboPlaceSpecialization.addItem(attractionSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+				}
+			}
+		});
 		
 		foodBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -541,6 +595,20 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cl_cardLayoutPanel.show(mainPanel, "createInsertionPanel_card");
+				
+				foodBtn.setBackground(new Color(97, 152, 232));
+				selectFood.setVisible(false);
+				
+				attrBtn.setBackground(new Color(97, 152, 232));
+				selectAttr.setVisible(false);
+				
+				hotelBtn.setBackground(new Color(97, 152, 232));
+				selectHotel.setVisible(false);
+				
+				foodBtnIsPressed = false;
+				attrBtnIsPressed = false;
+				hotelBtnIsPressed = false;
+				
 			}
 		});
 		
@@ -570,28 +638,16 @@ public class MainFrame extends JFrame {
 		});
 		
 	}
-	
-	public void checkFields() {
-		
-		try {
-			if(ctrl.checkAddInsertion(txtPlaceTitle.getText(), txtCity.getText(), txtAddress.getText()))
-				throw new EmptyFieldException();
-			else {
-				
-			}
-				
-				
-		}
-		catch(EmptyFieldException ex) {
-			
-		}
-		
-	}
 
 	public void resetAddInsertion() {
 		txtPlaceTitle.setText("");
 		txtCity.setText("");
 		txtAddress.setText("");
+		setAddInsertionMessage("Verifica i campi in rosso!", false);
+		hideAddInsertionMessage();
+		hidePlaceTitleError();
+		hideCityError();
+		hideAddressError();
 		comboPlaceType.setSelectedIndex(0);
 	}
 
@@ -609,6 +665,10 @@ public class MainFrame extends JFrame {
 	
 	public String getPlaceType() {
 		return (String) comboPlaceType.getSelectedItem();
+	}
+	
+	public String getPlaceSpecialization() {
+		return (String) comboPlaceSpecialization.getSelectedItem();
 	}
 	
 	public void showPlaceTitleError() {
@@ -635,11 +695,11 @@ public class MainFrame extends JFrame {
 		lblAddressTitle.setForeground(Color.BLACK);
 	}
 	
-	public void showAddInsertionError() {
+	public void showAddInsertionMessage() {
 		lblAddInsertionMessage.setVisible(true);
 	}
 	
-	public void hideAddInsertionError() {
+	public void hideAddInsertionMessage() {
 		lblAddInsertionMessage.setVisible(false);
 	}
 	
@@ -653,5 +713,4 @@ public class MainFrame extends JFrame {
 			lblAddInsertionMessage.setForeground(Color.RED);
 		}
 	}
-
 }

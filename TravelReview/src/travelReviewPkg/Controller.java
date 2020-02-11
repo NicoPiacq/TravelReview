@@ -48,7 +48,6 @@ public class Controller {
 			frameLogin.setMessage("Connessione al Database assente! Riavvia il software.", false);
 		}
 		
-		
 		frameLogin.setVisible(true);
 	}
 	
@@ -62,12 +61,59 @@ public class Controller {
 		String city = frameMain.getCity();
 		String address = frameMain.getAddress();
 		String placeType = frameMain.getPlaceType();
-		String placeTypeSpecialization;
+		String placeTypeSpecialization = frameMain.getPlaceSpecialization();
 		
 		try {
 			if(inserzioneDAO.addInsertion(con, ps, placeType, getUtente().getUsername())) {
-				frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
-				frameMain.showAddInsertionError();
+				
+				switch(placeType) {
+					case "Ristorante": {
+						try {
+							/* if(RistoranteDAO.addInsertionInRestaurant( ... ) {
+								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
+							} 
+							else {
+								throw new Exception();
+							}*/
+						}
+						catch (Exception ex) {
+							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
+						}
+						break;
+					}
+					
+					case "Alloggio": {
+						try {
+							/* if(AlloggioDAO.addInsertionInHotel( ... ) {
+								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
+							} 
+							else {
+								throw new Exception();
+							}*/
+						}
+						catch (Exception ex) {
+							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
+						}
+						break;
+					}
+					
+					case "Attrazione": {
+						try {
+							/* if(AttrazioneDAO.addInsertionInAttraction( ... ) {
+								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
+							} 
+							else {
+								throw new Exception();
+							}*/
+						}
+						catch (Exception ex) {
+							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
+						}
+						break;
+					}
+				}
+				
+				frameMain.showAddInsertionMessage();
 			}
 			else {
 				throw new Exception();	
@@ -198,6 +244,34 @@ public class Controller {
 		
 	}
 	
+	public boolean checkLoginFields(String username, String password) {
+		boolean checkFields = true;
+		
+		try {
+			if(username.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hideUsernameLoginError();
+		} 
+		catch(EmptyFieldException e) {
+			frameLogin.showUsernameLoginError();
+			checkFields = false;
+		}
+		
+		try {
+			if(password.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameLogin.hidePasswordLoginError();
+		} 
+		catch(EmptyFieldException e) {
+			frameLogin.showPasswordLoginError();
+			checkFields = false;
+		}
+		
+		return checkFields;
+	}
+	
 	public boolean checkAddInsertion(String placeName, String city, String address) {
 		boolean checkFields = true;
 		
@@ -209,7 +283,7 @@ public class Controller {
 		} catch(EmptyFieldException e) {
 			frameMain.showPlaceTitleError();
 			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
-			frameMain.showAddInsertionError();
+			frameMain.showAddInsertionMessage();
 			checkFields = false;
 		}
 		
@@ -221,7 +295,7 @@ public class Controller {
 		} catch(EmptyFieldException e) {
 			frameMain.showCityError();
 			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
-			frameMain.showAddInsertionError();
+			frameMain.showAddInsertionMessage();
 			checkFields = false;
 		}
 		
@@ -233,7 +307,7 @@ public class Controller {
 		} catch(EmptyFieldException e) {
 			frameMain.showAddressError();
 			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
-			frameMain.showAddInsertionError();
+			frameMain.showAddInsertionMessage();
 			checkFields = false;
 		}
 		
