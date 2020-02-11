@@ -22,9 +22,11 @@ public class Controller {
 	
 	// CLASSI DAO
 	private UtenteDAO utenteDAO = new UtenteDAO(this);
+	private InserzioneDAO inserzioneDAO = new InserzioneDAO(this);
 	
 	// CLASSI
 	private Utente utente;
+	private Inserzione inserzione;
 	
 	public Controller() {
 		
@@ -52,6 +54,28 @@ public class Controller {
 	
 	public boolean isConnected() {
 		return connected;
+	}
+	
+	public void addInsertion() {
+	
+		String placeName = frameMain.getPlaceTitle();
+		String city = frameMain.getCity();
+		String address = frameMain.getAddress();
+		String placeType = frameMain.getPlaceType();
+		String placeTypeSpecialization;
+		
+		try {
+			if(inserzioneDAO.addInsertion(con, ps, placeType, getUtente().getUsername())) {
+				frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
+				frameMain.showAddInsertionError();
+			}
+			else {
+				throw new Exception();	
+			}
+		}
+		catch(Exception ex) {
+			frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
+		}
 	}
 	
 	public void verifyAccess() {
@@ -172,6 +196,48 @@ public class Controller {
 		
 		return true;
 		
+	}
+	
+	public boolean checkAddInsertion(String placeName, String city, String address) {
+		boolean checkFields = true;
+		
+		try {
+			if(placeName.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameMain.hidePlaceTitleError();
+		} catch(EmptyFieldException e) {
+			frameMain.showPlaceTitleError();
+			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
+			frameMain.showAddInsertionError();
+			checkFields = false;
+		}
+		
+		try {
+			if(city.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameMain.hideCityError();
+		} catch(EmptyFieldException e) {
+			frameMain.showCityError();
+			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
+			frameMain.showAddInsertionError();
+			checkFields = false;
+		}
+		
+		try {
+			if(address.length() == 0)
+				throw new EmptyFieldException();
+			else
+				frameMain.hideAddressError();
+		} catch(EmptyFieldException e) {
+			frameMain.showAddressError();
+			frameMain.setAddInsertionMessage("Verifica i campi in rosso!", false);
+			frameMain.showAddInsertionError();
+			checkFields = false;
+		}
+		
+		return checkFields;
 	}
 
 	public boolean checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {

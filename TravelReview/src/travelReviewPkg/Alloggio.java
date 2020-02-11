@@ -4,6 +4,7 @@ public class Alloggio {
 	private String nome;
 	private String via;
 	private String citta;
+	private String codice;
 	
 	public String getVia() {
 		return via;

@@ -1,36 +1,46 @@
 package travelReviewPkg;
 
+import java.awt.Image;
 import java.util.Date;
 
 public class Utente {
 	
-	private String nome;
-	private String cognome;
+	private String name;
+	private String surname;
 	private String username;
 	private String password;
-	private Date dataDiNascita;
+	private Date birthdate;
+	private Image profileImage;
 	
 	
+	public Image getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(Image profileImage) {
+		this.profileImage = profileImage;
+	}
+
 	public Utente(String nome, String cognome, String username) {
 		
-		this.nome = nome;
-		this.cognome = cognome;
+		this.name = nome;
+		this.surname = cognome;
 		this.username = username;
 		
 	}
 	
 	public String getNome() {
-		return nome;
+		return name;
 	}
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.name = nome;
 	}
 	
 	public String getCognome() {
-		return cognome;
+		return surname;
 	}
 	public void setCognome(String cognome) {
-		this.cognome = cognome;
+		this.surname = cognome;
 	}
 	
 	public String getUsername() {
@@ -41,10 +51,10 @@ public class Utente {
 	}
 	
 	public Date getDataDiNascita() {
-		return dataDiNascita;
+		return birthdate;
 	}
 	public void setDataDiNascita(Date dataDiNascita) {
-		this.dataDiNascita = dataDiNascita;
+		this.birthdate = dataDiNascita;
 	}
 	
 	public String getPassword() {

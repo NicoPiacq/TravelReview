@@ -82,7 +82,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblWelcomeLogo;
 	private JLabel lblWelcomeDescription;
-	private JLabel lblAddInsertionError;
+	private JLabel lblAddInsertionMessage;
 
 	public MainFrame(Controller c) {
 		
@@ -164,13 +164,13 @@ public class MainFrame extends JFrame {
 		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 17));
-		lblUserTitle.setBounds(31, 11, 174, 47);
+		lblUserTitle.setBounds(20, 11, 193, 47);
 		userPanel.add(lblUserTitle);
 		
 		lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblUsername.setBounds(65, 39, 121, 47);
+		lblUsername.setBounds(40, 39, 140, 47);
 		userPanel.add(lblUsername);
 		
 		userPanelShadow2 = new JPanel();
@@ -306,16 +306,16 @@ public class MainFrame extends JFrame {
 		
 		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn);
 		
-		lblAddInsertionError = new JLabel("Verifica i campi in rosso!");
-		lblAddInsertionError.setForeground(Color.RED);
-		lblAddInsertionError.setVisible(false);
-		lblAddInsertionError.setFont(new Font("Ubuntu", Font.BOLD, 15));
-		lblAddInsertionError.setBounds(337, 59, 204, 14);
-		createInsertionPanel.add(lblAddInsertionError);
-		
 	}
 	
 	public void displayAddInsertion() {
+		
+		lblAddInsertionMessage = new JLabel("Verifica i campi in rosso!");
+		lblAddInsertionMessage.setForeground(Color.RED);
+		lblAddInsertionMessage.setVisible(false);
+		lblAddInsertionMessage.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblAddInsertionMessage.setBounds(337, 59, 204, 14);
+		createInsertionPanel.add(lblAddInsertionMessage);
 		
 		lblNewInsertionTitle = new JLabel("Crea una nuova inserzione");
 		lblNewInsertionTitle.setFont(new Font("Ubuntu", Font.BOLD, 23));
@@ -448,6 +448,12 @@ public class MainFrame extends JFrame {
 			public void mouseEntered(MouseEvent arg0) {
 				addInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(ctrl.checkAddInsertion(getPlaceTitle(), getCity(), getAddress()))
+					ctrl.addInsertion();
+			}
 		});
 		
 		cancelInsertionBtn.addMouseListener(new MouseAdapter() {
@@ -564,6 +570,23 @@ public class MainFrame extends JFrame {
 		});
 		
 	}
+	
+	public void checkFields() {
+		
+		try {
+			if(ctrl.checkAddInsertion(txtPlaceTitle.getText(), txtCity.getText(), txtAddress.getText()))
+				throw new EmptyFieldException();
+			else {
+				
+			}
+				
+				
+		}
+		catch(EmptyFieldException ex) {
+			
+		}
+		
+	}
 
 	public void resetAddInsertion() {
 		txtPlaceTitle.setText("");
@@ -572,7 +595,21 @@ public class MainFrame extends JFrame {
 		comboPlaceType.setSelectedIndex(0);
 	}
 
+	public String getPlaceTitle() {
+		return txtPlaceTitle.getText();
+	}
 	
+	public String getCity() {
+		return txtCity.getText();
+	}
+	
+	public String getAddress() {
+		return txtAddress.getText();
+	}
+	
+	public String getPlaceType() {
+		return (String) comboPlaceType.getSelectedItem();
+	}
 	
 	public void showPlaceTitleError() {
 		lblPlaceTitle.setForeground(Color.RED);
@@ -599,11 +636,22 @@ public class MainFrame extends JFrame {
 	}
 	
 	public void showAddInsertionError() {
-		lblAddInsertionError.setVisible(true);
+		lblAddInsertionMessage.setVisible(true);
 	}
 	
 	public void hideAddInsertionError() {
-		lblAddInsertionError.setVisible(false);
+		lblAddInsertionMessage.setVisible(false);
+	}
+	
+	public void setAddInsertionMessage(String text, boolean state) {
+		lblAddInsertionMessage.setText(text);
+		
+		if(state) {
+			lblAddInsertionMessage.setForeground(Color.GREEN);
+		}
+		else {
+			lblAddInsertionMessage.setForeground(Color.RED);
+		}
 	}
 
 }

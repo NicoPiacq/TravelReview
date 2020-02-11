@@ -1,5 +1,7 @@
 package travelReviewPkg;
 
+import java.awt.Image;
+
 public class Inserzione {
 	
 	private enum TipoInserzione {
@@ -10,6 +12,7 @@ public class Inserzione {
 	
 	private TipoInserzione tipo;
 	private String codice;
+	private Image image;
 
 	
 	public String getCodice() {
