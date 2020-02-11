@@ -163,14 +163,14 @@ public class MainFrame extends JFrame {
 		
 		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setForeground(new Color(255, 255, 255));
-		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 29));
+		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 17));
 		lblUserTitle.setBounds(31, 11, 174, 47);
 		userPanel.add(lblUserTitle);
 		
 		lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblUsername.setBounds(84, 39, 121, 47);
+		lblUsername.setBounds(65, 39, 121, 47);
 		userPanel.add(lblUsername);
 		
 		userPanelShadow2 = new JPanel();
