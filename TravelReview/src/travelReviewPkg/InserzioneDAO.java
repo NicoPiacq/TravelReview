@@ -33,4 +33,47 @@ public class InserzioneDAO {
 		}
 	}
 	
+	public int countInsertionByCategory(Connection con, PreparedStatement ps, String placeType) {
+		
+		int numberOfInsertions = 0;
+		
+		ResultSet rs;
+		
+		try {
+			String query = "SELECT COUNT (codice) FROM "+placeType+";";
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				numberOfInsertions = rs.getInt("count");
+			}
+			
+			rs.close();
+			ps.close();
+			
+		} 
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Errore sconosciuto");
+		}
+		
+		return numberOfInsertions;
+	}
+	
+	public ResultSet getInsertions(Connection con, PreparedStatement ps) {
+		
+		ResultSet rs = null;
+		
+		String query = "SELECT * FROM public.\"inserzione\"";
+		
+		try {
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+		} catch (SQLException e) {
+			
+		}
+		
+		return rs;
+	}
+	
 }

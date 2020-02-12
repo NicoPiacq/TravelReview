@@ -32,4 +32,21 @@ public class AlloggioDAO {
 		
 	} */
 	
+	public ResultSet getInsertions(Connection con, PreparedStatement ps) {
+		
+		ResultSet rs = null;
+		
+		String query = "SELECT * FROM public.\"alloggio\"";
+		
+		try {
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+		} catch (SQLException e) {
+			
+		}
+		
+		return rs;
+	}
+	
 }

@@ -13,6 +13,8 @@ import javax.swing.JSeparator;
 import keeptoo.KGradientPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.SwingConstants;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -21,6 +23,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.JScrollBar;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.JTable;
 
 public class MainFrame extends JFrame {
 	
@@ -90,6 +96,9 @@ public class MainFrame extends JFrame {
 	private JLabel lblWelcomeDescription;
 	private JLabel lblAddInsertionMessage;
 
+	private ListaInserzioni[] insertionList;
+	private JPanel panel;
+	
 	public MainFrame(Controller c) {
 		
 		ctrl = c;
@@ -167,15 +176,16 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
+		lblUserTitle = new JLabel("Nicola Piacquaddio");
+		//lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 21));
 		lblUserTitle.setBounds(0, 11, 224, 47);
 		userPanel.add(lblUserTitle);
 		
-		
-		lblUsername = new JLabel(ctrl.getUtente().getUsername());
+		lblUsername = new JLabel("Nick");
+		//lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -258,8 +268,18 @@ public class MainFrame extends JFrame {
 		welcomePanel.add(lblWelcomeBackground);
 		
 		insertionListPanel = new JPanel();
+		insertionListPanel.setBackground(Color.WHITE);
 		mainPanel.add(insertionListPanel, "insertionListPanel_card");
-		insertionListPanel.setLayout(new GridLayout(1, 0, 0, 0));
+		insertionListPanel.setLayout(null);
+		
+		panel = new JPanel();
+		panel.setBounds(0, 0, 851, 80);
+		insertionListPanel.add(panel);
+		panel.setLayout(null);
+		
+		KGradientPanel gradientPanel = new KGradientPanel();
+		gradientPanel.setBounds(652, 24, 180, 25);
+		panel.add(gradientPanel);
 		
 		reviewPanel = new JPanel();
 		mainPanel.add(reviewPanel, "reviewPanel_card");
@@ -486,6 +506,9 @@ public class MainFrame extends JFrame {
 				foodBtnIsPressed = true;
 				attrBtnIsPressed = false;
 				hotelBtnIsPressed = false;
+				
+				buildInsertionList("ristorante");
+				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
 			}
 			
 			@Override
@@ -543,6 +566,9 @@ public class MainFrame extends JFrame {
 				foodBtnIsPressed = false;
 				attrBtnIsPressed = true;
 				hotelBtnIsPressed = false;
+				
+				buildInsertionList("attrazione");
+				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
 			}
 			
 			@Override
@@ -576,6 +602,8 @@ public class MainFrame extends JFrame {
 				attrBtnIsPressed = false;
 				hotelBtnIsPressed = true;
 				
+				buildInsertionList("alloggio");
+				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
 			}
 			
 			@Override
@@ -641,6 +669,19 @@ public class MainFrame extends JFrame {
 				uploadImageBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 		});
+		
+	}
+	
+	private void buildInsertionList(String placeType) {
+		int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
+		insertionListPanel.setLayout(new GridLayout(numberOfInsertions, 0, 0, 0));
+		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
+		
+		ctrl.buildList(numberOfInsertions, placeType);
+		
+		for(int i = 0; i < numberOfInsertions; i++) {
+			insertionListPanel.add(list[i]);
+		}
 		
 	}
 

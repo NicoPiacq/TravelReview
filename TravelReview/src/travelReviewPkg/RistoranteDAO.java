@@ -29,5 +29,22 @@ public class RistoranteDAO {
 		
 	} */
 	
+	public ResultSet getInsertions(Connection con, PreparedStatement ps) {
+		
+		ResultSet rs = null;
+		
+		String query = "SELECT * FROM public.\"ristorante\"";
+		
+		try {
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+		} catch (SQLException e) {
+			
+		}
+		
+		return rs;
+	}
+	
 }
 	

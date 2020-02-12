@@ -6,11 +6,13 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
-	private MainFrame frameMain;
+	private MainFrame frameMain = new MainFrame(this);
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
 	private boolean connected = true;
@@ -23,6 +25,9 @@ public class Controller {
 	// CLASSI DAO
 	private UtenteDAO utenteDAO = new UtenteDAO(this);
 	private InserzioneDAO inserzioneDAO = new InserzioneDAO(this);
+	private RistoranteDAO ristoranteDAO = new RistoranteDAO(this);
+	private AlloggioDAO alloggioDAO = new AlloggioDAO(this);
+	private AttrazioneDAO attrazioneDAO = new AttrazioneDAO(this);
 	
 	// CLASSI
 	private Utente utente;
@@ -49,10 +54,78 @@ public class Controller {
 		}
 		
 		frameLogin.setVisible(true);
+		frameMain.setVisible(true);
 	}
 	
 	public boolean isConnected() {
 		return connected;
+	}
+	
+	public int getNumberOfInsertionsByType(String placeType) {
+		int number = 0;
+		
+		number = inserzioneDAO.countInsertionByCategory(con, ps, placeType);
+		
+		return number;
+	}
+	
+	public ListaInserzioni[] buildList(int numberOfInsertions, String placeType) {
+		
+		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
+		ResultSet rs = null;
+		
+		switch(placeType) {
+			case "Ristorante": {
+				rs = ristoranteDAO.getInsertions(con, ps);
+				break;
+			}
+			case "Alloggio": {
+				rs = alloggioDAO.getInsertions(con, ps);
+				break;
+			}
+			case "Attrazione": {
+				rs = attrazioneDAO.getInsertions(con, ps);
+				break;
+			}
+		}
+		
+		for(int i = 0; i < numberOfInsertions; i++) {
+			try {
+				while(rs.next()) {
+					list[i].setPlaceTitle(rs.getString("nome"));
+					list[i].setAddress(rs.getString("via"));
+					list[i].setCity(rs.getString("citta"));
+				}
+			} catch (SQLException e) {
+				
+			}
+		}
+		
+		ResultSet rs2 = inserzioneDAO.getInsertions(con, ps);
+		
+		
+		for(int i = 0; i < numberOfInsertions; i++) {
+			try {
+				while(rs2.next()) {
+					list[i].setImage(null);
+					list[i].setPoster(rs2.getString("poster"));
+				}
+			} catch (SQLException e) {
+				
+			}
+		}
+		
+		
+		try {
+			rs.close();
+			rs2.close();
+		} catch (SQLException e) {
+			
+		}
+		
+		
+		return list;
+		
 	}
 	
 	public void addInsertion() {
