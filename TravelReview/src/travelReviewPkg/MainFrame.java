@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
 	private String[] attractionSpecializations = {"Museo", "Parco", "Monumento"};
 	private JPanel welcomePanel;
 	private JLabel lblWelcomeTitle;
-	private JLabel lblNewLabel_1;
+	private JLabel lblWelcomeTo;
 	private JLabel lblWelcomeLogo;
 	private JLabel lblWelcomeDescription;
 	private JLabel lblAddInsertionMessage;
@@ -234,23 +234,28 @@ public class MainFrame extends JFrame {
 		
 		lblWelcomeTitle = new JLabel("TravelReview");
 		lblWelcomeTitle.setFont(new Font("Quicksand Medium", Font.PLAIN, 45));
-		lblWelcomeTitle.setBounds(362, 109, 355, 57);
+		lblWelcomeTitle.setBounds(370, 100, 355, 57);
 		welcomePanel.add(lblWelcomeTitle);
 		
-		lblNewLabel_1 = new JLabel("Benvenuto in...");
-		lblNewLabel_1.setFont(new Font("Ubuntu", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(362, 87, 145, 22);
-		welcomePanel.add(lblNewLabel_1);
+		lblWelcomeTo = new JLabel("Benvenuto in...");
+		lblWelcomeTo.setFont(new Font("Ubuntu", Font.BOLD, 20));
+		lblWelcomeTo.setBounds(370, 78, 145, 22);
+		welcomePanel.add(lblWelcomeTo);
 		
 		lblWelcomeLogo = new JLabel("");
 		lblWelcomeLogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/logo_medium.png")));
-		lblWelcomeLogo.setBounds(133, 33, 216, 216);
+		lblWelcomeLogo.setBounds(141, 24, 216, 216);
 		welcomePanel.add(lblWelcomeLogo);
 		
 		lblWelcomeDescription = new JLabel("<html>\r\nCiao! <br>\r\nQuesta \u00E8 la <b>pagina iniziale</b>, da qui puoi scegliere se <b>pubblicare</b> una nuova inserzione oppure <b>cercare</b> delle inserzioni scegliendo una delle tre categorie principali.\r\n</html>");
 		lblWelcomeDescription.setFont(new Font("Ubuntu", Font.PLAIN, 22));
-		lblWelcomeDescription.setBounds(80, 273, 704, 138);
+		lblWelcomeDescription.setBounds(67, 238, 704, 138);
 		welcomePanel.add(lblWelcomeDescription);
+		
+		JLabel lblWelcomeBackground = new JLabel("");
+		lblWelcomeBackground.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/welcome_background.png")));
+		lblWelcomeBackground.setBounds(0, 345, 851, 151);
+		welcomePanel.add(lblWelcomeBackground);
 		
 		insertionListPanel = new JPanel();
 		mainPanel.add(insertionListPanel, "insertionListPanel_card");
