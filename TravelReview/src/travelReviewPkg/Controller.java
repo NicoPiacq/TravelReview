@@ -276,7 +276,7 @@ public class Controller {
 		boolean checkFields = true;
 		
 		try {
-			if(placeName.length() == 0)
+			if(placeName.length() == 0 || placeName.contains("  "))
 				throw new EmptyFieldException();
 			else
 				frameMain.hidePlaceTitleError();
@@ -288,7 +288,7 @@ public class Controller {
 		}
 		
 		try {
-			if(city.length() == 0)
+			if(city.length() == 0 || city.contains("  "))
 				throw new EmptyFieldException();
 			else
 				frameMain.hideCityError();
@@ -300,7 +300,7 @@ public class Controller {
 		}
 		
 		try {
-			if(address.length() == 0)
+			if(address.length() == 0 || address.contains("  "))
 				throw new EmptyFieldException();
 			else
 				frameMain.hideAddressError();
@@ -320,7 +320,7 @@ public class Controller {
 		boolean checkDate;
 		
 		try {
-			if(username.length() == 0)
+			if(username.length() == 0 || username.contains(" "))
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideUsernameError();
@@ -330,7 +330,7 @@ public class Controller {
 		}
 		
 		try {
-			if(password.length() == 0)
+			if(password.length() == 0 || password.contains(" "))
 				throw new EmptyFieldException();
 			else
 				frameLogin.hidePasswordError();
@@ -340,7 +340,7 @@ public class Controller {
 		}
 		
 		try {
-			if(firstName.length() == 0)
+			if(firstName.length() == 0 || firstName.contains("  "))
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideFirstNameError();
@@ -350,7 +350,7 @@ public class Controller {
 		}
 		
 		try {
-			if(lastName.length() == 0)
+			if(lastName.length() == 0 || lastName.contains("  "))
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideSurnameError();
