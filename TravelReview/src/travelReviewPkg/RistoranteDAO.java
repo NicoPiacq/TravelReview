@@ -40,7 +40,7 @@ public class RistoranteDAO {
 			rs = ps.executeQuery();
 			
 		} catch (SQLException e) {
-			
+			e.printStackTrace();
 		}
 		
 		return rs;

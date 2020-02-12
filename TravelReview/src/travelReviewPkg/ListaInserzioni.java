@@ -9,14 +9,14 @@ import javax.swing.border.EmptyBorder;
 
 import keeptoo.KGradientPanel;
 
-public class ListaInserzioni extends JPanel {
+public class ListaInserzioni extends JPanel{
 	
 	private JLabel lblPlaceTitle = new JLabel(getPlaceTitle());
 	private JLabel lblCity = new JLabel(getCity());
 	private JLabel lblAddress = new JLabel(getAddress());
 	private JLabel lblPoster = new JLabel(getPoster());
 	private JLabel lblOpenInsertionBtn = new JLabel("Visualizza");
-	private KGradientPanel openInsertionBtn;
+	private KGradientPanel openInsertionBtn = new KGradientPanel();
 	
 	public ListaInserzioni() {
 		

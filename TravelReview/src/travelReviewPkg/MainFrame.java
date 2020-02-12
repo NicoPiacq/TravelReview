@@ -176,16 +176,14 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel("Nicola Piacquaddio");
-		//lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
+		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 21));
 		lblUserTitle.setBounds(0, 11, 224, 47);
 		userPanel.add(lblUserTitle);
 		
-		lblUsername = new JLabel("Nick");
-		//lblUsername = new JLabel(ctrl.getUtente().getUsername());
+		lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -677,7 +675,7 @@ public class MainFrame extends JFrame {
 		insertionListPanel.setLayout(new GridLayout(numberOfInsertions, 0, 0, 0));
 		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
 		
-		ctrl.buildList(numberOfInsertions, placeType);
+		list = ctrl.buildList(numberOfInsertions, placeType);
 		
 		for(int i = 0; i < numberOfInsertions; i++) {
 			insertionListPanel.add(list[i]);

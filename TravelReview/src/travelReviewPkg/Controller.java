@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
-	private MainFrame frameMain = new MainFrame(this);
+	private MainFrame frameMain;
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
 	private boolean connected = true;
@@ -54,7 +54,6 @@ public class Controller {
 		}
 		
 		frameLogin.setVisible(true);
-		frameMain.setVisible(true);
 	}
 	
 	public boolean isConnected() {
@@ -72,10 +71,15 @@ public class Controller {
 	public ListaInserzioni[] buildList(int numberOfInsertions, String placeType) {
 		
 		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
+		
+		for(int i = 0; i < numberOfInsertions; i++) {
+			list[i] = new ListaInserzioni();
+		}
+		
 		ResultSet rs = null;
 		
 		switch(placeType) {
-			case "Ristorante": {
+			case "ristorante": {
 				rs = ristoranteDAO.getInsertions(con, ps);
 				break;
 			}
@@ -96,8 +100,8 @@ public class Controller {
 					list[i].setAddress(rs.getString("via"));
 					list[i].setCity(rs.getString("citta"));
 				}
-			} catch (SQLException e) {
-				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		
@@ -107,7 +111,7 @@ public class Controller {
 		for(int i = 0; i < numberOfInsertions; i++) {
 			try {
 				while(rs2.next()) {
-					list[i].setImage(null);
+					//list[i].setImage(null);
 					list[i].setPoster(rs2.getString("poster"));
 				}
 			} catch (SQLException e) {
