@@ -1,10 +1,14 @@
-# TravelReview
-Questo software consente la visualizzazione e la pubblicazione di recensioni di luoghi di intrattenimento (alloggi, attrazioni e ristoranti)
+# TravelReview!
+Questo software consente:
+* Visualizzare una lista di inserzioni:
+  * Inserzioni di tre tipologie: ristorante, alloggio, attrazione;
+  
+* Visualizzare le recensioni di una singola inserzione;
+* Pubblicare una propria inserzione
 
 
 # Traccia
 Si sviluppi un sistema informativo, composto da una base di dati relazionale e da un applicativo in Java Swing, per la gestione di un sistema di recensioni turistiche, tipo TripAdvisor. 
-
 
 In particolare, il sistema deve permettere di gestire tre categorie Ristoranti, Alloggi e Attrazioni. 
 
