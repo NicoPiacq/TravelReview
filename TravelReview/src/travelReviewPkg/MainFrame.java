@@ -5,9 +5,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
 import javax.swing.ImageIcon;
 import javax.swing.JSeparator;
 import keeptoo.KGradientPanel;
@@ -16,17 +22,26 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.CardLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JSlider;
 
 public class MainFrame extends JFrame {
 	
@@ -90,16 +105,27 @@ public class MainFrame extends JFrame {
 	private String[] hotelSpecializations = {"Hotel", "Ostello", "B&B"};
 	private String[] attractionSpecializations = {"Museo", "Parco", "Monumento"};
 	private JPanel welcomePanel;
+	private JScrollPane scrollBar;
 	private JLabel lblWelcomeTitle;
 	private JLabel lblWelcomeTo;
 	private JLabel lblWelcomeLogo;
 	private JLabel lblWelcomeDescription;
 	private JLabel lblAddInsertionMessage;
-
-	private ListaInserzioni[] insertionList;
-	private JPanel panel;
+	private JPanel insertionInfo;
+	private JLabel lblInfoPlaceTitle;
+	private JLabel lblInfoWrittenBy;
+	private JLabel lblInfoFullAddress;
+	private JLabel lblInfoPhoto;
+	
+	private ListaInserzioni[] list;
 	
 	public MainFrame(Controller c) {
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			JOptionPane.showMessageDialog(this, "Errore grave! Il software non rileva correttamente il tema di Sistema!");
+		}
 		
 		ctrl = c;
 		
@@ -176,14 +202,16 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
+		lblUserTitle = new JLabel("Nicola Piacquaddio");
+		//lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 21));
 		lblUserTitle.setBounds(0, 11, 224, 47);
 		userPanel.add(lblUserTitle);
 		
-		lblUsername = new JLabel(ctrl.getUtente().getUsername());
+		lblUsername = new JLabel("Nick");
+		//lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -267,25 +295,23 @@ public class MainFrame extends JFrame {
 		
 		insertionListPanel = new JPanel();
 		insertionListPanel.setBackground(Color.WHITE);
-		mainPanel.add(insertionListPanel, "insertionListPanel_card");
 		insertionListPanel.setLayout(null);
 		
-		panel = new JPanel();
-		panel.setBounds(0, 0, 851, 80);
-		insertionListPanel.add(panel);
-		panel.setLayout(null);
-		
-		KGradientPanel gradientPanel = new KGradientPanel();
-		gradientPanel.setBounds(652, 24, 180, 25);
-		panel.add(gradientPanel);
+		scrollBar = new JScrollPane(insertionListPanel);
+		scrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		mainPanel.add(scrollBar, "insertionListPanel_card");
 		
 		reviewPanel = new JPanel();
 		mainPanel.add(reviewPanel, "reviewPanel_card");
 		reviewPanel.setLayout(null);
 		
 		reviewListPanel = new JPanel();
-		reviewListPanel.setBounds(0, 216, 851, 280);
+		reviewListPanel.setBounds(0, 166, 851, 330);
 		reviewPanel.add(reviewListPanel);
+		
+		JLabel lblReviewsTitle = new JLabel("COOMING SOON!");
+		lblReviewsTitle.setFont(new Font("Ubuntu", Font.BOLD, 45));
+		reviewListPanel.add(lblReviewsTitle);
 		
 		createInsertionPanel = new JPanel();
 		createInsertionPanel.setBackground(Color.WHITE);
@@ -335,9 +361,43 @@ public class MainFrame extends JFrame {
 		contentPane.add(mainPanelShadow);
 		mainPanelShadow.setBackground(new Color(79, 57, 232, 70));
 		
+		insertionInfo = new JPanel();
+		insertionInfo.setBackground(new Color(255, 255, 255));
+		insertionInfo.setBounds(0, 0, 851, 155);
+		reviewPanel.add(insertionInfo);
+		insertionInfo.setLayout(null);
+		
 		displayAddInsertion();
 		
+		displayInsertion();
+		
 		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType);
+		
+	}
+	
+	public void displayInsertion() {
+		
+		lblInfoPlaceTitle = new JLabel();
+		lblInfoPlaceTitle.setFont(new Font("Ubuntu", Font.BOLD, 21));
+		lblInfoPlaceTitle.setBounds(10, 28, 312, 25);
+		insertionInfo.add(lblInfoPlaceTitle);
+		
+		lblInfoFullAddress = new JLabel();
+		lblInfoFullAddress.setVerticalAlignment(SwingConstants.TOP);
+		lblInfoFullAddress.setHorizontalAlignment(SwingConstants.LEFT);
+		lblInfoFullAddress.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		lblInfoFullAddress.setBounds(10, 56, 312, 57);
+		insertionInfo.add(lblInfoFullAddress);
+		
+		lblInfoWrittenBy = new JLabel();
+		lblInfoWrittenBy.setFont(new Font("Ubuntu", Font.PLAIN, 13));
+		lblInfoWrittenBy.setBounds(10, 124, 187, 14);
+		insertionInfo.add(lblInfoWrittenBy);
+		
+		lblInfoPhoto = new JLabel("");
+		lblInfoPhoto.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/no_pic_default.png")));
+		lblInfoPhoto.setBounds(520, 12, 180, 130);
+		insertionInfo.add(lblInfoPhoto);
 		
 	}
 	
@@ -671,16 +731,37 @@ public class MainFrame extends JFrame {
 	}
 	
 	private void buildInsertionList(String placeType) {
-		int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
-		insertionListPanel.setLayout(new GridLayout(numberOfInsertions, 0, 0, 0));
-		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
+		
+		//insertionListPanel.removeAll();
+		
+		//int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
+		int numberOfInsertions = 9;
 		
 		list = ctrl.buildList(numberOfInsertions, placeType);
 		
+		insertionListPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weightx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(20, 0, 0, 0);
+        //gbc.gridwidth = GridBagConstraints.REMAINDER;
+		
 		for(int i = 0; i < numberOfInsertions; i++) {
-			insertionListPanel.add(list[i]);
+			insertionListPanel.add(list[i], gbc);
+			gbc.gridy += 1;
 		}
 		
+	}
+	
+	public void showInsertionPage() {
+		int code = ctrl.getIndex();
+		
+		lblInfoPlaceTitle.setText(list[code].getPlaceTitle());
+		lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+list[code].getPoster()+"</b></html>");
+		lblInfoFullAddress.setText("<html>Si trova a: "+list[code].getAddress()+", "+list[code].getCity());
+		
+		cl_cardLayoutPanel.show(mainPanel, "reviewPanel_card");
 	}
 
 	public void resetAddInsertion() {

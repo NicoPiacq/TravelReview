@@ -8,31 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import keeptoo.KGradientPanel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class ListaInserzioni extends JPanel{
-	
-	private JLabel lblPlaceTitle = new JLabel(getPlaceTitle());
-	private JLabel lblCity = new JLabel(getCity());
-	private JLabel lblAddress = new JLabel(getAddress());
-	private JLabel lblPoster = new JLabel(getPoster());
-	private JLabel lblOpenInsertionBtn = new JLabel("Visualizza");
-	private KGradientPanel openInsertionBtn = new KGradientPanel();
-	
-	public ListaInserzioni() {
-		
-		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.X_AXIS);
-		this.setLayout(boxLayout);
-		this.setBorder(new EmptyBorder(new Insets(150, 200, 150, 200)));
-		
-		openInsertionBtn.add(lblOpenInsertionBtn);
-		
-		this.add(lblPlaceTitle);
-		this.add(lblAddress);
-		this.add(lblCity);
-		this.add(lblPoster);
-		this.add(openInsertionBtn);
-		
-	}
+public class ListaInserzioni extends JPanel {
 	
 	private String type;
 	private Image image;
@@ -43,6 +26,70 @@ public class ListaInserzioni extends JPanel{
 	private String address;
 	private String placeSpecialization;
 	
+	private JLabel lblPlaceTitle = new JLabel();
+	private JLabel lblPlaceType;
+	private JLabel lblFullAddress;
+	private JLabel lblWrittenBy;
+	private JLabel lblOpenInsertionBtn;
+	private KGradientPanel openInsertionBtn;
+	
+	
+	public ListaInserzioni(Controller c) {
+		
+		setLayout(null);
+		
+		KGradientPanel openInsertionBtn = new KGradientPanel();
+		openInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				c.setIndex(code);
+				c.showInsertionPage();
+			}
+		});
+		openInsertionBtn.kStartColor = new Color(0, 153, 0);
+		openInsertionBtn.setkEndColor(new Color(102, 204, 0));
+		openInsertionBtn.setBounds(661, 30, 180, 33);
+		add(openInsertionBtn);
+		openInsertionBtn.setLayout(null);
+		
+		lblOpenInsertionBtn = new JLabel("Visualizza");
+		lblOpenInsertionBtn.setForeground(new Color(255, 255, 255));
+		lblOpenInsertionBtn.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblOpenInsertionBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOpenInsertionBtn.setBounds(0, 0, 180, 33);
+		openInsertionBtn.add(lblOpenInsertionBtn);
+		
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+	    return new Dimension(851, 100);
+	}
+	
+	public void setAllTexts() {
+		
+		lblPlaceTitle = new JLabel(placeTitle);
+		lblPlaceTitle.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblPlaceTitle.setBounds(10, 30, 207, 21);
+		this.add(lblPlaceTitle);
+		
+		lblPlaceType = new JLabel(type+" - "+placeSpecialization);
+		lblPlaceType.setFont(new Font("Ubuntu", Font.PLAIN, 14));
+		lblPlaceType.setBounds(10, 49, 143, 14);
+		this.add(lblPlaceType);
+		
+		lblFullAddress = new JLabel(address+", "+city);
+		lblFullAddress.setFont(new Font("Ubuntu", Font.PLAIN, 13));
+		lblFullAddress.setBounds(10, 75, 207, 14);
+		this.add(lblFullAddress);
+		
+		lblWrittenBy = new JLabel("<html>Pubblicato da: <b>"+poster+"</b></html>");
+		lblWrittenBy.setFont(new Font("Ubuntu", Font.PLAIN, 12));
+		lblWrittenBy.setBounds(661, 74, 180, 14);
+		this.add(lblWrittenBy);
+		
+	}
+
 	
 	public String getType() {
 		return type;
@@ -92,5 +139,4 @@ public class ListaInserzioni extends JPanel{
 	public void setPlaceSpecialization(String placeSpecialization) {
 		this.placeSpecialization = placeSpecialization;
 	}
-
 }

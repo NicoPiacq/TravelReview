@@ -12,10 +12,15 @@ import javax.swing.table.DefaultTableModel;
 public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
-	private MainFrame frameMain;
+	private MainFrame frameMain = new MainFrame(this);
+	
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
+	
 	private boolean connected = true;
+	
+	private ListaInserzioni[] list;
+	private int index = 0;
 
 	// ELEMENTI PER IL DATABASE
 	public Connection con;
@@ -54,6 +59,7 @@ public class Controller {
 		}
 		
 		frameLogin.setVisible(true);
+		frameMain.setVisible(true);
 	}
 	
 	public boolean isConnected() {
@@ -70,9 +76,28 @@ public class Controller {
 	
 	public ListaInserzioni[] buildList(int numberOfInsertions, String placeType) {
 		
-		ListaInserzioni[] list = new ListaInserzioni[numberOfInsertions];
+		list = new ListaInserzioni[numberOfInsertions];
 		
+		String[] placeTitles = {"La Gallinella", "Kebabberia", "Sole mio", "Trottola", "OneFingerFood", "Spaghettoni", "MasterGrill", "Sakura", "MagiaPizza"};
+		String[] cities = {"Milano", "Roma", "Napoli", "Milano", "Foggia", "Palermo", "Napoli", "Giugliano in Campania", "Melito di Napoli"};
+		String[] addresses = {"Via Grazia 21", "Viale Colosseo 5", "Via Chiaia 1", "Piazza Fontana", "Via Siciliana 14", "Piazza Matteotti", "Via Vesuvio 7", "Via Europa 101", "Via Gran Paradiso 3"};
+		String[] posters = {"Aleserra99", "Nick", "Nick", "Ginius", "Unina", "Aleserra99", "Nick", "Brygida", "Nick"};
+		String[] specializations = {"Pizzeria", "Pub", "Pizzeria", "Braceria", "Pub", "Pizzeria", "Braceria", "Pub", "Pizzeria"};
+		int[] codes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+ 		
 		for(int i = 0; i < numberOfInsertions; i++) {
+			list[i] = new ListaInserzioni(this);
+			list[i].setPlaceTitle(placeTitles[i]);
+			list[i].setType("Ristorante");
+			list[i].setCity(cities[i]);
+			list[i].setAddress(addresses[i]);
+			list[i].setPoster(posters[i]);
+			list[i].setPlaceSpecialization(specializations[i]);
+			list[i].setCode(codes[i]);
+			list[i].setAllTexts();
+		}
+		
+		/* for(int i = 0; i < numberOfInsertions; i++) {
 			list[i] = new ListaInserzioni();
 		}
 		
@@ -117,7 +142,7 @@ public class Controller {
 			} catch (SQLException e) {
 				
 			}
-		}
+		} 
 		
 		
 		try {
@@ -125,11 +150,15 @@ public class Controller {
 			rs2.close();
 		} catch (SQLException e) {
 			
-		}
+		} */
 		
 		
 		return list;
 		
+	}
+	
+	public void showInsertionPage() {
+		frameMain.showInsertionPage();
 	}
 	
 	public void addInsertion() {
@@ -473,6 +502,14 @@ public class Controller {
 
 	public Utente getUtente() {
 		return utente;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index-1;
 	}
 	
 }
