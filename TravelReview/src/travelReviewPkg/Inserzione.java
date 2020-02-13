@@ -5,30 +5,50 @@ import java.awt.Image;
 public class Inserzione {
 	
 	private enum TipoInserzione {
-		RISTORANTE,
-		ALLOGGIO,
-		ATTRAZIONE;
+		Ristorante,
+		Alloggio,
+		Attrazione;
 	}
+	
 	
 	private TipoInserzione tipo;
-	private String codice;
+	private int codice;
 	private Image image;
-
+	private String poster;
 	
-	public String getCodice() {
-		return codice;
-	}
-
-	public void setCodice(String codice) {
-		this.codice = codice;	
-	}
 	
 	public TipoInserzione getTipo() {
 		return tipo;
 	}
-
-	public void setTipo(TipoInserzione tipo) {
-		this.tipo = tipo;
+	public void setTipo(String type) {
+		switch(type) {
+			case "Ristorante": {
+				tipo = TipoInserzione.Ristorante;
+				break;
+			}
+			case "Alloggio": {
+				tipo = TipoInserzione.Alloggio;
+				break;
+			}
+			case "Attrazione": {
+				tipo = TipoInserzione.Attrazione;
+				break;
+			}
+		}
 	}
+	public int getCodice() {
+		return codice;
+	}
+	public void setCodice(int codice) {
+		this.codice = codice;
+	}
+	public String getPoster() {
+		return poster;
+	}
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
+
+	
 	
 }

@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 public class Controller {
 
 	private LoginFrame frameLogin = new LoginFrame(this);
-	private MainFrame frameMain = new MainFrame(this);
+	private MainFrame frameMain;
 	
 	private JFileChooser chooser = new JFileChooser();
 	private int chooserReturn;
@@ -36,7 +36,10 @@ public class Controller {
 	
 	// CLASSI
 	private Utente utente;
-	private Inserzione inserzione;
+	private Inserzione inserzione = new Inserzione();
+	private Ristorante ristorante = new Ristorante();
+	private Alloggio alloggio  = new Alloggio();
+	private Attrazione attrazione = new Attrazione();
 	
 	public Controller() {
 		
@@ -59,7 +62,6 @@ public class Controller {
 		}
 		
 		frameLogin.setVisible(true);
-		frameMain.setVisible(true);
 	}
 	
 	public boolean isConnected() {
@@ -77,88 +79,85 @@ public class Controller {
 	public ListaInserzioni[] buildList(int numberOfInsertions, String placeType) {
 		
 		list = new ListaInserzioni[numberOfInsertions];
+		int i = 0;
 		
-		String[] placeTitles = {"La Gallinella", "Kebabberia", "Sole mio", "Trottola", "OneFingerFood", "Spaghettoni", "MasterGrill", "Sakura", "MagiaPizza"};
-		String[] cities = {"Milano", "Roma", "Napoli", "Milano", "Foggia", "Palermo", "Napoli", "Giugliano in Campania", "Melito di Napoli"};
-		String[] addresses = {"Via Grazia 21", "Viale Colosseo 5", "Via Chiaia 1", "Piazza Fontana", "Via Siciliana 14", "Piazza Matteotti", "Via Vesuvio 7", "Via Europa 101", "Via Gran Paradiso 3"};
-		String[] posters = {"Aleserra99", "Nick", "Nick", "Ginius", "Unina", "Aleserra99", "Nick", "Brygida", "Nick"};
-		String[] specializations = {"Pizzeria", "Pub", "Pizzeria", "Braceria", "Pub", "Pizzeria", "Braceria", "Pub", "Pizzeria"};
-		int[] codes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
- 		
-		for(int i = 0; i < numberOfInsertions; i++) {
-			list[i] = new ListaInserzioni(this);
-			list[i].setPlaceTitle(placeTitles[i]);
-			list[i].setType("Ristorante");
-			list[i].setCity(cities[i]);
-			list[i].setAddress(addresses[i]);
-			list[i].setPoster(posters[i]);
-			list[i].setPlaceSpecialization(specializations[i]);
-			list[i].setCode(codes[i]);
-			list[i].setAllTexts();
-		}
-		
-		/* for(int i = 0; i < numberOfInsertions; i++) {
-			list[i] = new ListaInserzioni();
+		for(int j = 0; j < numberOfInsertions; j++) {
+			list[j] = new ListaInserzioni(this);
 		}
 		
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		
 		switch(placeType) {
 			case "ristorante": {
 				rs = ristoranteDAO.getInsertions(con, ps);
+				rs2 = inserzioneDAO.getInsertions(con, ps, "Ristorante");
 				break;
 			}
-			case "Alloggio": {
+			case "alloggio": {
 				rs = alloggioDAO.getInsertions(con, ps);
+				rs2 = inserzioneDAO.getInsertions(con, ps, "Alloggio");
 				break;
 			}
-			case "Attrazione": {
+			case "attrazione": {
 				rs = attrazioneDAO.getInsertions(con, ps);
+				rs2 = inserzioneDAO.getInsertions(con, ps, "Attrazione");
 				break;
 			}
 		}
 		
-		for(int i = 0; i < numberOfInsertions; i++) {
-			try {
-				while(rs.next()) {
-					list[i].setPlaceTitle(rs.getString("nome"));
-					list[i].setAddress(rs.getString("via"));
-					list[i].setCity(rs.getString("citta"));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+		
+		i = 0;
+		
+		try {
+			while(rs.next() && rs2.next()) {
+				list[i].setPlaceTitle(rs.getString("nome"));
+				list[i].setAddress(rs.getString("via"));
+				list[i].setCity(rs.getString("citta"));
+				list[i].setPlaceCategory(rs.getString("categoria"));
+				list[i].setCode(i);
+				list[i].setPoster(rs2.getString("poster"));
+				list[i].setType(rs2.getString("tipo"));
+				System.out.println("DAL DB HO ESTRATTO QUESTO: "+rs2.getString("tipo"));
+				list[i].setAllTexts();
+				i++;
 			}
-		}
-		
-		ResultSet rs2 = inserzioneDAO.getInsertions(con, ps);
-		
-		
-		for(int i = 0; i < numberOfInsertions; i++) {
-			try {
-				while(rs2.next()) {
-					//list[i].setImage(null);
-					list[i].setPoster(rs2.getString("poster"));
-				}
-			} catch (SQLException e) {
-				
-			}
-		} 
-		
-		
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			}	
 		try {
 			rs.close();
 			rs2.close();
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			
-		} */
-		
+		}
 		
 		return list;
 		
 	}
 	
-	public void showInsertionPage() {
-		frameMain.showInsertionPage();
+	public void showInsertionPage(String type, int index) {
+		
+		switch(type) {
+			case "Ristorante": {
+				setRistorante(index);
+				frameMain.showInsertionPage(type);
+				break;
+			}
+			case "Alloggio": {
+				setAlloggio(index);
+				frameMain.showInsertionPage(type);
+				break;
+			}
+			case "Attrazione": {
+				setAttrazione(index);
+				frameMain.showInsertionPage(type);
+				break;
+			}
+		}
+		
 	}
 	
 	public void addInsertion() {
@@ -167,6 +166,7 @@ public class Controller {
 		String city = frameMain.getCity();
 		String address = frameMain.getAddress();
 		String placeType = frameMain.getPlaceType();
+		System.out.println(placeType);
 		String placeTypeSpecialization = frameMain.getPlaceSpecialization();
 		
 		try {
@@ -175,12 +175,12 @@ public class Controller {
 				switch(placeType) {
 					case "Ristorante": {
 						try {
-							/* if(RistoranteDAO.addInsertionInRestaurant( ... ) {
+							if(ristoranteDAO.addInsertionInRestaurant(con, ps, placeTypeSpecialization, placeName, city, address)) {
 								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
 							} 
 							else {
 								throw new Exception();
-							}*/
+							}
 						}
 						catch (Exception ex) {
 							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
@@ -190,12 +190,12 @@ public class Controller {
 					
 					case "Alloggio": {
 						try {
-							/* if(AlloggioDAO.addInsertionInHotel( ... ) {
+							if(alloggioDAO.addInsertionInHotel(con, ps, placeTypeSpecialization, placeName, city, address)) {
 								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
 							} 
 							else {
 								throw new Exception();
-							}*/
+							}
 						}
 						catch (Exception ex) {
 							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
@@ -205,12 +205,12 @@ public class Controller {
 					
 					case "Attrazione": {
 						try {
-							/* if(AttrazioneDAO.addInsertionInAttraction( ... ) {
+							if(attrazioneDAO.addInsertionInAttraction(con, ps, placeTypeSpecialization, placeName, city, address)) {
 								frameMain.setAddInsertionMessage("Inserzione creata con successo!", true);
 							} 
 							else {
 								throw new Exception();
-							}*/
+							}
 						}
 						catch (Exception ex) {
 							frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
@@ -503,13 +503,56 @@ public class Controller {
 	public Utente getUtente() {
 		return utente;
 	}
+	
+	private void setRistorante(int index) {
+		ristorante.setCitta(list[index].getCity());
+		ristorante.setNome(list[index].getPlaceTitle());
+		ristorante.setVia(list[index].getAddress());
+		inserzione.setCodice(list[index].getCode());
+		inserzione.setPoster(list[index].getPoster());
+		inserzione.setTipo("Ristorante");
+	}
+	
+	private void setAttrazione(int index) {
+		attrazione.setCitta(list[index].getCity());
+		attrazione.setNome(list[index].getPlaceTitle());
+		attrazione.setVia(list[index].getAddress());
+		inserzione.setCodice(list[index].getCode());
+		inserzione.setPoster(list[index].getPoster());
+		inserzione.setTipo("Ristorante");
+	}
+	
+	private void setAlloggio(int index) {
+		alloggio.setCitta(list[index].getCity());
+		alloggio.setNome(list[index].getPlaceTitle());
+		alloggio.setVia(list[index].getAddress());
+		inserzione.setCodice(list[index].getCode());
+		inserzione.setPoster(list[index].getPoster());
+		inserzione.setTipo("Ristorante");
+	}
+	
+	public Inserzione getInserzione() {
+		return inserzione;
+	}
+	
+	public Ristorante getRistorante() {
+		return ristorante;
+	}
+	
+	public Alloggio getAlloggio() {
+		return alloggio;
+	}
+	
+	public Attrazione getAttrazione() {
+		return attrazione;
+	}
 
 	public int getIndex() {
 		return index;
 	}
 
 	public void setIndex(int index) {
-		this.index = index-1;
+		this.index = index;
 	}
 	
 }

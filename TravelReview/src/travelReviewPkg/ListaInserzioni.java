@@ -24,7 +24,7 @@ public class ListaInserzioni extends JPanel {
 	private String placeTitle;
 	private String city;
 	private String address;
-	private String placeSpecialization;
+	private String placeCategory;
 	
 	private JLabel lblPlaceTitle = new JLabel();
 	private JLabel lblPlaceType;
@@ -43,7 +43,8 @@ public class ListaInserzioni extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				c.setIndex(code);
-				c.showInsertionPage();
+				c.showInsertionPage(type, code);
+				
 			}
 		});
 		openInsertionBtn.kStartColor = new Color(0, 153, 0);
@@ -73,9 +74,9 @@ public class ListaInserzioni extends JPanel {
 		lblPlaceTitle.setBounds(10, 30, 207, 21);
 		this.add(lblPlaceTitle);
 		
-		lblPlaceType = new JLabel(type+" - "+placeSpecialization);
+		lblPlaceType = new JLabel(type+" - "+placeCategory);
 		lblPlaceType.setFont(new Font("Ubuntu", Font.PLAIN, 14));
-		lblPlaceType.setBounds(10, 49, 143, 14);
+		lblPlaceType.setBounds(10, 49, 143, 18);
 		this.add(lblPlaceType);
 		
 		lblFullAddress = new JLabel(address+", "+city);
@@ -133,10 +134,10 @@ public class ListaInserzioni extends JPanel {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getPlaceSpecialization() {
-		return placeSpecialization;
+	public String getPlaceCategory() {
+		return placeCategory;
 	}
-	public void setPlaceSpecialization(String placeSpecialization) {
-		this.placeSpecialization = placeSpecialization;
+	public void setPlaceCategory(String placeSpecialization) {
+		this.placeCategory = placeSpecialization;
 	}
 }
