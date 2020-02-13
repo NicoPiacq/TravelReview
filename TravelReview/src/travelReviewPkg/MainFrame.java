@@ -101,9 +101,9 @@ public class MainFrame extends JFrame {
 	private JComboBox comboPlaceSpecialization;
 	private JLabel lblPlaceSpecialization;
 	private String[] insertionType = {"Ristorante", "Alloggio", "Attrazione"};
-	private String[] restaurantSpecializations = {"Pizzeria", "Braceria", "Pub"};
-	private String[] hotelSpecializations = {"Hotel", "Ostello", "B&B"};
-	private String[] attractionSpecializations = {"Museo", "Parco", "Monumento"};
+	private String[] restaurantSpecializations = {"Generale", "Pizzeria", "Braceria"};
+	private String[] hotelSpecializations = {"Generale", "Hotel", "Residence"};
+	private String[] attractionSpecializations = {"Generale", "Museo", "Parco"};
 	private JPanel welcomePanel;
 	private JScrollPane scrollBar;
 	private JLabel lblWelcomeTitle;
@@ -202,16 +202,14 @@ public class MainFrame extends JFrame {
 		contentPane.add(userPanel);
 		userPanel.setLayout(null);
 		
-		lblUserTitle = new JLabel("Nicola Piacquaddio");
-		//lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
+		lblUserTitle = new JLabel(ctrl.getUtente().getNome()+" "+ctrl.getUtente().getCognome());
 		lblUserTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUserTitle.setForeground(new Color(255, 255, 255));
 		lblUserTitle.setFont(new Font("Segoe UI Light", Font.PLAIN, 21));
 		lblUserTitle.setBounds(0, 11, 224, 47);
 		userPanel.add(lblUserTitle);
 		
-		lblUsername = new JLabel("Nick");
-		//lblUsername = new JLabel(ctrl.getUtente().getUsername());
+		lblUsername = new JLabel(ctrl.getUtente().getUsername());
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setForeground(new Color(255, 255, 255));
 		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 16));
@@ -732,10 +730,10 @@ public class MainFrame extends JFrame {
 	
 	private void buildInsertionList(String placeType) {
 		
-		//insertionListPanel.removeAll();
+		insertionListPanel.removeAll();
 		
-		//int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
-		int numberOfInsertions = 9;
+		int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
+		//int numberOfInsertions = 9;
 		
 		list = ctrl.buildList(numberOfInsertions, placeType);
 		
@@ -752,14 +750,32 @@ public class MainFrame extends JFrame {
 			gbc.gridy += 1;
 		}
 		
+		insertionListPanel.revalidate();
+		insertionListPanel.repaint();
 	}
 	
-	public void showInsertionPage() {
-		int code = ctrl.getIndex();
+	public void showInsertionPage(String type) {
 		
-		lblInfoPlaceTitle.setText(list[code].getPlaceTitle());
-		lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+list[code].getPoster()+"</b></html>");
-		lblInfoFullAddress.setText("<html>Si trova a: "+list[code].getAddress()+", "+list[code].getCity());
+		switch(type) {
+			case "Ristorante": {
+				lblInfoPlaceTitle.setText(ctrl.getRistorante().getNome());
+				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getRistorante().getVia()+", "+ctrl.getRistorante().getCitta());
+				break;
+			}
+			case "Alloggio": {
+				lblInfoPlaceTitle.setText(ctrl.getAlloggio().getNome());
+				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getAlloggio().getVia()+", "+ctrl.getAlloggio().getCitta());
+				break;
+			}
+			case "Attrazione": {
+				lblInfoPlaceTitle.setText(ctrl.getAttrazione().getNome());
+				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getAttrazione().getVia()+", "+ctrl.getAttrazione().getCitta());
+				break;
+			}
+		}
 		
 		cl_cardLayoutPanel.show(mainPanel, "reviewPanel_card");
 	}
