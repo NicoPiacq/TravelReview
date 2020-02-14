@@ -119,6 +119,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblInfoWrittenBy;
 	private JLabel lblInfoFullAddress;
 	private JLabel lblInfoPhoto;
+	private JLabel lblLogOut;
 	
 	//private RigaInserzione[] list;
 	
@@ -387,12 +388,19 @@ public class MainFrame extends JFrame {
 		reviewPanel.add(insertionInfo);
 		insertionInfo.setLayout(null);
 		
+		lblLogOut = new JLabel("<html><u>Logout</u></html>");
+		lblLogOut.setForeground(new Color(255, 255, 255));
+		lblLogOut.setFont(new Font("Ubuntu", Font.BOLD, 12));
+		lblLogOut.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLogOut.setBounds(64, 475, 88, 25);
+		userPanel.add(lblLogOut);
+		
 		displayAddInsertion();
 		
 		displayInsertion();
 		
-		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType);
-		
+		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType, lblLogOut, lblLogo, lblLogoTitle);
+
 	}
 	
 	public void displayInsertion() {
@@ -533,7 +541,42 @@ public class MainFrame extends JFrame {
 	}
 	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType) {
+	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType, JLabel lblLogOut, JLabel lblLogo, JLabel lblLogoTitle) {
+		
+		lblLogo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblLogo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cl_cardLayoutPanel.show(mainPanel, "welcomePanel_card");
+			}
+		});
+		
+		lblLogoTitle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblLogoTitle.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cl_cardLayoutPanel.show(mainPanel, "welcomePanel_card");
+			}
+		});
+		
+		lblLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblLogOut.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ctrl.logout();
+			}
+		});
 		
 		comboPlaceType.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
@@ -822,6 +865,7 @@ public class MainFrame extends JFrame {
 				break;
 			}
 		}
+		
 		
 		cl_cardLayoutPanel.show(mainPanel, "reviewPanel_card");
 	}
