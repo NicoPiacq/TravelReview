@@ -198,7 +198,29 @@ public class Controller {
 			}
 		}
 		
+		setRecensione(index);
 		frameMain.buildReviewList(list[index].getCode());
+		
+	}
+	
+	public void addReview() {
+		
+		// MANCANO I COMPONENTI NEL MAINFRAME!!
+		
+		String reviewTitle = null;
+		String reviewMessage = null;
+		String poster = null;
+		
+		try {
+			if(recensioneDAO.addReview(con, ps, reviewTitle, reviewMessage, poster)) {
+				// frameMain.setAddReviewMessage("Recensione creata con successo!", true);
+			}
+			else
+				throw new Exception();
+		}
+		catch(Exception ex) {
+			// frameMain.setAddReviewMessage("Errore nell'inserimento della recensione!", false);
+		}
 		
 	}
 	
@@ -526,6 +548,26 @@ public class Controller {
 			
 	}
 	
+	public void logout() {
+		
+		ristorante = null;
+		alloggio = null;
+		attrazione = null;
+		inserzione = null;
+		recensione = null;
+		utente = null;
+		
+		frameMain.setVisible(false);
+		frameMain = null;
+		
+		frameLogin.setMessage("Sei uscito dal programma!", true);
+		frameLogin.resetTxtPassword();
+		frameLogin.resetTxtUsername();
+		frameLogin.hideUsernameLoginError();
+		frameLogin.hidePasswordLoginError();
+		frameLogin.setVisible(true);
+	}
+	
 	public void uploadImgProfile() {
 		chooser = new JFileChooser();
 		chooserReturn = chooser.showOpenDialog(null);
@@ -571,6 +613,16 @@ public class Controller {
 		inserzione.setCodice(list[index].getCode());
 		inserzione.setPoster(list[index].getPoster());
 		inserzione.setTipo("Ristorante");
+	}
+	
+	private void setRecensione(int index) {
+		recensione.setTitolo(reviewList[index].getTitle());
+		recensione.setMessaggio(reviewList[index].getMessage());
+		recensione.setPoster(reviewList[index].getPoster());
+	}
+	
+	public Recensione getRecensione() {
+		return recensione;
 	}
 	
 	public Inserzione getInserzione() {
