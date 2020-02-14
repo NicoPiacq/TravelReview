@@ -8,6 +8,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.border.MatteBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 
 import javax.swing.JTextField;
@@ -111,6 +113,7 @@ public class LoginFrame extends JFrame {
 		
 		messagePanel = new KGradientPanel();
 		messagePanel.setVisible(false);
+		messagePanel.setVisible(false);
 		messagePanel.kEndColor = new Color(255, 69, 0);
 		messagePanel.kStartColor = new Color(204, 51, 0);
 		messagePanel.setBounds(0, 0, 899, 24);
@@ -159,8 +162,9 @@ public class LoginFrame extends JFrame {
 		
 		registerKeyListener(ctrl, txtUsername, txtPassword);
 		
-		if(c.isConnected()) {
-			messagePanel.setVisible(false);
+		if(!c.isConnected()) {
+			messagePanel.setVisible(true);
+			lblCloseMessageIcon.setVisible(false);
 		}
 	}
 	
@@ -366,8 +370,19 @@ public class LoginFrame extends JFrame {
 		lblRegisterNow.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_card");
-				messagePanel.setVisible(false);
+				
+				try {
+					if(!ctrl.isConnected()) {
+						throw new Exception();
+					}
+					else {
+						cl_cardLayoutPanel.show(cardLayoutPanel, "registrationPanel_card");
+						messagePanel.setVisible(false);
+					}
+				}
+				catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Impossibile avviare la registrazione!", "Connessione Assente", 0, null);
+				}
 			}
 			
 			@Override
@@ -393,8 +408,19 @@ public class LoginFrame extends JFrame {
 		gradientLoginBtn.addMouseListener(new MouseAdapter() {	
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(ctrl.checkLoginFields(getTxtUsername(), getTxtPassword()))
-					ctrl.verifyAccess();
+				
+				try {
+					if(!ctrl.isConnected())
+						throw new Exception();
+					else {
+						if(ctrl.checkLoginFields(getTxtUsername(), getTxtPassword()))
+							ctrl.verifyAccess();
+					}
+				}
+				catch(Exception ex) {
+					JOptionPane.showMessageDialog(null, "Impossibile eseguire il Login", "Connessione Assente", 0, null);
+				}
+				
 			}
 			
 			@Override

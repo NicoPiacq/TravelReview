@@ -19,8 +19,10 @@ public class Controller {
 	
 	private boolean connected = true;
 	
-	private ListaInserzioni[] list;
+	private RigaInserzione[] list;
 	private int index = 0;
+	
+	private RigaRecensione[] reviewList;
 
 	// ELEMENTI PER IL DATABASE
 	public Connection con;
@@ -33,6 +35,7 @@ public class Controller {
 	private RistoranteDAO ristoranteDAO = new RistoranteDAO(this);
 	private AlloggioDAO alloggioDAO = new AlloggioDAO(this);
 	private AttrazioneDAO attrazioneDAO = new AttrazioneDAO(this);
+	private RecensioneDAO recensioneDAO = new RecensioneDAO();
 	
 	// CLASSI
 	private Utente utente;
@@ -40,6 +43,7 @@ public class Controller {
 	private Ristorante ristorante = new Ristorante();
 	private Alloggio alloggio  = new Alloggio();
 	private Attrazione attrazione = new Attrazione();
+	private Recensione recensione = new Recensione();
 	
 	public Controller() {
 		
@@ -68,6 +72,14 @@ public class Controller {
 		return connected;
 	}
 	
+	public int getNumberOfReviewByCode(int code) {
+		int number = 0;
+		
+		//number = recensioneDAO.countReviewByCode(con, ps, code);
+		
+		return number;
+	}
+	
 	public int getNumberOfInsertionsByType(String placeType) {
 		int number = 0;
 		
@@ -76,13 +88,41 @@ public class Controller {
 		return number;
 	}
 	
-	public ListaInserzioni[] buildList(int numberOfInsertions, String placeType) {
+	public RigaRecensione[] buildReviewList(int numberOfReviews, int code) {
 		
-		list = new ListaInserzioni[numberOfInsertions];
+		reviewList = new RigaRecensione[numberOfReviews];
+		int i = 0;
+		
+		for(int j = 0; j < numberOfReviews; j++) {
+			reviewList[j] = new RigaRecensione(this);
+		}
+		
+		ResultSet rs = recensioneDAO.getReviews(con, ps, code);
+		
+		try {
+			while(rs.next()) {
+				reviewList[i].setTitle(rs.getString("titolo"));
+				reviewList[i].setMessage(rs.getString("messaggio"));
+				reviewList[i].setPoster(rs.getString("poster"));
+				i++;
+			}
+			
+			rs.close();
+		}
+		catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return reviewList;
+	}
+	
+	public RigaInserzione[] buildList(int numberOfInsertions, String placeType) {
+		
+		list = new RigaInserzione[numberOfInsertions];
 		int i = 0;
 		
 		for(int j = 0; j < numberOfInsertions; j++) {
-			list[j] = new ListaInserzioni(this);
+			list[j] = new RigaInserzione(this);
 		}
 		
 		ResultSet rs = null;
@@ -157,6 +197,8 @@ public class Controller {
 				break;
 			}
 		}
+		
+		frameMain.buildReviewList(list[index].getCode());
 		
 	}
 	

@@ -105,7 +105,10 @@ public class MainFrame extends JFrame {
 	private String[] hotelSpecializations = {"Generale", "Hotel", "Residence"};
 	private String[] attractionSpecializations = {"Generale", "Museo", "Parco"};
 	private JPanel welcomePanel;
-	private JScrollPane scrollBar;
+	private JPanel reviewCardLayout;
+	private JPanel createReviewPanel;
+	private JScrollPane insertionListScrollBar;
+	private JScrollPane reviewListScrollBar;
 	private JLabel lblWelcomeTitle;
 	private JLabel lblWelcomeTo;
 	private JLabel lblWelcomeLogo;
@@ -117,7 +120,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblInfoFullAddress;
 	private JLabel lblInfoPhoto;
 	
-	private ListaInserzioni[] list;
+	//private RigaInserzione[] list;
 	
 	public MainFrame(Controller c) {
 		
@@ -295,21 +298,40 @@ public class MainFrame extends JFrame {
 		insertionListPanel.setBackground(Color.WHITE);
 		insertionListPanel.setLayout(null);
 		
-		scrollBar = new JScrollPane(insertionListPanel);
-		scrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		mainPanel.add(scrollBar, "insertionListPanel_card");
+		insertionListScrollBar = new JScrollPane(insertionListPanel);
+		insertionListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		mainPanel.add(insertionListScrollBar, "insertionListPanel_card");
+		
+		//////////////////////////////////////////////////////////////////////
 		
 		reviewPanel = new JPanel();
 		mainPanel.add(reviewPanel, "reviewPanel_card");
 		reviewPanel.setLayout(null);
 		
-		reviewListPanel = new JPanel();
-		reviewListPanel.setBounds(0, 166, 851, 330);
-		reviewPanel.add(reviewListPanel);
+		reviewCardLayout = new JPanel();
+		reviewCardLayout.setLayout(new CardLayout());
+		reviewCardLayout.setBounds(0, 166, 851, 330);
+		reviewPanel.add(reviewCardLayout);
 		
-		JLabel lblReviewsTitle = new JLabel("COOMING SOON!");
-		lblReviewsTitle.setFont(new Font("Ubuntu", Font.BOLD, 45));
-		reviewListPanel.add(lblReviewsTitle);
+		reviewListPanel = new JPanel();
+		reviewListPanel.setBackground(new Color(255, 255, 255));
+		reviewListPanel.setLayout(null);
+		
+		createReviewPanel = new JPanel();
+		createReviewPanel.setBackground(new Color(255, 255, 255));
+		createReviewPanel.setLayout(null);
+		
+		reviewListScrollBar = new JScrollPane(reviewListPanel);
+		reviewListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		reviewCardLayout.add(reviewListScrollBar, "reviewListPanel_card");
+		reviewCardLayout.add(createReviewPanel, "createReviewPanel_card");
+		
+		JLabel lblTest = new JLabel("QUESTO E' IL PANEL PER CREARE UNA RECENSIONE");
+		lblTest.setBounds(0, 0, 413, 14);
+		createReviewPanel.add(lblTest);
+		
+		/////////////////////////////////////////////////////////////////////////
 		
 		createInsertionPanel = new JPanel();
 		createInsertionPanel.setBackground(Color.WHITE);
@@ -733,8 +755,8 @@ public class MainFrame extends JFrame {
 		insertionListPanel.removeAll();
 		
 		int numberOfInsertions = ctrl.getNumberOfInsertionsByType(placeType);
-		//int numberOfInsertions = 9;
 		
+		RigaInserzione[] list;
 		list = ctrl.buildList(numberOfInsertions, placeType);
 		
 		insertionListPanel.setLayout(new GridBagLayout());
@@ -743,7 +765,6 @@ public class MainFrame extends JFrame {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(20, 0, 0, 0);
-        //gbc.gridwidth = GridBagConstraints.REMAINDER;
 		
 		for(int i = 0; i < numberOfInsertions; i++) {
 			insertionListPanel.add(list[i], gbc);
@@ -752,6 +773,31 @@ public class MainFrame extends JFrame {
 		
 		insertionListPanel.revalidate();
 		insertionListPanel.repaint();
+	}
+	
+	public void buildReviewList(int code) {
+		
+		reviewListPanel.removeAll();
+		
+		int numberOfReviews = ctrl.getNumberOfReviewByCode(code);	
+		
+		RigaRecensione[] list;
+		list = ctrl.buildReviewList(numberOfReviews, code);
+		
+		reviewListPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.weightx = 1;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(10, 0, 0, 0);
+		
+		for(int i = 0; i < numberOfReviews; i++) {
+			reviewListPanel.add(list[i], gbc);
+			gbc.gridy += 1;
+		}
+		
+		reviewListPanel.revalidate();
+		reviewListPanel.repaint();
 	}
 	
 	public void showInsertionPage(String type) {
