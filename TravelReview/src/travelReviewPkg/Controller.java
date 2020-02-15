@@ -422,8 +422,10 @@ public class Controller {
 				throw new InvalidDateException();
 			else if(day == 31)
 					throw new InvalidDateException();
-				else
+				else if(month != 2) {
 					frameLogin.hideDateError();
+					return true;
+				}
 		}catch(InvalidDateException e) {
 			frameLogin.showDateError();
 		}
