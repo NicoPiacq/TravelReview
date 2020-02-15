@@ -11,6 +11,7 @@ import keeptoo.KGradientPanel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,11 +21,14 @@ public class RigaInserzione extends JPanel {
 	private String type;
 	private Image image;
 	private int code;
+	private int dbCode;
 	private String poster;
 	private String placeTitle;
 	private String city;
 	private String address;
 	private String placeCategory;
+	
+	private Controller ctrl;
 	
 	private JLabel lblPlaceTitle = new JLabel();
 	private JLabel lblPlaceType;
@@ -38,15 +42,9 @@ public class RigaInserzione extends JPanel {
 		
 		setLayout(null);
 		
-		KGradientPanel openInsertionBtn = new KGradientPanel();
-		openInsertionBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				c.setIndex(code);
-				c.showInsertionPage(type, code);
-				
-			}
-		});
+		ctrl = c;
+		
+		openInsertionBtn = new KGradientPanel();
 		openInsertionBtn.kStartColor = new Color(0, 153, 0);
 		openInsertionBtn.setkEndColor(new Color(102, 204, 0));
 		openInsertionBtn.setBounds(661, 30, 180, 33);
@@ -89,6 +87,23 @@ public class RigaInserzione extends JPanel {
 		lblWrittenBy.setBounds(661, 74, 180, 14);
 		this.add(lblWrittenBy);
 		
+		registerMouseListener(openInsertionBtn);
+	}
+	
+	public void registerMouseListener(KGradientPanel openInsertionBtn) {
+		openInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ctrl.setIndex(code);
+				ctrl.setReviewIndex(dbCode);
+				ctrl.showInsertionPage(type, code);
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				openInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
 	}
 
 	
@@ -139,5 +154,13 @@ public class RigaInserzione extends JPanel {
 	}
 	public void setPlaceCategory(String placeSpecialization) {
 		this.placeCategory = placeSpecialization;
+	}
+
+	public int getDbCode() {
+		return dbCode;
+	}
+
+	public void setDbCode(int dbCode) {
+		this.dbCode = dbCode;
 	}
 }

@@ -14,6 +14,7 @@ public class RigaRecensione extends JPanel {
 	private String poster;
 	private String title;
 	private String message;
+	private int code;
 	
 	private JLabel lblReviewTitle;
 	private JLabel lblReviewMessage;
@@ -76,5 +77,13 @@ public class RigaRecensione extends JPanel {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 }

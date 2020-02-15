@@ -1,8 +1,15 @@
 package travelReviewPkg;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,9 +28,10 @@ public class Controller {
 	
 	private RigaInserzione[] list;
 	private int index = 0;
+	private int reviewIndex = 0;
 	
 	private RigaRecensione[] reviewList;
-
+	
 	// ELEMENTI PER IL DATABASE
 	public Connection con;
 	public ResultSet rs;
@@ -75,7 +83,7 @@ public class Controller {
 	public int getNumberOfReviewByCode(int code) {
 		int number = 0;
 		
-		//number = recensioneDAO.countReviewByCode(con, ps, code);
+		number = recensioneDAO.countReviewsByCode(con, ps, code);
 		
 		return number;
 	}
@@ -102,8 +110,10 @@ public class Controller {
 		try {
 			while(rs.next()) {
 				reviewList[i].setTitle(rs.getString("titolo"));
-				reviewList[i].setMessage(rs.getString("messaggio"));
-				reviewList[i].setPoster(rs.getString("poster"));
+				reviewList[i].setMessage(rs.getString("testo"));
+				reviewList[i].setPoster(rs.getString("username"));
+				reviewList[i].setCode(i);
+				reviewList[i].setAllTexts();
 				i++;
 			}
 			
@@ -156,9 +166,9 @@ public class Controller {
 				list[i].setCity(rs.getString("citta"));
 				list[i].setPlaceCategory(rs.getString("categoria"));
 				list[i].setCode(i);
+				list[i].setDbCode(rs2.getInt("codice"));
 				list[i].setPoster(rs2.getString("poster"));
 				list[i].setType(rs2.getString("tipo"));
-				System.out.println("DAL DB HO ESTRATTO QUESTO: "+rs2.getString("tipo"));
 				list[i].setAllTexts();
 				i++;
 			}
@@ -198,29 +208,47 @@ public class Controller {
 			}
 		}
 		
-		setRecensione(index);
-		frameMain.buildReviewList(list[index].getCode());
+		frameMain.buildReviewList(list[index].getDbCode());
 		
+	}
+	
+	public void refreshReviewList() {
+		frameMain.buildReviewList(list[index].getDbCode());
+	}
+	
+	public boolean checkUserReview() {
+		
+		boolean result = recensioneDAO.checkUserReview(con, ps, getUtente().getUsername(), list[index].getDbCode());
+		
+		return result;
 	}
 	
 	public void addReview() {
 		
-		// MANCANO I COMPONENTI NEL MAINFRAME!!
-		
-		String reviewTitle = null;
-		String reviewMessage = null;
-		String poster = null;
+		String reviewTitle = frameMain.getTxtReviewTitle();
+		String reviewMessage = frameMain.getTxtReviewText();
+		String poster = getUtente().getUsername();
+		int insertionCode = list[index].getDbCode();
 		
 		try {
-			if(recensioneDAO.addReview(con, ps, reviewTitle, reviewMessage, poster)) {
-				// frameMain.setAddReviewMessage("Recensione creata con successo!", true);
+			if(recensioneDAO.addReview(con, ps, reviewTitle, reviewMessage, poster, insertionCode)) {
+				frameMain.setReviewMessage("Recensione creata con successo!", true);
+				frameMain.lockAddReview();
+				getUserNumberReviews();
+				frameMain.hideCreateReviewBtn();
 			}
 			else
 				throw new Exception();
 		}
 		catch(Exception ex) {
-			// frameMain.setAddReviewMessage("Errore nell'inserimento della recensione!", false);
+			frameMain.setReviewMessage("Errore nell'inserimento della recensione!", false);
 		}
+		
+	}
+	
+	public void getUserNumberReviews() {
+		
+		frameMain.setNumberOfReviews(recensioneDAO.countReviewsByUsername(con, ps, getUtente().getUsername()));
 		
 	}
 	
@@ -230,7 +258,6 @@ public class Controller {
 		String city = frameMain.getCity();
 		String address = frameMain.getAddress();
 		String placeType = frameMain.getPlaceType();
-		System.out.println(placeType);
 		String placeTypeSpecialization = frameMain.getPlaceSpecialization();
 		
 		try {
@@ -303,17 +330,18 @@ public class Controller {
 			utente = utenteDAO.login(con, ps, username, password);
 			
 			if(utente == null) {
-				throw new Exception();
+				throw new SQLException();
 			}
 			else {
 				frameLogin.setVisible(false);
 				
 				frameMain = new MainFrame(this);
-				
 				frameMain.setVisible(true);
+				
+				getUserNumberReviews();
 			}
 		}	
-		catch(Exception ex) {
+		catch(SQLException ex) {
 			frameLogin.setMessage("Credenziali errate!", false);
 			frameLogin.resetTxtPassword();
 			frameLogin.resetTxtUsername();
@@ -550,13 +578,6 @@ public class Controller {
 	
 	public void logout() {
 		
-		ristorante = null;
-		alloggio = null;
-		attrazione = null;
-		inserzione = null;
-		recensione = null;
-		utente = null;
-		
 		frameMain.setVisible(false);
 		frameMain = null;
 		
@@ -573,7 +594,34 @@ public class Controller {
 		chooserReturn = chooser.showOpenDialog(null);
 		
 		switch(chooserReturn) {
+			case 0: {
+				// PREMUTO TASTO APRI
+				
+				File imgFile = chooser.getSelectedFile();
+				try {
+					
+					FileInputStream fis = new FileInputStream(imgFile);
+					utenteDAO.uploadImgProfile(con, ps, (int) imgFile.length(), fis, getUtente().getUsername());
+					
+					getUtente().setProfileImage(utenteDAO.loadImgProfile(con, ps, getUtente().getUsername()));
+					
+					frameMain.updateImgProfile(getUtente().getProfileImage());
+					
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+				break;
+			}
+				
+			case 1: {
+				// PREMUTO TASTO ANNULLA
+				break;
+			}
+				
 			default: {
+				JOptionPane.showMessageDialog(null, "Errore sconosciuto durante il caricamento dell'immagine!");
 				break;
 			}
 		}
@@ -615,10 +663,10 @@ public class Controller {
 		inserzione.setTipo("Ristorante");
 	}
 	
-	private void setRecensione(int index) {
-		recensione.setTitolo(reviewList[index].getTitle());
-		recensione.setMessaggio(reviewList[index].getMessage());
-		recensione.setPoster(reviewList[index].getPoster());
+	private void setRecensione(int reviewIndex) {
+		recensione.setTitolo(reviewList[reviewIndex].getTitle());
+		recensione.setMessaggio(reviewList[reviewIndex].getMessage());
+		recensione.setPoster(reviewList[reviewIndex].getPoster());
 	}
 	
 	public Recensione getRecensione() {
@@ -647,6 +695,14 @@ public class Controller {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+	
+	public void setReviewIndex(int i) {
+		this.reviewIndex = i;
+	}
+	
+	public int getReviewIndex() {
+		return reviewIndex;
 	}
 	
 }

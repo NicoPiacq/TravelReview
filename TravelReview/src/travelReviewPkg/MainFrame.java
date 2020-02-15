@@ -19,6 +19,7 @@ import javax.swing.JSeparator;
 import keeptoo.KGradientPanel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.SwingConstants;
@@ -36,12 +37,14 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JSlider;
+import java.awt.Toolkit;
 
 public class MainFrame extends JFrame {
 	
@@ -73,6 +76,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblAddRewBtnTitle;
 	private JPanel mainPanel;
 	private CardLayout cl_cardLayoutPanel;
+	private CardLayout cl_cardLayoutReviewPanel;
 	private JPanel insertionListPanel;
 	private JPanel reviewPanel;
 	private JPanel reviewListPanel;
@@ -120,10 +124,24 @@ public class MainFrame extends JFrame {
 	private JLabel lblInfoFullAddress;
 	private JLabel lblInfoPhoto;
 	private JLabel lblLogOut;
-	
-	//private RigaInserzione[] list;
+	private JLabel lblNoReviewsFound;
+	private JLabel lblNoReviewsFoundDescription;
+	private JLabel lblWriteReviewTitle;
+	private JTextField txtReviewTitle;
+	private JTextField txtReviewText;
+	private JLabel lblWriteReviewBtn;
+	private KGradientPanel writeReviewBtn;
+	private JLabel lblReviewMessage;
+	private JLabel lblCancelReviewBtn;
+	private KGradientPanel cancelReviewBtn;
+	private KGradientPanel createReviewBtn;
+	private JLabel lblCreateReviewBtn;
+	private JLabel lblConfirmReviewBtn;
+	private KGradientPanel confirmReviewBtn;
+	private JLabel lblAlreadyWritten;
 	
 	public MainFrame(Controller c) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/icon-64.png")));
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -301,18 +319,18 @@ public class MainFrame extends JFrame {
 		
 		insertionListScrollBar = new JScrollPane(insertionListPanel);
 		insertionListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		insertionListScrollBar.setBorder(BorderFactory.createEmptyBorder());
 		mainPanel.add(insertionListScrollBar, "insertionListPanel_card");
-		
-		//////////////////////////////////////////////////////////////////////
 		
 		reviewPanel = new JPanel();
 		mainPanel.add(reviewPanel, "reviewPanel_card");
 		reviewPanel.setLayout(null);
 		
 		reviewCardLayout = new JPanel();
-		reviewCardLayout.setLayout(new CardLayout());
-		reviewCardLayout.setBounds(0, 166, 851, 330);
+		reviewCardLayout.setLayout(new CardLayout(0, 0));
+		reviewCardLayout.setBounds(0, 155, 851, 341);
 		reviewPanel.add(reviewCardLayout);
+		cl_cardLayoutReviewPanel = (CardLayout) reviewCardLayout.getLayout();
 		
 		reviewListPanel = new JPanel();
 		reviewListPanel.setBackground(new Color(255, 255, 255));
@@ -323,16 +341,74 @@ public class MainFrame extends JFrame {
 		createReviewPanel.setLayout(null);
 		
 		reviewListScrollBar = new JScrollPane(reviewListPanel);
+		reviewListScrollBar.setBorder(BorderFactory.createEmptyBorder());
+		
+		lblNoReviewsFoundDescription = new JLabel("<html><center>Questa zona \u00E8 vuota!</center>Se conosci questo posto, scrivi ora una recensione e fai a conoscere a tutti gli utenti cos'ha da offrire questo posto! ;-)</html>");
+		lblNoReviewsFoundDescription.setBounds(0, 240, 851, 116);
+		lblNoReviewsFoundDescription.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNoReviewsFoundDescription.setFont(new Font("Ubuntu", Font.PLAIN, 13));
+		reviewPanel.add(lblNoReviewsFoundDescription);
+		
+		lblNoReviewsFound = new JLabel("Questa inserzione non ha recensioni!");
+		lblNoReviewsFound.setBounds(0, 200, 851, 72);
+		lblNoReviewsFound.setFont(new Font("Ubuntu", Font.BOLD, 20));
+		lblNoReviewsFound.setHorizontalAlignment(SwingConstants.CENTER);
 		reviewListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		reviewPanel.add(lblNoReviewsFound);
 		
 		reviewCardLayout.add(reviewListScrollBar, "reviewListPanel_card");
 		reviewCardLayout.add(createReviewPanel, "createReviewPanel_card");
 		
-		JLabel lblTest = new JLabel("QUESTO E' IL PANEL PER CREARE UNA RECENSIONE");
-		lblTest.setBounds(0, 0, 413, 14);
-		createReviewPanel.add(lblTest);
+		lblWriteReviewTitle = new JLabel("Titolo della recensione");
+		lblWriteReviewTitle.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblWriteReviewTitle.setBounds(10, 40, 256, 29);
+		createReviewPanel.add(lblWriteReviewTitle);
 		
-		/////////////////////////////////////////////////////////////////////////
+		txtReviewTitle = new JTextField();
+		txtReviewTitle.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		txtReviewTitle.setBounds(10, 71, 336, 29);
+		createReviewPanel.add(txtReviewTitle);
+		txtReviewTitle.setColumns(10);
+		
+		JLabel lblWriteReviewText = new JLabel("Testo della recensione");
+		lblWriteReviewText.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblWriteReviewText.setBounds(10, 133, 336, 29);
+		createReviewPanel.add(lblWriteReviewText);
+		
+		txtReviewText = new JTextField();
+		txtReviewText.setBounds(10, 164, 656, 90);
+		createReviewPanel.add(txtReviewText);
+		txtReviewText.setColumns(10);
+		
+		createReviewBtn = new KGradientPanel();
+		createReviewBtn.kGradientFocus = 250;
+		createReviewBtn.kStartColor = new Color(50, 205, 50);
+		createReviewBtn.kEndColor = new Color(34, 139, 34);
+		createReviewBtn.setBounds(190, 278, 186, 36);
+		createReviewPanel.add(createReviewBtn);
+		createReviewBtn.setLayout(null);
+		
+		lblCreateReviewBtn = new JLabel("Pubblica");
+		lblCreateReviewBtn.setForeground(new Color(255, 255, 255));
+		lblCreateReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblCreateReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCreateReviewBtn.setBounds(0, 0, 186, 36);
+		createReviewBtn.add(lblCreateReviewBtn);
+		
+		cancelReviewBtn = new KGradientPanel();
+		cancelReviewBtn.kGradientFocus = 250;
+		cancelReviewBtn.kStartColor = new Color(255, 0, 0);
+		cancelReviewBtn.kEndColor = new Color(255, 69, 0);
+		cancelReviewBtn.setBounds(442, 278, 186, 36);
+		createReviewPanel.add(cancelReviewBtn);
+		cancelReviewBtn.setLayout(null);
+		
+		lblCancelReviewBtn = new JLabel("Annulla");
+		lblCancelReviewBtn.setForeground(new Color(255, 255, 255));
+		lblCancelReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblCancelReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCancelReviewBtn.setBounds(0, 0, 186, 36);
+		cancelReviewBtn.add(lblCancelReviewBtn);
 		
 		createInsertionPanel = new JPanel();
 		createInsertionPanel.setBackground(Color.WHITE);
@@ -395,11 +471,54 @@ public class MainFrame extends JFrame {
 		lblLogOut.setBounds(64, 475, 88, 25);
 		userPanel.add(lblLogOut);
 		
+		lblReviewMessage = new JLabel("Errore nell'inserimento della recensione!");
+		lblReviewMessage.setForeground(Color.RED);
+		lblReviewMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReviewMessage.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblReviewMessage.setBounds(0, 11, 851, 18);
+		createReviewPanel.add(lblReviewMessage);
+		
+		confirmReviewBtn = new KGradientPanel();
+		confirmReviewBtn.kGradientFocus = 250;
+		confirmReviewBtn.kStartColor = new Color(154, 205, 50);
+		confirmReviewBtn.kEndColor = new Color(60, 179, 113);
+		confirmReviewBtn.setBounds(325, 278, 170, 36);
+		createReviewPanel.add(confirmReviewBtn);
+		confirmReviewBtn.setLayout(null);
+		
+		lblConfirmReviewBtn = new JLabel("OK");
+		lblConfirmReviewBtn.setForeground(new Color(255, 255, 255));
+		lblConfirmReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblConfirmReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirmReviewBtn.setBounds(0, 0, 170, 36);
+		confirmReviewBtn.add(lblConfirmReviewBtn);
+		confirmReviewBtn.setVisible(false);
+		lblReviewMessage.setVisible(false);
+		
 		displayAddInsertion();
 		
 		displayInsertion();
 		
-		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType, lblLogOut, lblLogo, lblLogoTitle);
+		loadImgProfile(ctrl.getUtente().getProfileImage());
+		
+		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType, lblLogOut, lblLogo, lblLogoTitle, lblWriteReviewBtn, createReviewBtn, cancelReviewBtn, confirmReviewBtn);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 150, 820, 2);
+		insertionInfo.add(separator);
+		
+		JLabel lblVisitedThisPlace = new JLabel("Lo hai visitato? Raccontacelo!");
+		lblVisitedThisPlace.setFont(new Font("Ubuntu", Font.BOLD, 12));
+		lblVisitedThisPlace.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVisitedThisPlace.setBounds(332, 85, 187, 25);
+		insertionInfo.add(lblVisitedThisPlace);
+		
+		lblAlreadyWritten = new JLabel("Hai gi\u00E0 scritto una recensione!");
+		lblAlreadyWritten.setForeground(Color.RED);
+		lblAlreadyWritten.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblAlreadyWritten.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAlreadyWritten.setBounds(300, 112, 245, 20);
+		insertionInfo.add(lblAlreadyWritten);
 
 	}
 	
@@ -407,7 +526,7 @@ public class MainFrame extends JFrame {
 		
 		lblInfoPlaceTitle = new JLabel();
 		lblInfoPlaceTitle.setFont(new Font("Ubuntu", Font.BOLD, 21));
-		lblInfoPlaceTitle.setBounds(10, 28, 312, 25);
+		lblInfoPlaceTitle.setBounds(10, 20, 312, 25);
 		insertionInfo.add(lblInfoPlaceTitle);
 		
 		lblInfoFullAddress = new JLabel();
@@ -424,8 +543,23 @@ public class MainFrame extends JFrame {
 		
 		lblInfoPhoto = new JLabel("");
 		lblInfoPhoto.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/no_pic_default.png")));
-		lblInfoPhoto.setBounds(520, 12, 180, 130);
+		lblInfoPhoto.setBounds(600, 12, 180, 130);
 		insertionInfo.add(lblInfoPhoto);
+		
+		writeReviewBtn = new KGradientPanel();
+		writeReviewBtn.kGradientFocus = 400;
+		writeReviewBtn.kStartColor = new Color(102, 204, 51);
+		writeReviewBtn.kEndColor = new Color(97, 132, 232);
+		writeReviewBtn.setBounds(332, 110, 187, 28);
+		insertionInfo.add(writeReviewBtn);
+		writeReviewBtn.setLayout(null);
+		
+		lblWriteReviewBtn = new JLabel("Pubblica una recensione");
+		lblWriteReviewBtn.setForeground(new Color(255, 255, 255));
+		lblWriteReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 13));
+		lblWriteReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWriteReviewBtn.setBounds(0, 0, 187, 28);
+		writeReviewBtn.add(lblWriteReviewBtn);
 		
 	}
 	
@@ -541,7 +675,61 @@ public class MainFrame extends JFrame {
 	}
 	
 	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType, JLabel lblLogOut, JLabel lblLogo, JLabel lblLogoTitle) {
+	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType, JLabel lblLogOut, JLabel lblLogo, JLabel lblLogoTitle, JLabel lblWriteReviewBtn, KGradientPanel createReviewBtn, KGradientPanel cancelReviewBtn, KGradientPanel confirmReviewBtn) {
+		
+		confirmReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
+				ctrl.refreshReviewList();
+				resetAddReview();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				confirmReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		createReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ctrl.addReview();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				createReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		cancelReviewBtn.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				cancelReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
+				resetAddReview();
+			}
+			
+		});
+		
+		lblWriteReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				reviewCardLayout.setVisible(true);
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "createReviewPanel_card");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblWriteReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
 		
 		lblLogo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -630,6 +818,7 @@ public class MainFrame extends JFrame {
 				
 				buildInsertionList("ristorante");
 				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
 			}
 			
 			@Override
@@ -690,6 +879,7 @@ public class MainFrame extends JFrame {
 				
 				buildInsertionList("attrazione");
 				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
 			}
 			
 			@Override
@@ -725,6 +915,7 @@ public class MainFrame extends JFrame {
 				
 				buildInsertionList("alloggio");
 				cl_cardLayoutPanel.show(mainPanel, "insertionListPanel_card");
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
 			}
 			
 			@Override
@@ -824,6 +1015,13 @@ public class MainFrame extends JFrame {
 		
 		int numberOfReviews = ctrl.getNumberOfReviewByCode(code);	
 		
+		if(numberOfReviews > 0)
+			hideNoInsertionsMessages();
+		else {
+			showNoInsertionsMessages();
+			return;
+		}
+		
 		RigaRecensione[] list;
 		list = ctrl.buildReviewList(numberOfReviews, code);
 		
@@ -866,6 +1064,11 @@ public class MainFrame extends JFrame {
 			}
 		}
 		
+		if(ctrl.checkUserReview()) {
+			hideCreateReviewBtn();
+		}
+		else
+			showCreateReviewBtn();
 		
 		cl_cardLayoutPanel.show(mainPanel, "reviewPanel_card");
 	}
@@ -894,6 +1097,23 @@ public class MainFrame extends JFrame {
 		return txtAddress.getText();
 	}
 	
+	
+	public String getTxtReviewTitle() {
+		return txtReviewTitle.getText();
+	}
+
+	public void setTxtReviewTitle(String text) {
+		txtReviewTitle.setText(text);
+	}
+
+	public String getTxtReviewText() {
+		return txtReviewText.getText();
+	}
+
+	public void setTxtReviewText(String text) {
+		txtReviewText.setText(text);
+	}
+
 	public String getPlaceType() {
 		return (String) comboPlaceType.getSelectedItem();
 	}
@@ -943,5 +1163,75 @@ public class MainFrame extends JFrame {
 		else {
 			lblAddInsertionMessage.setForeground(Color.RED);
 		}
+	}
+	
+	public void showNoInsertionsMessages() {
+		reviewCardLayout.setVisible(false);
+	}
+	
+	public void hideNoInsertionsMessages() {
+		reviewCardLayout.setVisible(true);
+	}
+	
+	public void setReviewMessage(String text, boolean type) {
+		lblReviewMessage.setText(text);
+		
+		if(type) {
+			lblReviewMessage.setForeground(Color.GREEN);
+		}
+		else
+			lblReviewMessage.setForeground(Color.RED);
+		
+		lblReviewMessage.setVisible(true);
+	}
+	
+	public void hideReviewMessage() {
+		lblReviewMessage.setVisible(false);
+	}
+	
+	private void resetAddReview() {
+		txtReviewText.setText("");
+		txtReviewTitle.setText("");
+		lblReviewMessage.setVisible(false);
+		txtReviewText.setEditable(true);
+		txtReviewTitle.setEditable(true);
+		confirmReviewBtn.setVisible(false);
+		createReviewBtn.setVisible(true);
+		cancelReviewBtn.setVisible(true);
+	}
+	
+	public void lockAddReview() {
+		txtReviewText.setEditable(false);
+		txtReviewTitle.setEditable(false);
+		confirmReviewBtn.setVisible(true);
+		createReviewBtn.setVisible(false);
+		cancelReviewBtn.setVisible(false);
+	}
+	
+	public void showCreateReviewBtn() {
+		writeReviewBtn.setVisible(true);
+		lblAlreadyWritten.setVisible(false);
+	}
+	
+	public void hideCreateReviewBtn() {
+		writeReviewBtn.setVisible(false);
+		lblAlreadyWritten.setVisible(true);
+	}
+	
+	public void setNumberOfReviews(int number) {
+		lblNumReviews.setText(number+"");
+	}
+	
+	public void loadImgProfile(BufferedImage img) {
+		if(img == null) {
+			lblImgProfile.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/profile_nopic_ph.png")));
+		}
+		else {
+			lblImgProfile.setIcon(new ImageIcon(img));
+		}
+	}
+	
+	public void updateImgProfile(BufferedImage img) {
+		lblImgProfile.setIcon(new ImageIcon(img));
 	}
 }

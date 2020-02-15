@@ -1,6 +1,7 @@
 package travelReviewPkg;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Date;
 
 public class Utente {
@@ -10,28 +11,22 @@ public class Utente {
 	private String username;
 	private String password;
 	private Date birthdate;
-	private Image profileImage;
-	
-	
-	public Image getProfileImage() {
-		return profileImage;
-	}
+	private BufferedImage profileImage;
 
-	public void setProfileImage(Image profileImage) {
-		this.profileImage = profileImage;
-	}
-
-	public Utente(String nome, String cognome, String username) {
+	public Utente(String nome, String cognome, String username, BufferedImage img) {
 		
 		this.name = nome;
 		this.surname = cognome;
 		this.username = username;
+		
+		setProfileImage(img);
 		
 	}
 	
 	public String getNome() {
 		return name;
 	}
+	
 	public void setNome(String nome) {
 		this.name = nome;
 	}
@@ -39,6 +34,7 @@ public class Utente {
 	public String getCognome() {
 		return surname;
 	}
+	
 	public void setCognome(String cognome) {
 		this.surname = cognome;
 	}
@@ -46,6 +42,7 @@ public class Utente {
 	public String getUsername() {
 		return username;
 	}
+	
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -53,6 +50,7 @@ public class Utente {
 	public Date getDataDiNascita() {
 		return birthdate;
 	}
+	
 	public void setDataDiNascita(Date dataDiNascita) {
 		this.birthdate = dataDiNascita;
 	}
@@ -60,8 +58,17 @@ public class Utente {
 	public String getPassword() {
 		return password;
 	}
+	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public BufferedImage getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(BufferedImage profileImage) {
+		this.profileImage = profileImage;
 	}
 	
 }

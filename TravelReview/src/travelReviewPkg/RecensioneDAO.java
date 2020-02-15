@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class RecensioneDAO {
 
 	public RecensioneDAO() {
@@ -15,7 +17,7 @@ public class RecensioneDAO {
 		
 		ResultSet rs = null;
 		
-		String query = "SELECT * FROM public.\"recensione\" WHERE codice = '"+code+"';";
+		String query = "SELECT * FROM public.\"recensione\" WHERE codInserzione = '"+code+"';";
 		
 		try {
 			ps = con.prepareStatement(query);
@@ -28,11 +30,62 @@ public class RecensioneDAO {
 		return rs;
 	}
 	
-	public boolean addReview(Connection con, PreparedStatement ps, String reviewTitle, String reviewMessage, String poster) {
+	public int countReviewsByCode(Connection con, PreparedStatement ps, int code) {
+		
+		int numberOfInsertions = 0;
+		
+		ResultSet rs;
 		
 		try {
-			// QUERY INCOMPLETA
-			String query = "INSERT INTO public.\"recensione\" VALUES ('"+reviewTitle+"');";
+			String query = "SELECT COUNT (codInserzione) FROM \"recensione\" WHERE codInserzione = '"+code+"';";
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				numberOfInsertions = rs.getInt("count");
+			}
+			
+			rs.close();
+			ps.close();
+			
+		} 
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Errore sconosciuto");
+		}
+		
+		return numberOfInsertions;
+	}
+	
+	public int countReviewsByUsername(Connection con, PreparedStatement ps, String username) {
+		
+		int numberOfInsertions = 0;
+		
+		ResultSet rs;
+		
+		try {
+			String query = "SELECT COUNT (*) FROM \"recensione\" WHERE username = '"+username+"';";
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				numberOfInsertions = rs.getInt("count");
+			}
+			
+			rs.close();
+			ps.close();
+			
+		} 
+		catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Errore sconosciuto");
+		}
+		
+		return numberOfInsertions;
+	}
+	
+	public boolean addReview(Connection con, PreparedStatement ps, String reviewTitle, String reviewMessage, String poster, int insertionCode) {
+		
+		try {
+			String query = "INSERT INTO public.\"recensione\" VALUES ('"+reviewTitle+"', '"+reviewMessage+"', '"+poster+"', '"+insertionCode+"');";
 			
 			ps = con.prepareStatement(query);
 			ps.executeUpdate();
@@ -52,12 +105,12 @@ public class RecensioneDAO {
 		ResultSet rs = null;
 		
 		try {
-			String query = "SELECT * FROM public.\"recensione\" WHERE poster = '"+poster+"' AND codice = '"+code+"'";
+			String query = "SELECT * FROM public.\"recensione\" WHERE username = '"+poster+"' AND codInserzione = '"+code+"'";
 			
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			
-			if(rs.first())
+			if(rs.next())
 				return true;
 		}		
 		catch(SQLException e) {

@@ -34,6 +34,7 @@ import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
 
 public class LoginFrame extends JFrame {
 	
@@ -89,6 +90,7 @@ public class LoginFrame extends JFrame {
 	private JLabel lblCloseMessageIcon;
  
 	public LoginFrame(Controller c) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginFrame.class.getResource("/resources/icon-64.png")));
 		setTitle("TravelReview - Read before you go");
 		
 		ctrl = c;
@@ -162,9 +164,8 @@ public class LoginFrame extends JFrame {
 		
 		registerKeyListener(ctrl, txtUsername, txtPassword);
 		
-		if(!c.isConnected()) {
-			messagePanel.setVisible(true);
-			lblCloseMessageIcon.setVisible(false);
+		if(c.isConnected()) {
+			messagePanel.setVisible(false);
 		}
 	}
 	
