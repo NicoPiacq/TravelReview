@@ -1,6 +1,7 @@
 package travelReviewPkg;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public class Inserzione {
 	
@@ -13,12 +14,12 @@ public class Inserzione {
 	
 	private TipoInserzione tipo;
 	private int codice;
-	private Image image;
+	private BufferedImage image;
 	private String poster;
 	
 	
-	public TipoInserzione getTipo() {
-		return tipo;
+	public String getTipo() {
+		return tipo.toString();
 	}
 	public void setTipo(String type) {
 		switch(type) {
@@ -47,6 +48,13 @@ public class Inserzione {
 	}
 	public void setPoster(String poster) {
 		this.poster = poster;
+	}
+	
+	public BufferedImage getImage() {
+		return image;
+	}
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 
 	

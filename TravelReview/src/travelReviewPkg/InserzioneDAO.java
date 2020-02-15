@@ -1,10 +1,15 @@
 package travelReviewPkg;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 public class InserzioneDAO {
@@ -15,7 +20,26 @@ public class InserzioneDAO {
 		
 	}
 	
-	public boolean addInsertion(Connection con, PreparedStatement ps, String placeType, String poster) {
+	public boolean addInsertion(Connection con, PreparedStatement ps, String placeType, String poster, int fileLength, FileInputStream fis) {
+		
+		try {
+			String query = "INSERT INTO public.\"inserzione\" VALUES ('"+placeType+"', (?), DEFAULT, '"+poster+"');";
+			
+			ps = con.prepareStatement(query);
+			ps.setBinaryStream(1, fis, fileLength);
+			ps.executeUpdate();
+			
+			ps.close();
+			
+			return true;
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean addInsertionNoImg(Connection con, PreparedStatement ps, String placeType, String poster) {
 		
 		try {
 			String query = "INSERT INTO public.\"inserzione\" VALUES ('"+placeType+"', null, DEFAULT, '"+poster+"');";
@@ -99,6 +123,59 @@ public class InserzioneDAO {
 		}
 		
 		return code;
+		
+	}
+	
+	public boolean uploadImgInsertion(Connection con, PreparedStatement ps, int fileLength, FileInputStream fis, int code) {
+		
+		try {
+			
+			String query = "UPDATE public.\"inserzione\" SET immagine = (?) WHERE codice = '"+code+"'";
+			
+			ps = con.prepareStatement(query);
+			
+			ps.setBinaryStream(1, fis, fileLength);
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			
+		}
+		catch (SQLException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	public BufferedImage loadImgInsertion(Connection con, PreparedStatement ps, int code) {
+		
+		BufferedImage bufferedImgInsertion = null;
+		
+		String query = "SELECT immagine FROM public.\"inserzione\" WHERE codice = '"+code+"'";
+		
+		ResultSet rs;
+		
+		try {
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				InputStream fileInput = rs.getBinaryStream("immagine");
+				
+				if(fileInput != null)
+					bufferedImgInsertion = ImageIO.read(fileInput);
+				else
+					bufferedImgInsertion = null;
+			}
+			
+		} catch (SQLException | IOException e) {
+			return bufferedImgInsertion = null;
+		}
+		
+		return bufferedImgInsertion;
 		
 	}
 	

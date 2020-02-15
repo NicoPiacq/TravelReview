@@ -1,20 +1,15 @@
 package travelReviewPkg;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Controller {
 
@@ -22,6 +17,7 @@ public class Controller {
 	private MainFrame frameMain;
 	
 	private JFileChooser chooser = new JFileChooser();
+	private FileNameExtensionFilter filter;
 	private int chooserReturn;
 	
 	private boolean connected = true;
@@ -31,6 +27,9 @@ public class Controller {
 	private int reviewIndex = 0;
 	
 	private RigaRecensione[] reviewList;
+	
+	private File imgInsertionFile;
+	private BufferedImage insertionBimg;
 	
 	// ELEMENTI PER IL DATABASE
 	public Connection con;
@@ -59,13 +58,14 @@ public class Controller {
 			Class.forName("org.postgresql.Driver");
 		}
 		catch(ClassNotFoundException ex) {
+			frameLogin.setMessage("Driver di connessione non trovato!", false);
 			ex.printStackTrace();
 		}
 		
 		// CREAZIONE CONNESSIONE AL DATABASE
 		
 		try {
-			con = DriverManager.getConnection("jdbc:postgresql://localhost/travelreview", "postgres", "postgres");
+			con = DriverManager.getConnection("jdbc:postgresql://127.0.0.1/travelreview", "postgres", "postgres");
 			connected = true;
 		}
 		catch(SQLException ex) {
@@ -193,16 +193,22 @@ public class Controller {
 		switch(type) {
 			case "Ristorante": {
 				setRistorante(index);
+				setInserzione(index);
+				frameMain.setlblInsertionImage("Ristorante");
 				frameMain.showInsertionPage(type);
 				break;
 			}
 			case "Alloggio": {
 				setAlloggio(index);
+				setInserzione(index);
+				frameMain.setlblInsertionImage("Alloggio");
 				frameMain.showInsertionPage(type);
 				break;
 			}
 			case "Attrazione": {
 				setAttrazione(index);
+				setInserzione(index);
+				frameMain.setlblInsertionImage("Attrazione");
 				frameMain.showInsertionPage(type);
 				break;
 			}
@@ -228,7 +234,7 @@ public class Controller {
 		String reviewTitle = frameMain.getTxtReviewTitle();
 		String reviewMessage = frameMain.getTxtReviewText();
 		String poster = getUtente().getUsername();
-		int insertionCode = list[index].getDbCode();
+		int insertionCode = list[index].getDbCode();		
 		
 		try {
 			if(recensioneDAO.addReview(con, ps, reviewTitle, reviewMessage, poster, insertionCode)) {
@@ -261,7 +267,29 @@ public class Controller {
 		String placeTypeSpecialization = frameMain.getPlaceSpecialization();
 		
 		try {
-			if(inserzioneDAO.addInsertion(con, ps, placeType, getUtente().getUsername())) {
+			if(address.length() == 0 || address.contains("  "))
+				throw new EmptyFieldException();
+			else
+				frameMain.hideAddressError();
+		} 
+		catch(EmptyFieldException e) {
+			frameMain.showAddressError();
+		}
+		
+		if(imgInsertionFile == null)
+			imgInsertionFile = new File("src/resources/no_pic_default.png");
+		
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(imgInsertionFile);
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+		try {
+			
+			if(inserzioneDAO.addInsertion(con, ps, placeType, getUtente().getUsername(), (int) imgInsertionFile.length(), fis)) {
 				
 				switch(placeType) {
 					case "Ristorante": {
@@ -310,6 +338,8 @@ public class Controller {
 					}
 				}
 				
+				
+				imgInsertionFile = null;
 				frameMain.showAddInsertionMessage();
 			}
 			else {
@@ -317,7 +347,9 @@ public class Controller {
 			}
 		}
 		catch(Exception ex) {
+			ex.printStackTrace();
 			frameMain.setAddInsertionMessage("Errore nell'inserimento dell'inserzione!", false);
+			frameMain.showAddInsertionMessage();
 		}
 	}
 	
@@ -476,7 +508,7 @@ public class Controller {
 		boolean checkFields = true;
 		
 		try {
-			if(placeName.length() == 0 || placeName.contains("  "))
+			if(placeName.length() == 0 || placeName.contains("  ") || placeName.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameMain.hidePlaceTitleError();
@@ -488,7 +520,7 @@ public class Controller {
 		}
 		
 		try {
-			if(city.length() == 0 || city.contains("  "))
+			if(city.length() == 0 || city.contains("  ") || city.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameMain.hideCityError();
@@ -500,7 +532,7 @@ public class Controller {
 		}
 		
 		try {
-			if(address.length() == 0 || address.contains("  "))
+			if(address.length() == 0 || address.contains("  ") || address.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameMain.hideAddressError();
@@ -513,6 +545,34 @@ public class Controller {
 		
 		return checkFields;
 	}
+	
+	public boolean checkAddReview(String reviewTitle, String reviewText) {
+		boolean checkFields = true;
+		
+		try {
+			if(reviewTitle.contains("  ") || reviewTitle.length() == 0 || reviewTitle.charAt(0) == ' ')
+				throw new EmptyFieldException();
+			else
+				frameMain.hideReviewTitleError();
+		} catch(EmptyFieldException e) {
+			frameMain.showReviewTitleError();
+			frameMain.setReviewMessage("Verifica i campi in rosso!", false);
+			checkFields = false;
+		}
+		
+		try {
+			if(reviewText.contains("  ") || reviewText.length() == 0 || reviewText.charAt(0) == ' ')
+				throw new EmptyFieldException();
+			else
+				frameMain.hideReviewTextError();
+		} catch(EmptyFieldException e) {
+			frameMain.showReviewTextError();
+			frameMain.setReviewMessage("Verifica i campi in rosso!", false);
+			checkFields = false;
+		}
+		
+		return checkFields;
+	}
 
 	public boolean checkRegistration(String username, String password, String firstName, String lastName, boolean termsAccepted) {
 		
@@ -520,7 +580,7 @@ public class Controller {
 		boolean checkDate;
 		
 		try {
-			if(username.length() == 0 || username.contains(" "))
+			if(username.length() == 0 || username.contains(" ") || username.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideUsernameError();
@@ -530,7 +590,7 @@ public class Controller {
 		}
 		
 		try {
-			if(password.length() == 0 || password.contains(" "))
+			if(password.length() == 0 || password.contains(" ") || password.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameLogin.hidePasswordError();
@@ -540,7 +600,7 @@ public class Controller {
 		}
 		
 		try {
-			if(firstName.length() == 0 || firstName.contains("  "))
+			if(firstName.length() == 0 || firstName.contains("  ") || firstName.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideFirstNameError();
@@ -550,7 +610,7 @@ public class Controller {
 		}
 		
 		try {
-			if(lastName.length() == 0 || lastName.contains("  "))
+			if(lastName.length() == 0 || lastName.contains("  ") || lastName.charAt(0) == ' ')
 				throw new EmptyFieldException();
 			else
 				frameLogin.hideSurnameError();
@@ -582,6 +642,7 @@ public class Controller {
 		
 		frameMain.setVisible(false);
 		frameMain = null;
+		utente = null;
 		
 		frameLogin.setMessage("Sei uscito dal programma!", true);
 		frameLogin.resetTxtPassword();
@@ -589,10 +650,19 @@ public class Controller {
 		frameLogin.hideUsernameLoginError();
 		frameLogin.hidePasswordLoginError();
 		frameLogin.setVisible(true);
+		
 	}
 	
 	public void uploadImgProfile() {
+		
 		chooser = new JFileChooser();
+		chooser.setDialogTitle("Carica un'immagine nel tuo profilo!");
+		chooser.setApproveButtonText("Carica");
+		chooser.setAcceptAllFileFilterUsed(false);
+		
+		filter = new FileNameExtensionFilter("Immagini", ImageIO.getReaderFileSuffixes());
+		chooser.setFileFilter(filter);
+		
 		chooserReturn = chooser.showOpenDialog(null);
 		
 		switch(chooserReturn) {
@@ -600,6 +670,18 @@ public class Controller {
 				// PREMUTO TASTO APRI
 				
 				File imgFile = chooser.getSelectedFile();
+				
+				try {
+					BufferedImage checkerDimension = ImageIO.read(imgFile);
+					
+					if(checkerDimension.getWidth() > 160 && checkerDimension.getHeight() > 160)
+						throw new IOException();
+					
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Hai caricato un'immagine troppo grande! La dimensione massima è 160x160");
+					break;
+				}
+				
 				try {
 					
 					FileInputStream fis = new FileInputStream(imgFile);
@@ -631,7 +713,47 @@ public class Controller {
 	
 	public void uploadImgInsertion() {
 		chooser = new JFileChooser();
+		chooser.setDialogTitle("Carica un'immagine nell'inserzione!");
+		chooser.setApproveButtonText("Carica");
+		chooser.setAcceptAllFileFilterUsed(false);
+		
+		filter = new FileNameExtensionFilter("Immagini", ImageIO.getReaderFileSuffixes());
+		chooser.setFileFilter(filter);
+		
 		chooserReturn = chooser.showOpenDialog(null);
+		
+		switch(chooserReturn) {
+			case 0: {
+				// PREMUTO TASTO APRI
+				
+				imgInsertionFile = chooser.getSelectedFile();
+				
+				try {
+					insertionBimg = ImageIO.read(imgInsertionFile);
+					
+					if(insertionBimg.getWidth() > 180 && insertionBimg.getHeight() > 130)
+						throw new IOException();
+					
+					frameMain.setLblInsertionImagePreview(insertionBimg);
+					
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, "Hai caricato un'immagine troppo grande! La dimensione massima è 180x130");
+					break;
+				}
+				
+				break;
+			}
+				
+			case 1: {
+				// PREMUTO TASTO ANNULLA
+				break;
+			}
+				
+			default: {
+				JOptionPane.showMessageDialog(null, "Errore sconosciuto durante il caricamento dell'immagine!");
+				break;
+			}
+		}
 	}
 
 	public Utente getUtente() {
@@ -642,8 +764,7 @@ public class Controller {
 		ristorante.setCitta(list[index].getCity());
 		ristorante.setNome(list[index].getPlaceTitle());
 		ristorante.setVia(list[index].getAddress());
-		inserzione.setCodice(list[index].getCode());
-		inserzione.setPoster(list[index].getPoster());
+		ristorante.setSpecialita(list[index].getPlaceCategory());
 		inserzione.setTipo("Ristorante");
 	}
 	
@@ -651,24 +772,22 @@ public class Controller {
 		attrazione.setCitta(list[index].getCity());
 		attrazione.setNome(list[index].getPlaceTitle());
 		attrazione.setVia(list[index].getAddress());
-		inserzione.setCodice(list[index].getCode());
-		inserzione.setPoster(list[index].getPoster());
-		inserzione.setTipo("Ristorante");
+		attrazione.setSpecialita(list[index].getPlaceCategory());
+		inserzione.setTipo("Attrazione");
 	}
 	
 	private void setAlloggio(int index) {
 		alloggio.setCitta(list[index].getCity());
 		alloggio.setNome(list[index].getPlaceTitle());
 		alloggio.setVia(list[index].getAddress());
-		inserzione.setCodice(list[index].getCode());
-		inserzione.setPoster(list[index].getPoster());
-		inserzione.setTipo("Ristorante");
+		alloggio.setSpecialita(list[index].getPlaceCategory());
+		inserzione.setTipo("Alloggio");
 	}
 	
-	private void setRecensione(int reviewIndex) {
-		recensione.setTitolo(reviewList[reviewIndex].getTitle());
-		recensione.setMessaggio(reviewList[reviewIndex].getMessage());
-		recensione.setPoster(reviewList[reviewIndex].getPoster());
+	private void setInserzione(int index) {
+		inserzione.setCodice(list[index].getCode());
+		inserzione.setPoster(list[index].getPoster());
+		inserzione.setImage(inserzioneDAO.loadImgInsertion(con, ps, list[index].getDbCode()));	
 	}
 	
 	public Recensione getRecensione() {

@@ -40,6 +40,8 @@ import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
@@ -98,7 +100,6 @@ public class MainFrame extends JFrame {
 	private KGradientPanel uploadImageBtn;
 	private KGradientPanel addInsertionBtn;
 	private KGradientPanel cancelInsertionBtn;
-	private JLabel lblAdsBackground;
 	private JLabel lblAddInsertion;
 	private JLabel lblCancelInsertion;
 	private JLabel lblUploadImage;
@@ -139,6 +140,13 @@ public class MainFrame extends JFrame {
 	private JLabel lblConfirmReviewBtn;
 	private KGradientPanel confirmReviewBtn;
 	private JLabel lblAlreadyWritten;
+	private JLabel lblInsertionImagePreview;
+	private JSeparator separator;
+	private JLabel lblWriteReviewText;
+	private JLabel lblWelcomeBackground;
+	private JLabel lblVisitedThisPlace;
+	private JLabel lblInsertionImage;
+	private JLabel lblFullType;
 	
 	public MainFrame(Controller c) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/icon-64.png")));
@@ -248,6 +256,7 @@ public class MainFrame extends JFrame {
 		lblImgProfile.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/profile_nopic_ph.png")));
 		lblImgProfile.setHorizontalAlignment(SwingConstants.CENTER);
 		lblImgProfile.setBounds(31, 97, 160, 160);
+		loadImgProfile(ctrl.getUtente().getProfileImage());
 		userPanel.add(lblImgProfile);
 		
 		lblNumRewTitle = new JLabel("Recensioni pubblicate");
@@ -288,31 +297,6 @@ public class MainFrame extends JFrame {
 		mainPanel.add(welcomePanel, "welcomePanel_card");
 		welcomePanel.setLayout(null);
 		
-		lblWelcomeTitle = new JLabel("TravelReview");
-		lblWelcomeTitle.setFont(new Font("Quicksand Medium", Font.PLAIN, 45));
-		lblWelcomeTitle.setBounds(370, 100, 355, 57);
-		welcomePanel.add(lblWelcomeTitle);
-		
-		lblWelcomeTo = new JLabel("Benvenuto in...");
-		lblWelcomeTo.setFont(new Font("Ubuntu", Font.BOLD, 20));
-		lblWelcomeTo.setBounds(370, 78, 145, 22);
-		welcomePanel.add(lblWelcomeTo);
-		
-		lblWelcomeLogo = new JLabel("");
-		lblWelcomeLogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/logo_medium.png")));
-		lblWelcomeLogo.setBounds(141, 24, 216, 216);
-		welcomePanel.add(lblWelcomeLogo);
-		
-		lblWelcomeDescription = new JLabel("<html>\r\nCiao! <br>\r\nQuesta \u00E8 la <b>pagina iniziale</b>, da qui puoi scegliere se <b>pubblicare</b> una nuova inserzione oppure <b>cercare</b> delle inserzioni scegliendo una delle tre categorie principali.\r\n</html>");
-		lblWelcomeDescription.setFont(new Font("Ubuntu", Font.PLAIN, 22));
-		lblWelcomeDescription.setBounds(67, 238, 704, 138);
-		welcomePanel.add(lblWelcomeDescription);
-		
-		JLabel lblWelcomeBackground = new JLabel("");
-		lblWelcomeBackground.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/welcome_background.png")));
-		lblWelcomeBackground.setBounds(0, 345, 851, 151);
-		welcomePanel.add(lblWelcomeBackground);
-		
 		insertionListPanel = new JPanel();
 		insertionListPanel.setBackground(Color.WHITE);
 		insertionListPanel.setLayout(null);
@@ -343,72 +327,8 @@ public class MainFrame extends JFrame {
 		reviewListScrollBar = new JScrollPane(reviewListPanel);
 		reviewListScrollBar.setBorder(BorderFactory.createEmptyBorder());
 		
-		lblNoReviewsFoundDescription = new JLabel("<html><center>Questa zona \u00E8 vuota!</center>Se conosci questo posto, scrivi ora una recensione e fai a conoscere a tutti gli utenti cos'ha da offrire questo posto! ;-)</html>");
-		lblNoReviewsFoundDescription.setBounds(0, 240, 851, 116);
-		lblNoReviewsFoundDescription.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNoReviewsFoundDescription.setFont(new Font("Ubuntu", Font.PLAIN, 13));
-		reviewPanel.add(lblNoReviewsFoundDescription);
-		
-		lblNoReviewsFound = new JLabel("Questa inserzione non ha recensioni!");
-		lblNoReviewsFound.setBounds(0, 200, 851, 72);
-		lblNoReviewsFound.setFont(new Font("Ubuntu", Font.BOLD, 20));
-		lblNoReviewsFound.setHorizontalAlignment(SwingConstants.CENTER);
-		reviewListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		reviewPanel.add(lblNoReviewsFound);
-		
 		reviewCardLayout.add(reviewListScrollBar, "reviewListPanel_card");
 		reviewCardLayout.add(createReviewPanel, "createReviewPanel_card");
-		
-		lblWriteReviewTitle = new JLabel("Titolo della recensione");
-		lblWriteReviewTitle.setFont(new Font("Ubuntu", Font.BOLD, 18));
-		lblWriteReviewTitle.setBounds(10, 40, 256, 29);
-		createReviewPanel.add(lblWriteReviewTitle);
-		
-		txtReviewTitle = new JTextField();
-		txtReviewTitle.setFont(new Font("Ubuntu", Font.PLAIN, 15));
-		txtReviewTitle.setBounds(10, 71, 336, 29);
-		createReviewPanel.add(txtReviewTitle);
-		txtReviewTitle.setColumns(10);
-		
-		JLabel lblWriteReviewText = new JLabel("Testo della recensione");
-		lblWriteReviewText.setFont(new Font("Ubuntu", Font.BOLD, 18));
-		lblWriteReviewText.setBounds(10, 133, 336, 29);
-		createReviewPanel.add(lblWriteReviewText);
-		
-		txtReviewText = new JTextField();
-		txtReviewText.setBounds(10, 164, 656, 90);
-		createReviewPanel.add(txtReviewText);
-		txtReviewText.setColumns(10);
-		
-		createReviewBtn = new KGradientPanel();
-		createReviewBtn.kGradientFocus = 250;
-		createReviewBtn.kStartColor = new Color(50, 205, 50);
-		createReviewBtn.kEndColor = new Color(34, 139, 34);
-		createReviewBtn.setBounds(190, 278, 186, 36);
-		createReviewPanel.add(createReviewBtn);
-		createReviewBtn.setLayout(null);
-		
-		lblCreateReviewBtn = new JLabel("Pubblica");
-		lblCreateReviewBtn.setForeground(new Color(255, 255, 255));
-		lblCreateReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblCreateReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCreateReviewBtn.setBounds(0, 0, 186, 36);
-		createReviewBtn.add(lblCreateReviewBtn);
-		
-		cancelReviewBtn = new KGradientPanel();
-		cancelReviewBtn.kGradientFocus = 250;
-		cancelReviewBtn.kStartColor = new Color(255, 0, 0);
-		cancelReviewBtn.kEndColor = new Color(255, 69, 0);
-		cancelReviewBtn.setBounds(442, 278, 186, 36);
-		createReviewPanel.add(cancelReviewBtn);
-		cancelReviewBtn.setLayout(null);
-		
-		lblCancelReviewBtn = new JLabel("Annulla");
-		lblCancelReviewBtn.setForeground(new Color(255, 255, 255));
-		lblCancelReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
-		lblCancelReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCancelReviewBtn.setBounds(0, 0, 186, 36);
-		cancelReviewBtn.add(lblCancelReviewBtn);
 		
 		createInsertionPanel = new JPanel();
 		createInsertionPanel.setBackground(Color.WHITE);
@@ -471,54 +391,19 @@ public class MainFrame extends JFrame {
 		lblLogOut.setBounds(64, 475, 88, 25);
 		userPanel.add(lblLogOut);
 		
-		lblReviewMessage = new JLabel("Errore nell'inserimento della recensione!");
-		lblReviewMessage.setForeground(Color.RED);
-		lblReviewMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblReviewMessage.setFont(new Font("Ubuntu", Font.BOLD, 15));
-		lblReviewMessage.setBounds(0, 11, 851, 18);
-		createReviewPanel.add(lblReviewMessage);
-		
-		confirmReviewBtn = new KGradientPanel();
-		confirmReviewBtn.kGradientFocus = 250;
-		confirmReviewBtn.kStartColor = new Color(154, 205, 50);
-		confirmReviewBtn.kEndColor = new Color(60, 179, 113);
-		confirmReviewBtn.setBounds(325, 278, 170, 36);
-		createReviewPanel.add(confirmReviewBtn);
-		confirmReviewBtn.setLayout(null);
-		
-		lblConfirmReviewBtn = new JLabel("OK");
-		lblConfirmReviewBtn.setForeground(new Color(255, 255, 255));
-		lblConfirmReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 15));
-		lblConfirmReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
-		lblConfirmReviewBtn.setBounds(0, 0, 170, 36);
-		confirmReviewBtn.add(lblConfirmReviewBtn);
-		confirmReviewBtn.setVisible(false);
-		lblReviewMessage.setVisible(false);
-		
 		displayAddInsertion();
 		
 		displayInsertion();
 		
-		loadImgProfile(ctrl.getUtente().getProfileImage());
+		displayAddReview();
 		
-		registerMouseListener(foodBtn, attrBtn, hotelBtn, addRewBtn, selectFood, selectAttr, selectHotel, uploadImageBtn, lblImgProfile, addInsertionBtn, cancelInsertionBtn, comboPlaceType, lblLogOut, lblLogo, lblLogoTitle, lblWriteReviewBtn, createReviewBtn, cancelReviewBtn, confirmReviewBtn);
+		displayWelcome();
 		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 150, 820, 2);
-		insertionInfo.add(separator);
+		registerMouseListener();
 		
-		JLabel lblVisitedThisPlace = new JLabel("Lo hai visitato? Raccontacelo!");
-		lblVisitedThisPlace.setFont(new Font("Ubuntu", Font.BOLD, 12));
-		lblVisitedThisPlace.setHorizontalAlignment(SwingConstants.CENTER);
-		lblVisitedThisPlace.setBounds(332, 85, 187, 25);
-		insertionInfo.add(lblVisitedThisPlace);
+		registerMouseListenerAddReview();
 		
-		lblAlreadyWritten = new JLabel("Hai gi\u00E0 scritto una recensione!");
-		lblAlreadyWritten.setForeground(Color.RED);
-		lblAlreadyWritten.setFont(new Font("Ubuntu", Font.BOLD, 15));
-		lblAlreadyWritten.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAlreadyWritten.setBounds(300, 112, 245, 20);
-		insertionInfo.add(lblAlreadyWritten);
+		registerMouseListenerAddInsertion();
 
 	}
 	
@@ -529,11 +414,16 @@ public class MainFrame extends JFrame {
 		lblInfoPlaceTitle.setBounds(10, 20, 312, 25);
 		insertionInfo.add(lblInfoPlaceTitle);
 		
+		lblFullType = new JLabel("");
+		lblFullType.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		lblFullType.setBounds(10, 50, 245, 28);
+		insertionInfo.add(lblFullType);
+		
 		lblInfoFullAddress = new JLabel();
 		lblInfoFullAddress.setVerticalAlignment(SwingConstants.TOP);
 		lblInfoFullAddress.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfoFullAddress.setFont(new Font("Ubuntu", Font.PLAIN, 15));
-		lblInfoFullAddress.setBounds(10, 56, 312, 57);
+		lblInfoFullAddress.setBounds(10, 75, 312, 57);
 		insertionInfo.add(lblInfoFullAddress);
 		
 		lblInfoWrittenBy = new JLabel();
@@ -561,6 +451,65 @@ public class MainFrame extends JFrame {
 		lblWriteReviewBtn.setBounds(0, 0, 187, 28);
 		writeReviewBtn.add(lblWriteReviewBtn);
 		
+		lblInsertionImagePreview = new JLabel("");
+		lblInsertionImagePreview.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/no_pic_default.png")));
+		lblInsertionImagePreview.setBounds(556, 121, 180, 130);
+		createInsertionPanel.add(lblInsertionImagePreview);
+		
+		separator = new JSeparator();
+		separator.setBounds(10, 150, 820, 2);
+		insertionInfo.add(separator);
+		
+		lblVisitedThisPlace = new JLabel("Lo hai visitato? Raccontacelo!");
+		lblVisitedThisPlace.setFont(new Font("Ubuntu", Font.BOLD, 12));
+		lblVisitedThisPlace.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVisitedThisPlace.setBounds(332, 85, 187, 25);
+		insertionInfo.add(lblVisitedThisPlace);
+		
+		lblAlreadyWritten = new JLabel("Hai gi\u00E0 scritto una recensione!");
+		lblAlreadyWritten.setForeground(Color.RED);
+		lblAlreadyWritten.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblAlreadyWritten.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAlreadyWritten.setBounds(300, 112, 245, 20);
+		insertionInfo.add(lblAlreadyWritten);
+		
+		lblInsertionImage = new JLabel("");
+		lblInsertionImage.setBounds(60, 15, 200, 132);
+		insertionInfo.add(lblInsertionImage);
+		
+		lblWriteReviewTitle = new JLabel("Titolo della recensione");
+		lblWriteReviewTitle.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblWriteReviewTitle.setBounds(10, 40, 256, 29);
+		createReviewPanel.add(lblWriteReviewTitle);
+		
+		txtReviewTitle = new JTextField();
+		txtReviewTitle.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+		txtReviewTitle.setBounds(10, 71, 336, 29);
+		createReviewPanel.add(txtReviewTitle);
+		txtReviewTitle.setColumns(10);
+		
+		lblWriteReviewText = new JLabel("Testo della recensione");
+		lblWriteReviewText.setFont(new Font("Ubuntu", Font.BOLD, 18));
+		lblWriteReviewText.setBounds(10, 133, 336, 29);
+		createReviewPanel.add(lblWriteReviewText);
+		
+		txtReviewText = new JTextField();
+		txtReviewText.setBounds(10, 164, 656, 90);
+		createReviewPanel.add(txtReviewText);
+		txtReviewText.setColumns(10);
+		
+		lblNoReviewsFoundDescription = new JLabel("<html><center>Questa zona \u00E8 vuota!</center>Se conosci questo posto, scrivi ora una recensione e fai conoscere a tutti gli utenti cos'ha da offrire questo posto! ;-)</html>");
+		lblNoReviewsFoundDescription.setBounds(0, 240, 851, 116);
+		lblNoReviewsFoundDescription.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNoReviewsFoundDescription.setFont(new Font("Ubuntu", Font.PLAIN, 13));
+		reviewPanel.add(lblNoReviewsFoundDescription);
+		
+		lblNoReviewsFound = new JLabel("Questa inserzione non ha recensioni!");
+		lblNoReviewsFound.setBounds(0, 200, 851, 72);
+		lblNoReviewsFound.setFont(new Font("Ubuntu", Font.BOLD, 20));
+		lblNoReviewsFound.setHorizontalAlignment(SwingConstants.CENTER);
+		reviewListScrollBar.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		reviewPanel.add(lblNoReviewsFound);
 	}
 	
 	public void displayAddInsertion() {
@@ -631,7 +580,7 @@ public class MainFrame extends JFrame {
 		uploadImageBtn = new KGradientPanel();
 		uploadImageBtn.setkStartColor(new Color(102, 204, 153));
 		uploadImageBtn.kEndColor = new Color(102, 204, 0);
-		uploadImageBtn.setBounds(542, 175, 215, 37);
+		uploadImageBtn.setBounds(542, 295, 215, 37);
 		createInsertionPanel.add(uploadImageBtn);
 		uploadImageBtn.setLayout(null);
 		
@@ -640,11 +589,6 @@ public class MainFrame extends JFrame {
 		lblUploadImage.setFont(new Font("Ubuntu", Font.BOLD, 14));
 		lblUploadImage.setBounds(53, 5, 127, 26);
 		uploadImageBtn.add(lblUploadImage);
-		
-		lblAdsBackground = new JLabel("");
-		lblAdsBackground.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/new_ad_background.png")));
-		lblAdsBackground.setBounds(595, 240, 256, 256);
-		createInsertionPanel.add(lblAdsBackground);
 		
 		addInsertionBtn = new KGradientPanel();
 		addInsertionBtn.kEndColor = new Color(102, 204, 0);
@@ -674,62 +618,94 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	// Metodo che contiene tutti i Listener dei bottoni dell'UI
-	public void registerMouseListener(JPanel foodBtn, JPanel attrBtn, JPanel hotelBtn, KGradientPanel addRewBtn, JPanel selectFood, JPanel selectAttr, JPanel selectHotel, JPanel uploadImageBtn, JLabel lblImgProfile, KGradientPanel addInsertionBtn, KGradientPanel cancelInsertionBtn, JComboBox comboPlaceType, JLabel lblLogOut, JLabel lblLogo, JLabel lblLogoTitle, JLabel lblWriteReviewBtn, KGradientPanel createReviewBtn, KGradientPanel cancelReviewBtn, KGradientPanel confirmReviewBtn) {
+	public void displayAddReview() {
 		
-		confirmReviewBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
-				ctrl.refreshReviewList();
-				resetAddReview();
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				confirmReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
+		createReviewBtn = new KGradientPanel();
+		createReviewBtn.kGradientFocus = 250;
+		createReviewBtn.kStartColor = new Color(50, 205, 50);
+		createReviewBtn.kEndColor = new Color(34, 139, 34);
+		createReviewBtn.setBounds(190, 278, 186, 36);
+		createReviewPanel.add(createReviewBtn);
+		createReviewBtn.setLayout(null);
 		
-		createReviewBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				ctrl.addReview();
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				createReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
+		lblCreateReviewBtn = new JLabel("Pubblica");
+		lblCreateReviewBtn.setForeground(new Color(255, 255, 255));
+		lblCreateReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblCreateReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCreateReviewBtn.setBounds(0, 0, 186, 36);
+		createReviewBtn.add(lblCreateReviewBtn);
 		
-		cancelReviewBtn.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				cancelReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
-				resetAddReview();
-			}
-			
-		});
+		cancelReviewBtn = new KGradientPanel();
+		cancelReviewBtn.kGradientFocus = 250;
+		cancelReviewBtn.kStartColor = new Color(255, 0, 0);
+		cancelReviewBtn.kEndColor = new Color(255, 69, 0);
+		cancelReviewBtn.setBounds(442, 278, 186, 36);
+		createReviewPanel.add(cancelReviewBtn);
+		cancelReviewBtn.setLayout(null);
 		
-		lblWriteReviewBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				reviewCardLayout.setVisible(true);
-				cl_cardLayoutReviewPanel.show(reviewCardLayout, "createReviewPanel_card");
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				lblWriteReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-		});
+		lblCancelReviewBtn = new JLabel("Annulla");
+		lblCancelReviewBtn.setForeground(new Color(255, 255, 255));
+		lblCancelReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 16));
+		lblCancelReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCancelReviewBtn.setBounds(0, 0, 186, 36);
+		cancelReviewBtn.add(lblCancelReviewBtn);
+		
+		lblReviewMessage = new JLabel("Errore nell'inserimento della recensione!");
+		lblReviewMessage.setForeground(Color.RED);
+		lblReviewMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReviewMessage.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblReviewMessage.setBounds(0, 11, 851, 18);
+		createReviewPanel.add(lblReviewMessage);
+		
+		confirmReviewBtn = new KGradientPanel();
+		confirmReviewBtn.kGradientFocus = 250;
+		confirmReviewBtn.kStartColor = new Color(154, 205, 50);
+		confirmReviewBtn.kEndColor = new Color(60, 179, 113);
+		confirmReviewBtn.setBounds(325, 278, 170, 36);
+		createReviewPanel.add(confirmReviewBtn);
+		confirmReviewBtn.setLayout(null);
+		
+		lblConfirmReviewBtn = new JLabel("OK");
+		lblConfirmReviewBtn.setForeground(new Color(255, 255, 255));
+		lblConfirmReviewBtn.setFont(new Font("Ubuntu", Font.BOLD, 15));
+		lblConfirmReviewBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirmReviewBtn.setBounds(0, 0, 170, 36);
+		confirmReviewBtn.add(lblConfirmReviewBtn);
+		confirmReviewBtn.setVisible(false);
+		lblReviewMessage.setVisible(false);
+		
+	}
+
+	public void displayWelcome() {
+		
+		lblWelcomeTitle = new JLabel("TravelReview");
+		lblWelcomeTitle.setFont(new Font("Quicksand Medium", Font.PLAIN, 45));
+		lblWelcomeTitle.setBounds(370, 100, 355, 57);
+		welcomePanel.add(lblWelcomeTitle);
+		
+		lblWelcomeTo = new JLabel("Benvenuto in...");
+		lblWelcomeTo.setFont(new Font("Ubuntu", Font.BOLD, 20));
+		lblWelcomeTo.setBounds(370, 78, 145, 22);
+		welcomePanel.add(lblWelcomeTo);
+		
+		lblWelcomeLogo = new JLabel("");
+		lblWelcomeLogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/logo_medium.png")));
+		lblWelcomeLogo.setBounds(141, 24, 216, 216);
+		welcomePanel.add(lblWelcomeLogo);
+		
+		lblWelcomeDescription = new JLabel("<html>\r\nCiao! <br>\r\nQuesta \u00E8 la <b>pagina iniziale</b>, da qui puoi scegliere se <b>pubblicare</b> una nuova inserzione oppure <b>cercare</b> delle inserzioni scegliendo una delle tre categorie principali.\r\n</html>");
+		lblWelcomeDescription.setFont(new Font("Ubuntu", Font.PLAIN, 22));
+		lblWelcomeDescription.setBounds(67, 238, 704, 138);
+		welcomePanel.add(lblWelcomeDescription);
+		
+		lblWelcomeBackground = new JLabel("");
+		lblWelcomeBackground.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/welcome_background.png")));
+		lblWelcomeBackground.setBounds(0, 345, 851, 151);
+		welcomePanel.add(lblWelcomeBackground);
+		
+	}
+	
+	public void registerMouseListener() {
 		
 		lblLogo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -763,39 +739,6 @@ public class MainFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ctrl.logout();
-			}
-		});
-		
-		comboPlaceType.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				switch((String) comboPlaceType.getSelectedItem()) {
-					case "Ristorante": {
-						comboPlaceSpecialization.removeAllItems();
-						comboPlaceSpecialization.addItem(restaurantSpecializations[0]);
-						comboPlaceSpecialization.addItem(restaurantSpecializations[1]);
-						comboPlaceSpecialization.addItem(restaurantSpecializations[2]);
-						comboPlaceSpecialization.setSelectedIndex(0);
-						break;
-					}
-					
-					case "Alloggio": {
-						comboPlaceSpecialization.removeAllItems();
-						comboPlaceSpecialization.addItem(hotelSpecializations[0]);
-						comboPlaceSpecialization.addItem(hotelSpecializations[1]);
-						comboPlaceSpecialization.addItem(hotelSpecializations[2]);
-						comboPlaceSpecialization.setSelectedIndex(0);
-						break;
-					}
-					
-					case "Attrazione": {
-						comboPlaceSpecialization.removeAllItems();
-						comboPlaceSpecialization.addItem(attractionSpecializations[0]);
-						comboPlaceSpecialization.addItem(attractionSpecializations[1]);
-						comboPlaceSpecialization.addItem(attractionSpecializations[2]);
-						comboPlaceSpecialization.setSelectedIndex(0);
-						break;
-					}
-				}
 			}
 		});
 		
@@ -833,31 +776,6 @@ public class MainFrame extends JFrame {
 				foodBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			
-		});
-		
-		addInsertionBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				addInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if(ctrl.checkAddInsertion(getPlaceTitle(), getCity(), getAddress()))
-					ctrl.addInsertion();
-			}
-		});
-		
-		cancelInsertionBtn.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				cancelInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				cl_cardLayoutPanel.show(mainPanel, "welcomePanel_card");
-				resetAddInsertion();
-			}
 		});
 		
 		attrBtn.addMouseListener(new MouseAdapter() {
@@ -969,6 +887,104 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
+	}
+		
+	public void registerMouseListenerAddReview() {
+		
+		confirmReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
+				ctrl.refreshReviewList();
+				resetAddReview();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				confirmReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		createReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				if(ctrl.checkAddReview(getTxtReviewTitle(), getTxtReviewText()))
+					ctrl.addReview();
+
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				createReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+		cancelReviewBtn.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				cancelReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "reviewListPanel_card");
+				ctrl.refreshReviewList();
+				resetAddReview();
+			}
+			
+		});
+		
+		lblWriteReviewBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				reviewCardLayout.setVisible(true);
+				cl_cardLayoutReviewPanel.show(reviewCardLayout, "createReviewPanel_card");
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblWriteReviewBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+		});
+		
+	}
+	
+	public void registerMouseListenerAddInsertion() {
+		
+		comboPlaceType.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				switch((String) comboPlaceType.getSelectedItem()) {
+					case "Ristorante": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(restaurantSpecializations[0]);
+						comboPlaceSpecialization.addItem(restaurantSpecializations[1]);
+						comboPlaceSpecialization.addItem(restaurantSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+					
+					case "Alloggio": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(hotelSpecializations[0]);
+						comboPlaceSpecialization.addItem(hotelSpecializations[1]);
+						comboPlaceSpecialization.addItem(hotelSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+					
+					case "Attrazione": {
+						comboPlaceSpecialization.removeAllItems();
+						comboPlaceSpecialization.addItem(attractionSpecializations[0]);
+						comboPlaceSpecialization.addItem(attractionSpecializations[1]);
+						comboPlaceSpecialization.addItem(attractionSpecializations[2]);
+						comboPlaceSpecialization.setSelectedIndex(0);
+						break;
+					}
+				}
+			}
+		});
 		
 		uploadImageBtn.addMouseListener(new MouseAdapter() {
 			@Override
@@ -982,8 +998,33 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		addInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				addInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(ctrl.checkAddInsertion(getPlaceTitle(), getCity(), getAddress()))
+					ctrl.addInsertion();
+			}
+		});
+		
+		cancelInsertionBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				cancelInsertionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cl_cardLayoutPanel.show(mainPanel, "welcomePanel_card");
+				resetAddInsertion();
+			}
+		});
+		
 	}
-	
+
 	private void buildInsertionList(String placeType) {
 		
 		insertionListPanel.removeAll();
@@ -1043,23 +1084,36 @@ public class MainFrame extends JFrame {
 	
 	public void showInsertionPage(String type) {
 		
+		BufferedImage bimg = ctrl.getInserzione().getImage();
+		
+		if(bimg == null) {
+			lblInfoPhoto.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/no_pic_default.png")));
+		}
+		else {
+			lblInfoPhoto.setIcon(new ImageIcon(bimg));
+		}
+		
 		switch(type) {
 			case "Ristorante": {
 				lblInfoPlaceTitle.setText(ctrl.getRistorante().getNome());
 				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblFullType.setText(ctrl.getInserzione().getTipo()+" - "+ctrl.getRistorante().getSpecialita());
 				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getRistorante().getVia()+", "+ctrl.getRistorante().getCitta());
 				break;
 			}
 			case "Alloggio": {
 				lblInfoPlaceTitle.setText(ctrl.getAlloggio().getNome());
 				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblFullType.setText(ctrl.getInserzione().getTipo()+" - "+ctrl.getAlloggio().getSpecialita());
 				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getAlloggio().getVia()+", "+ctrl.getAlloggio().getCitta());
 				break;
 			}
 			case "Attrazione": {
 				lblInfoPlaceTitle.setText(ctrl.getAttrazione().getNome());
 				lblInfoWrittenBy.setText("<html>Pubblicato da: <b>"+ctrl.getInserzione().getPoster()+"</b></html>");
+				lblFullType.setText(ctrl.getInserzione().getTipo()+" - "+ctrl.getAttrazione().getSpecialita());
 				lblInfoFullAddress.setText("<html>Si trova a: "+ctrl.getAttrazione().getVia()+", "+ctrl.getAttrazione().getCitta());
+				
 				break;
 			}
 		}
@@ -1096,7 +1150,6 @@ public class MainFrame extends JFrame {
 	public String getAddress() {
 		return txtAddress.getText();
 	}
-	
 	
 	public String getTxtReviewTitle() {
 		return txtReviewTitle.getText();
@@ -1233,5 +1286,57 @@ public class MainFrame extends JFrame {
 	
 	public void updateImgProfile(BufferedImage img) {
 		lblImgProfile.setIcon(new ImageIcon(img));
+	}
+	
+	public BufferedImage getLblInsertionImagePreview() {
+		
+		Icon img = lblInsertionImagePreview.getIcon();
+		BufferedImage bimg = new BufferedImage(img.getIconWidth(), img.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		return bimg;
+	}
+	
+	public void setLblInsertionImagePreview(BufferedImage img) {
+		if(img == null) {
+			lblInsertionImagePreview.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/no_pic_default.png")));
+		}
+		else {
+			lblInsertionImagePreview.setIcon(new ImageIcon(img));
+		}
+	}
+
+	public void showReviewTitleError() {
+		this.lblWriteReviewTitle.setForeground(Color.RED);
+	}
+
+	public void showReviewTextError() {
+		this.lblWriteReviewText.setForeground(Color.RED);
+	}
+	
+	public void hideReviewTitleError() {
+		this.lblWriteReviewTitle.setForeground(Color.BLACK);
+	}
+
+	public void hideReviewTextError() {
+		this.lblWriteReviewText.setForeground(Color.BLACK);
+	}
+	
+	public void setlblInsertionImage(String type) {
+		
+		switch(type) {
+			case "Ristorante": {
+				lblInsertionImage.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/food-icon.png")));
+				break;
+			}
+			case "Alloggio": {
+				lblInsertionImage.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/hotel-icon.png")));
+				break;
+			}
+			case "Attrazione": {
+				lblInsertionImage.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/museum-icon.png")));
+				break;
+			}
+		}
+		
 	}
 }

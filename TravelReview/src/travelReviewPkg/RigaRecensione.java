@@ -18,16 +18,9 @@ public class RigaRecensione extends JPanel {
 	
 	private JLabel lblReviewTitle;
 	private JLabel lblReviewMessage;
-	private JSeparator separator;
 	
 	public RigaRecensione(Controller c) {
 		setLayout(null);
-		
-		separator = new JSeparator();
-		separator.setForeground(Color.BLACK);
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(700, 11, 7, 128);
-		add(separator);
 		
 		lblReviewTitle = new JLabel();
 		lblReviewTitle.setFont(new Font("Ubuntu", Font.PLAIN, 17));

@@ -5,7 +5,14 @@ public class Ristorante {
 	private String via;
 	private String citta;
 	private String codice;
+	private String specialita;
 	
+	public String getSpecialita() {
+		return specialita;
+	}
+	public void setSpecialita(String specialita) {
+		this.specialita = specialita;
+	}
 	public String getCitta() {
 		return citta;
 	}

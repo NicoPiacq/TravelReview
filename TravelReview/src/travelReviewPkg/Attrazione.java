@@ -4,7 +4,14 @@ public class Attrazione {
 	private String nome;
 	private String via;
 	private String citta;
+	private String specialita;
 	
+	public String getSpecialita() {
+		return specialita;
+	}
+	public void setSpecialita(String specialita) {
+		this.specialita = specialita;
+	}
 	public String getNome() {
 		return nome;
 	}

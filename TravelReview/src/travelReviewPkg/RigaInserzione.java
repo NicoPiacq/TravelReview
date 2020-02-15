@@ -15,6 +15,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 public class RigaInserzione extends JPanel {
 	
@@ -27,7 +28,8 @@ public class RigaInserzione extends JPanel {
 	private String city;
 	private String address;
 	private String placeCategory;
-	
+	private BufferedImage insertionImage;
+
 	private Controller ctrl;
 	
 	private JLabel lblPlaceTitle = new JLabel();
@@ -79,7 +81,7 @@ public class RigaInserzione extends JPanel {
 		
 		lblFullAddress = new JLabel(address+", "+city);
 		lblFullAddress.setFont(new Font("Ubuntu", Font.PLAIN, 13));
-		lblFullAddress.setBounds(10, 75, 207, 14);
+		lblFullAddress.setBounds(10, 75, 300, 14);
 		this.add(lblFullAddress);
 		
 		lblWrittenBy = new JLabel("<html>Pubblicato da: <b>"+poster+"</b></html>");
@@ -162,5 +164,13 @@ public class RigaInserzione extends JPanel {
 
 	public void setDbCode(int dbCode) {
 		this.dbCode = dbCode;
+	}
+	
+	public BufferedImage getInsertionImage() {
+		return insertionImage;
+	}
+
+	public void setInsertionImage(BufferedImage insertionImage) {
+		this.insertionImage = insertionImage;
 	}
 }
